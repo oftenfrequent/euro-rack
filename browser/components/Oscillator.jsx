@@ -13,11 +13,15 @@ export class Oscillator extends React.Component {
     this.state = {
       bindedFunction,
       clickDownY: 0,
-      frequency: 440,
+      frequency: {
+        value: 0,
+        min: 0,
+        max: 8000
+      },
+      type: "sine",
+      optionTypes: ['sine', 'square', 'triangle'],
       degreesValue: 0,
-      min: 0,
-      max: 8000,
-      osc: new Tone.Oscillator(440, "sine").toMaster().start()
+      osc: new Tone.Oscillator(0, "sine").toMaster().start()
     }
   }
 
@@ -25,7 +29,6 @@ export class Oscillator extends React.Component {
     const y = e.clientY
     this.setState({clickDownY: y})
     // const x = e.clientX
-    // console.log('X, Y - ', x, y)
     document.addEventListener("mousemove", this.state.bindedFunction)
     document.addEventListener('mouseup', () => document.removeEventListener('mousemove', this.state.bindedFunction))
   }
@@ -33,22 +36,34 @@ export class Oscillator extends React.Component {
   handleMouseMove(e) {
     const y = e.clientY
     const difference = this.state.clickDownY - y
-    console.log('difference', difference)
     const percentChange = this.distanceToPercentageChange(difference)
     console.log('percentage', percentChange)
-    // const rotationalDegrees = percentChange * 180
-    // console.log('rotationalDegrees', rotationalDegrees)
 
-    const newFrequency = this.state.frequency + (percentChange/100 * 8000)
-    const newDegrees = this.state.degreesValue + (percentChange/100 * 180)
+    const newFrequency = this.generateNewFrequency(percentChange)
+    const newDegrees = this.generateNewDegrees(percentChange)
     console.log('newFrequency', newFrequency)
     this.setState({
-      frequency: newFrequency,
+      frequency: {
+        value: newFrequency,
+        min: this.state.frequency.min,
+        max: this.state.frequency.max
+      },
       degreesValue: newDegrees
     }, () => {
-      // this.state.osc.frequency.value = newFrequency
-    })
-    // document.removeEventListener('mousemove', this.state.bindedFunction)
+      console.log(this.state.frequency)
+      this.state.osc.frequency.value = newFrequency })
+  }
+
+  generateNewFrequency(percentChange) {
+    const newFrequency = this.state.frequency.value + (percentChange/100 * 8000)
+    return newFrequency <= this.state.frequency.min ? this.state.frequency.min
+      : newFrequency >= this.state.frequency.max ? this.state.frequency.max
+      : newFrequency
+  }
+
+  generateNewDegrees(percentChange) {
+    const newDegrees = this.state.degreesValue + (percentChange/100 * 180)
+    return newDegrees <= 0 ? 0 : newDegrees >= 180 ? 180 : newDegrees
   }
 
 
@@ -62,18 +77,6 @@ export class Oscillator extends React.Component {
     }
   }
 
-  // distanceToPercentageChange(amount) {
-  //   // dist from center
-  //   const dist = 100
-  //   // total freq range
-  //   const frequency = 8000
-  //   return (dist * 100) / (frequency * 100)
-  // }
-
-  handleValueChange(value) {
-
-  }
-
   onChange(e) {
     const freq = e.target.value
     const y = e.clientY
@@ -83,23 +86,34 @@ export class Oscillator extends React.Component {
       console.log('CHANGEDD!!!!', this.state)
       this.state.osc.frequency.value = freq
     })
+  }
 
+  onChangeType(e) {
+    const type = e.target.value
+    this.setState({type}, () => {this.state.osc.type = type})
   }
 
   render(){
     const style = {
-      transform: 'rotate(15deg)'
+      transform: `rotate(${this.state.degreesValue}deg)`
     }
+    console.log('this.state.optionTypes', this.state.optionTypes)
 
     return (
       <div>
         <input
           type="number"
-          defaultValue={this.state.frequency}
+          defaultValue={this.state.frequency.value}
           min={this.state.min}
           max={this.state.max}
           onBlur={(e) => this.onChange(e)}
+          value={this.state.frequency.value}
         />
+        <select onChange={(e) => this.onChangeType(e)}>
+          {this.state.optionTypes.map( opt =>
+            <option key={opt} value={opt}>{opt}</option>
+          )}
+        </select>
         <div style={style} className='knob' onMouseDown={(e) => this.onMouseDown(e)}>
           <div className='line'></div>
         </div>
