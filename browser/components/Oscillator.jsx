@@ -3,12 +3,14 @@ import { connect } from 'react-redux'
 import Tone from 'tone'
 
 import DisplayAmount from './ModularComponents/DisplayAmount'
+import DisplayTypeDropdown from './ModularComponents/DisplayTypeDropdown'
+import Knob from './ModularComponents/Knob'
 
 export class Oscillator extends React.Component {
   constructor(props){
     super(props)
 //    this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this)
-    this.boundMouseMoveFunction = this.handleMouseMove.bind(this)
+    // this.boundMouseMoveFunction = this.handleMouseMove.bind(this)
     this.state = {
       clickDownY: 0,
       frequency: {
@@ -16,6 +18,7 @@ export class Oscillator extends React.Component {
         min: 0,
         max: 8000
       },
+      active: false,
       type: "sine",
       optionTypes: ['sine', 'square', 'triangle', 'sawtooth'],
       degreesValue: 0,
@@ -23,37 +26,8 @@ export class Oscillator extends React.Component {
     }
   }
 
-  onMouseDown(e) {
-    const y = e.clientY
-    this.setState({clickDownY: y})
-    // const x = e.clientX
-    document.addEventListener("mousemove", this.boundMouseMoveFunction)
-    document.addEventListener('mouseup', () => document.removeEventListener('mousemove', this.boundMouseMoveFunction))
-  }
-
-  handleMouseMove(e) {
-    const y = e.clientY
-    const difference = this.state.clickDownY - y
-    const percentChange = this.distanceToPercentageChange(difference)
-    console.log('percentage', percentChange)
-
-    const newFrequency = this.generateNewFrequency(percentChange)
-    const newDegrees = this.generateNewDegrees(percentChange)
-    console.log('newFrequency', newFrequency)
-    this.setState({
-      frequency: {
-        value: newFrequency,
-        min: this.state.frequency.min,
-        max: this.state.frequency.max
-      },
-      degreesValue: newDegrees
-    }, () => {
-      console.log(this.state.frequency)
-      this.state.osc.frequency.value = newFrequency })
-  }
-
   generateNewFrequency(percentChange) {
-    const newFrequency = this.state.frequency.value + (percentChange/100 * this.state.frequency.max)
+    const newFrequency = parseInt(this.state.frequency.value) + (percentChange/100 * this.state.frequency.max)
     return newFrequency <= this.state.frequency.min ? this.state.frequency.min
       : newFrequency >= this.state.frequency.max ? this.state.frequency.max
       : newFrequency
@@ -64,38 +38,47 @@ export class Oscillator extends React.Component {
     return newDegrees <= 0 ? 0 : newDegrees >= 180 ? 180 : newDegrees
   }
 
-
-  distanceToPercentageChange(distance) {
-    if(distance >= 100) {
-      return 100
-    } else if(distance <= -100) {
-      return -100
-    } else {
-      return distance
-    }
+  generateNewDegreesFromValueChange(newValue) {
+    return ((newValue - this.state.frequency.value)/(this.state.frequency.max - this.state.frequency.min))*100
   }
 
-  onChange(e) {
-    const freq = e.target.value
-    const y = e.clientY
-    // const x = e.clientX
-    // console.log('X, Y - ', x, y)
-    this.setState({frequency: freq, clickDownY: y}, () => {
-      console.log('CHANGEDD!!!!', this.state)
-      this.state.osc.frequency.value = freq
+  onChangeValue(value) {
+    this.setState({
+      active: false,
+      frequency: {
+        value: value,
+        min: this.state.frequency.min,
+        max: this.state.frequency.max
+      },
+      degreesValue: this.generateNewDegrees(this.generateNewDegreesFromValueChange(value))
+    }, () => {
+      this.state.osc.frequency.value = value
     })
   }
 
-  onChangeType(e) {
-    const type = e.target.value
+  onInputActive() {
+    this.setState({active: !this.state.active})
+  }
+
+  onChangeType(type) {
     this.setState({type}, () => {this.state.osc.type = type})
   }
 
+  onKnobTwist(percentChange) {
+    const newFrequency = this.generateNewFrequency(percentChange)
+    this.setState({
+      degreesValue: this.generateNewDegrees(percentChange),
+      frequency: {
+        value: this.generateNewFrequency(percentChange),
+        min: this.state.frequency.min,
+        max: this.state.frequency.max
+      }}, () => {
+      console.log(this.state.frequency)
+      this.state.osc.frequency.value = newFrequency })
+  }
+
   render(){
-    const style = {
-      transform: `rotate(${this.state.degreesValue}deg)`
-    }
-    console.log('this.state.optionTypes', this.state.optionTypes)
+    const style = {transform: `rotate(${this.state.degreesValue}deg)`}
 
     return (
       <div>
@@ -103,17 +86,20 @@ export class Oscillator extends React.Component {
           type={'number'}
           min={this.state.frequency.min}
           max={this.state.frequency.max}
-          value={this.state.frequency.value}
-          changeValue={(e) => this.onChange(e)}
+          value={this.state.frequency.value.toString()}
+          changeValue={(v) => this.onChangeValue(v)}
+          active={this.state.active}
+          makeActive={() => this.onInputActive()}
         />
-        <select onChange={(e) => this.onChangeType(e)}>
-          {this.state.optionTypes.map( opt =>
-            <option key={opt} value={opt}>{opt}</option>
-          )}
-        </select>
-        <div style={style} className='knob' onMouseDown={(e) => this.onMouseDown(e)}>
-          <div className='line'></div>
-        </div>
+        <DisplayTypeDropdown
+          optionTypes={this.state.optionTypes}
+          changeType={(v) => this.onChangeType(v)}
+        />
+        <Knob
+          degreesValue={this.state.degreesValue}
+          sensitivity={100}
+          onChange={(p) => this.onKnobTwist(p)}
+        />
       </div>
     )
   }

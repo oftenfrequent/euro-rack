@@ -1,21 +1,28 @@
 import React from 'react'
+import ReactDOM from 'react-dom'
+import classNames from 'classnames'
 
-const DisplayAmount = ({type, min, max, value, changeValue}) => {
-  const onBlur = (e) => {
-    const freq = e.target.value
-    changeValue(freq)
-  }
+const DisplayAmount = ({type, min, max, value, changeValue, active, makeActive}) => {
+  const onBlur = (e) => changeValue(e.target.value)
+  const clickValue = (e) => makeActive()
+
+  let viewClasses = classNames({'display-amount-view': true, 'hidden': active})
+  let inputClasses = classNames({'display-amount-input': true, 'hidden': !active})
 
   return (
-    <div>
-      <span>{value}</span>
-      <input
-        type={type || 'number'}
-        defaultValue={value}
-        min={min}
-        max={max}
-        onBlur={(e) => this.onBlur(e)}
-      />
+    <div className='display-amount-container'>
+      <div className={viewClasses} onClick={(e) => clickValue(e)}>{value}</div>
+      {active
+        ?(<input
+            className={inputClasses}
+            type={type || 'number'}
+            defaultValue={value}
+            min={min}
+            max={max}
+            onBlur={(e) => onBlur(e)}
+          />
+        ) : null
+      }
     </div>
   )
 }
@@ -24,8 +31,8 @@ DisplayAmount.propTypes = {
   type: React.PropTypes.string,
   min: React.PropTypes.number,
   max: React.PropTypes.number,
-  value: React.PropTypes.number,
-  changeValue: React.PropTypes.function
+  value: React.PropTypes.string,
+  // changeValue: React.PropTypes.function
 }
 
 export default DisplayAmount

@@ -14,7 +14,6 @@ export class App extends React.Component {
   render(){
     return (
       <div>
-        <div style={{ marginTop: '1.5em' }}>LOADED</div>
         <Oscillator/>
       </div>
     );
