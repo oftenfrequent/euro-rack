@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 // import PureRenderMixin from 'react-addons-pure-render-mixin';
 import Oscillator from './Oscillator'
 
+import '../app.scss'
+
 export class App extends React.Component {
   constructor(props){
     super(props);

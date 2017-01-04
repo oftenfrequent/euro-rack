@@ -1,17 +1,15 @@
-import React from 'react';
-import { connect } from 'react-redux';
-// import PureRenderMixin from 'react-addons-pure-render-mixin';
+import React from 'react'
+import { connect } from 'react-redux'
 import Tone from 'tone'
 
-import '../app.scss'
+import DisplayAmount from './ModularComponents/DisplayAmount'
 
 export class Oscillator extends React.Component {
   constructor(props){
-    super(props);
-//    this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
-    const bindedFunction = this.handleMouseMove.bind(this)
+    super(props)
+//    this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this)
+    this.boundMouseMoveFunction = this.handleMouseMove.bind(this)
     this.state = {
-      bindedFunction,
       clickDownY: 0,
       frequency: {
         value: 0,
@@ -19,7 +17,7 @@ export class Oscillator extends React.Component {
         max: 8000
       },
       type: "sine",
-      optionTypes: ['sine', 'square', 'triangle'],
+      optionTypes: ['sine', 'square', 'triangle', 'sawtooth'],
       degreesValue: 0,
       osc: new Tone.Oscillator(0, "sine").toMaster().start()
     }
@@ -29,8 +27,8 @@ export class Oscillator extends React.Component {
     const y = e.clientY
     this.setState({clickDownY: y})
     // const x = e.clientX
-    document.addEventListener("mousemove", this.state.bindedFunction)
-    document.addEventListener('mouseup', () => document.removeEventListener('mousemove', this.state.bindedFunction))
+    document.addEventListener("mousemove", this.boundMouseMoveFunction)
+    document.addEventListener('mouseup', () => document.removeEventListener('mousemove', this.boundMouseMoveFunction))
   }
 
   handleMouseMove(e) {
@@ -55,7 +53,7 @@ export class Oscillator extends React.Component {
   }
 
   generateNewFrequency(percentChange) {
-    const newFrequency = this.state.frequency.value + (percentChange/100 * 8000)
+    const newFrequency = this.state.frequency.value + (percentChange/100 * this.state.frequency.max)
     return newFrequency <= this.state.frequency.min ? this.state.frequency.min
       : newFrequency >= this.state.frequency.max ? this.state.frequency.max
       : newFrequency
@@ -101,13 +99,12 @@ export class Oscillator extends React.Component {
 
     return (
       <div>
-        <input
-          type="number"
-          defaultValue={this.state.frequency.value}
-          min={this.state.min}
-          max={this.state.max}
-          onBlur={(e) => this.onChange(e)}
+        <DisplayAmount
+          type={'number'}
+          min={this.state.frequency.min}
+          max={this.state.frequency.max}
           value={this.state.frequency.value}
+          changeValue={(e) => this.onChange(e)}
         />
         <select onChange={(e) => this.onChangeType(e)}>
           {this.state.optionTypes.map( opt =>
@@ -118,15 +115,15 @@ export class Oscillator extends React.Component {
           <div className='line'></div>
         </div>
       </div>
-    );
+    )
   }
-};
+}
 
 function mapStateToProps(state) {
   return {
   }
-};
+}
 
 export default connect(
   mapStateToProps
-)(Oscillator);
+)(Oscillator)
