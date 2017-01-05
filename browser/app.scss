@@ -25,13 +25,24 @@ body {
 	}
 }
 
+.module-container {
+	background: #ddd;
+	height: 400px;
+	width: 300px;
+	text-align: center;
+	position:relative;
+	.module-container--content {
+		padding: 25px;
+	}
+}
+
 
 .knob {
 	height: 80px;
 	width: 80px;
 	border: 5px solid $border-color;
 	border-radius: 50%;
-	margin-top: 20px;
+	margin: 20px auto 0;
 	.line{
 		height: 40px;
     width: 40px;
@@ -41,9 +52,47 @@ body {
 	}
 }
 
+.screw-row {
+	margin-top: 5px;
+	width: 100%;
+	&.screw-row--bottom {
+		position:absolute;
+		bottom: 5px;
+	}
+}
+
+.screw {
+	border-radius: 50%;
+	height: 25px;
+	width: 25px;
+	background: #888;
+	float: left;
+	margin-left: 5px;
+
+	&.right {
+		float: right;
+		margin-right: 5px;
+	}
+
+	.indent {
+    height: 5px;
+    width: 20px;
+    background: #666;
+    position: relative;
+    top: 10px;
+    border-radius: 3px;
+    left: 3px;
+    &.vert {
+    	transform: rotate(90deg);
+    	top: 5px;
+    }
+	}
+}
 
 .display-amount-container, .display-type-container {
+	margin: 0 auto;
 	.display-amount-input, .display-amount-view, .display-type-dropdown {
+		margin: 0 auto;
 		color: $border-color;
 		background: $background-color;
 		border: 1px solid $border-color;

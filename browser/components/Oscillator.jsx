@@ -2,9 +2,11 @@ import React from 'react'
 import { connect } from 'react-redux'
 import Tone from 'tone'
 
-import DisplayAmount from './ModularComponents/DisplayAmount'
-import DisplayTypeDropdown from './ModularComponents/DisplayTypeDropdown'
-import Knob from './ModularComponents/Knob'
+
+import ModuleContainer from './ModuleComponents/ModuleContainer'
+import DisplayAmount from './ModuleComponents/DisplayAmount'
+import DisplayTypeDropdown from './ModuleComponents/DisplayTypeDropdown'
+import Knob from './ModuleComponents/Knob'
 
 export class Oscillator extends React.Component {
   constructor(props){
@@ -81,7 +83,7 @@ export class Oscillator extends React.Component {
     const style = {transform: `rotate(${this.state.degreesValue}deg)`}
 
     return (
-      <div>
+      <ModuleContainer>
         <DisplayAmount
           type={'number'}
           min={this.state.frequency.min}
@@ -100,7 +102,7 @@ export class Oscillator extends React.Component {
           sensitivity={100}
           onChange={(p) => this.onKnobTwist(p)}
         />
-      </div>
+      </ModuleContainer>
     )
   }
 }
