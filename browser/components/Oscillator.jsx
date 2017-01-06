@@ -11,10 +11,7 @@ import Knob from './ModuleComponents/Knob'
 export class Oscillator extends React.Component {
   constructor(props){
     super(props)
-//    this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this)
-    // this.boundMouseMoveFunction = this.handleMouseMove.bind(this)
     this.state = {
-      clickDownY: 0,
       frequency: {
         value: 0,
         min: 0,
@@ -24,7 +21,7 @@ export class Oscillator extends React.Component {
       type: "sine",
       optionTypes: ['sine', 'square', 'triangle', 'sawtooth'],
       degreesValue: 0,
-      osc: new Tone.Oscillator(0, "sine").toMaster().start()
+      osc: this.props.osc //new Tone.Oscillator(0, "sine").start()
     }
   }
 
@@ -83,7 +80,11 @@ export class Oscillator extends React.Component {
     const style = {transform: `rotate(${this.state.degreesValue}deg)`}
 
     return (
-      <ModuleContainer>
+      <ModuleContainer name='VCO'>
+        <DisplayTypeDropdown
+          optionTypes={this.state.optionTypes}
+          changeType={(v) => this.onChangeType(v)}
+        />
         <DisplayAmount
           type={'number'}
           min={this.state.frequency.min}
@@ -93,14 +94,11 @@ export class Oscillator extends React.Component {
           active={this.state.active}
           makeActive={() => this.onInputActive()}
         />
-        <DisplayTypeDropdown
-          optionTypes={this.state.optionTypes}
-          changeType={(v) => this.onChangeType(v)}
-        />
         <Knob
           degreesValue={this.state.degreesValue}
           sensitivity={100}
           onChange={(p) => this.onKnobTwist(p)}
+          name='Frequency'
         />
       </ModuleContainer>
     )

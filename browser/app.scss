@@ -27,36 +27,55 @@ body {
 
 .module-container {
 	background: #ddd;
+	float: left;
+	margin-right: 5px;
 	height: 400px;
-	width: 300px;
+	width: 200px;
 	text-align: center;
 	position:relative;
 	.module-container--content {
-		padding: 25px;
+		padding: 15px;
+	}
+
+	.module-name {
+		font-style: italic;
+		position: relative;
+		text-transform: uppercase;
+    margin-top: 12px;
+    margin-bottom: 0px;
 	}
 }
 
 
-.knob {
-	height: 80px;
-	width: 80px;
-	border: 5px solid $border-color;
-	border-radius: 50%;
-	margin: 20px auto 0;
-	.line{
+.knob-container {
+	.knob {
 		height: 40px;
-    width: 40px;
-    margin: -5px;
-    border-bottom: 4px solid $border-color;
-    margin-top: -3px;
+		width: 40px;
+		border: 5px solid $border-color;
+		border-radius: 50%;
+		margin: 20px auto 0;
+		.line{
+			height: 20px;
+	    width: 20px;
+	    margin: -5px;
+	    border-bottom: 4px solid $border-color;
+	    margin-top: -3px;
+		}
+	}
+	.knob-name {
+		margin-top: 5px;
+		font-size: 12px;
+		letter-spacing: 2px;
+		font-weight:200;
+		text-transform: uppercase;
 	}
 }
 
 .screw-row {
 	margin-top: 5px;
 	width: 100%;
+	position:absolute;
 	&.screw-row--bottom {
-		position:absolute;
 		bottom: 5px;
 	}
 }

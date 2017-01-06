@@ -1,12 +1,9 @@
 import React from 'react'
-import { connect } from 'react-redux'
 
 export class ModuleContainer extends React.Component {
   constructor(props){
     super(props)
-    this.screwArr = [0,0,0,0]
-    console.log('screwArr', this.screwArr)
-    this.screwArr = this.screwArr.map(() => this.generateRandomDegrees())
+    this.screwArr = [0,0,0,0].map(() => Math.floor(Math.random() * 180))
   }
 
   generateRandomDegrees() {
@@ -35,6 +32,7 @@ export class ModuleContainer extends React.Component {
             <div className='indent vert'></div>
           </div>
         </div>
+        <h5 className='module-name'>{this.props.name}</h5>
         <div className='module-container--content'>
           {this.props.children}
         </div>

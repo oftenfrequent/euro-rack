@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
-const Knob = ({degreesValue, sensitivity, onChange}) => {
+const Knob = ({name, degreesValue, sensitivity, onChange}) => {
   let initialPositionOfYOnClickDown = 0
 
   const distanceToPercentageChange = (distance) => {
@@ -23,7 +23,7 @@ const Knob = ({degreesValue, sensitivity, onChange}) => {
   }
 
   return (
-    <div>
+    <div className='knob-container'>
       <div
         style={{transform: `rotate(${degreesValue}deg)`}}
         className='knob'
@@ -31,6 +31,7 @@ const Knob = ({degreesValue, sensitivity, onChange}) => {
       >
         <div className='line'></div>
       </div>
+      <h5 className='knob-name'>{name}</h5>
     </div>
   )
 }
