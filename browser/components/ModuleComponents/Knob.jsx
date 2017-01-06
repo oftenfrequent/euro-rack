@@ -1,36 +1,37 @@
 import React from 'react'
-import { connect } from 'react-redux'
+import KnobComponent from './KnobComponent'
 
-const Knob = ({name, degreesValue, sensitivity, onChange}) => {
-  let initialPositionOfYOnClickDown = 0
 
-  const distanceToPercentageChange = (distance) => {
-    return distance >= sensitivity ? sensitivity :
-           distance <= -1*(sensitivity) ? -1*(sensitivity) : distance
+
+const Knob = ({name, min, max, value, degreesTotal, sensitivity, onNewValue}) => {
+  let degreesValue = ((value - min) / max) * degreesTotal
+
+
+  const calculateDegreesFromValue = (newValue) => {
+    return ((value - min) / max) * degreesTotal
   }
 
-  const onMouseDown = (e) => {
-    initialPositionOfYOnClickDown = e.clientY
-    document.addEventListener("mousemove", handleMouseMove)
-    document.addEventListener('mouseup', () => document.removeEventListener('mousemove', handleMouseMove))
+  const calculateDegreesFromPercentChange = (percentChange) => {
+    const newValue = parseInt(value) + (percentChange/100 * max)
+    return newValue <= min ? min
+      : newValue >= max ? max
+      : newValue
   }
 
-  const handleMouseMove = (e) => {
-    const y = e.clientY
-    const difference = (initialPositionOfYOnClickDown - y) / sensitivity
-    const percentChange = distanceToPercentageChange(difference)
-    onChange(percentChange)
+
+  const onKnobTwist = (percentChange) => {
+    const newValue = calculateDegreesFromPercentChange(percentChange)
+    degreesValue = calculateDegreesFromValue(newValue)
+    onNewValue(newValue)
   }
 
   return (
     <div className='knob-container'>
-      <div
-        style={{transform: `rotate(${degreesValue}deg)`}}
-        className='knob'
-        onMouseDown={(e) => onMouseDown(e)}
-      >
-        <div className='line'></div>
-      </div>
+      <KnobComponent
+        degreesValue={degreesValue}
+        sensitivity={sensitivity}
+        onChange={(p) => onKnobTwist(p)}
+      />
       <h5 className='knob-name'>{name}</h5>
     </div>
   )

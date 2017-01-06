@@ -25,11 +25,19 @@ export class App extends React.Component {
     this.state.env.triggerAttackRelease(0.8)
   }
 
+  triggerAttackRelease() {
+    this.state.env.triggerAttackRelease(0.01)
+  }
+
   render(){
     return (
       <div>
         <Oscillator osc={this.state.osc}/>
-        <EnvelopeGenerator env={this.state.env} onConnect={() => this.connectOscandEnv()}/>
+        <EnvelopeGenerator
+          env={this.state.env}
+          onConnect={() => this.connectOscandEnv()}
+          triggerHit={() => this.triggerAttackRelease()}
+        />
       </div>
     );
   }

@@ -13,7 +13,6 @@ export class ModuleContainer extends React.Component {
 
 
   render(){
-    console.log('screwArr', this.screwArr)
     return (
       <div className='module-container'>
         <div className='screw-row'>

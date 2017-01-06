@@ -14,58 +14,28 @@ export class EnvelopeGenerator extends React.Component {
     this.state = {
       min: 0,
       max: 1000,
-      attack: {
-        degreesValue: 0,
-        value: 0
-      },
-      decay: {
-        degreesValue: 0,
-        value: 0
-      },
-      sustain: {
-        degreesValue: 0,
-        value: 0
-      },
-      release: {
-        degreesValue: 0,
-        value: 0
-      },
+      degreesTotal: 180,
+      attack: 0,
+      decay: 0,
+      sustain: 0,
+      release: 0,
       optionAttackTypes: ['linear', 'exponential', 'sine', 'ease', 'bounce', 'ripple', 'step'],
-      env: this.props.env //new Tone.AmplitudeEnvelope(0, 0.2, 1, 0.6)
+      env: this.props.env
     }
   }
-
-  generateNewValue(type, percentChange) {
-    const newFrequency = parseInt(this.state[type].value) + (percentChange/100 * this.state.max)
-    return newFrequency <= this.state.min ? this.state.min
-      : newFrequency >= this.state.max ? this.state.max
-      : newFrequency
-  }
-
-  generateNewDegrees(type, percentChange) {
-    const newDegrees = this.state[type].degreesValue + (percentChange/100 * 180)
-    return newDegrees <= 0 ? 0 : newDegrees >= 180 ? 180 : newDegrees
-  }
-
-  // generateNewDegreesFromValueChange(newValue) {
-  //   return ((newValue - this.state.frequency.value)/(this.state.frequency.max - this.state.frequency.min))*100
-  // }
 
   onChangeType(type) {
     this.setState({type}, () => {this.state.env.attackCurve = type})
   }
 
-  onKnobTwist(percentChange, type) {
-    const value = this.generateNewValue(type, percentChange)
-    const degreesValue = this.generateNewDegrees(type, percentChange)
-    this.setState({ [type]:{ degreesValue, value } }, () => {
-      this.state.env[type] = value
+  onValueChange(value, type) {
+    this.setState({ [type]:value }, () => {
+      this.state.env[type] = value / 1000
     })
   }
 
   render(){
     const style = {transform: `rotate(${this.state.degreesValue}deg)`}
-
     return (
       <ModuleContainer name='Envelope'>
         <DisplayTypeDropdown
@@ -73,30 +43,43 @@ export class EnvelopeGenerator extends React.Component {
           changeType={(v) => this.onChangeType(v)}
         />
         <Knob
-          degreesValue={this.state.attack.degreesValue}
-          sensitivity={10}
-          onChange={(p) => this.onKnobTwist(p, 'attack')}
-          name='Attack'
+          name='attack'
+          min={this.state.min}
+          max={this.state.max}
+          value={this.state.attack}
+          degreesTotal={this.state.degreesTotal}
+          sensitivity={100}
+          onNewValue={(p) => this.onValueChange(p, 'attack')}
         />
         <Knob
-          degreesValue={this.state.decay.degreesValue}
-          sensitivity={10}
-          onChange={(p) => this.onKnobTwist(p, 'decay')}
-          name='Decay'
+          name='decay'
+          min={this.state.min}
+          max={this.state.max}
+          value={this.state.decay}
+          degreesTotal={this.state.degreesTotal}
+          sensitivity={100}
+          onNewValue={(p) => this.onValueChange(p, 'decay')}
         />
         <Knob
-          degreesValue={this.state.sustain.degreesValue}
-          sensitivity={10}
-          onChange={(p) => this.onKnobTwist(p, 'sustain')}
-          name='Sustain'
+          name='sustain'
+          min={this.state.min}
+          max={this.state.max}
+          value={this.state.sustain}
+          degreesTotal={this.state.degreesTotal}
+          sensitivity={100}
+          onNewValue={(p) => this.onValueChange(p, 'sustain')}
         />
         <Knob
-          degreesValue={this.state.release.degreesValue}
-          sensitivity={10}
-          onChange={(p) => this.onKnobTwist(p, 'release')}
-          name='Release'
+          name='release'
+          min={this.state.min}
+          max={this.state.max}
+          value={this.state.release}
+          degreesTotal={this.state.degreesTotal}
+          sensitivity={100}
+          onNewValue={(p) => this.onValueChange(p, 'release')}
         />
         <button onClick={() => this.props.onConnect()}>connect to osc</button>
+        <button onClick={() => this.props.triggerHit()}>triggerAttackRelease</button>
       </ModuleContainer>
     )
   }
