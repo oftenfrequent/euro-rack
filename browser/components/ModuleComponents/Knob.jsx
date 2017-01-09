@@ -4,11 +4,9 @@ import KnobComponent from './KnobComponent'
 
 
 const Knob = ({name, min, max, value, degreesTotal, sensitivity, onNewValue}) => {
-  let degreesValue = ((value - min) / max) * degreesTotal
-
 
   const calculateDegreesFromValue = (newValue) => {
-    return ((value - min) / max) * degreesTotal
+    return (((value - min) / max) * degreesTotal) - ((degreesTotal - 180)/2)
   }
 
   const calculateDegreesFromPercentChange = (percentChange) => {
@@ -21,19 +19,16 @@ const Knob = ({name, min, max, value, degreesTotal, sensitivity, onNewValue}) =>
 
   const onKnobTwist = (percentChange) => {
     const newValue = calculateDegreesFromPercentChange(percentChange)
-    degreesValue = calculateDegreesFromValue(newValue)
     onNewValue(newValue)
   }
 
   return (
-    <div className='knob-container'>
-      <KnobComponent
-        degreesValue={degreesValue}
-        sensitivity={sensitivity}
-        onChange={(p) => onKnobTwist(p)}
-      />
-      <h5 className='knob-name'>{name}</h5>
-    </div>
+    <KnobComponent
+      degreesValue={calculateDegreesFromValue(value)}
+      sensitivity={sensitivity}
+      onChange={(p) => onKnobTwist(p)}
+      name={name}
+    />
   )
 }
 

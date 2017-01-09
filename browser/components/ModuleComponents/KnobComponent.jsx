@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
-const KnobComponent = ({degreesValue, sensitivity, onChange}) => {
+const KnobComponent = ({name, degreesValue, sensitivity, onChange}) => {
   let initialPositionOfYOnClickDown = 0
 
   const distanceToPercentageChange = (distance) => {
@@ -24,14 +24,24 @@ const KnobComponent = ({degreesValue, sensitivity, onChange}) => {
   }
 
   return (
-    <div>
-      <div
-        style={{transform: `rotate(${degreesValue}deg)`}}
-        className='knob'
-        onMouseDown={(e) => onMouseDown(e)}
-      >
-        <div className='line'></div>
+    <div className='knob-container'>
+      <div className='value-centering'>
+        <div className='value-line'>
+          <div className='min-line'></div>
+          <div className='max-line'></div>
+        </div>
       </div>
+      <div className='knob-centering'>
+        <div
+          style={{transform: `rotate(${degreesValue}deg)`}}
+          className='knob'
+          onMouseDown={(e) => onMouseDown(e)}
+        >
+          <div className='line'></div>
+        </div>
+      </div>
+
+      <h5 className='knob-name'>{name}</h5>
     </div>
   )
 }

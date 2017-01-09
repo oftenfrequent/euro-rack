@@ -15,7 +15,7 @@ export class Oscillator extends React.Component {
       min: 0,
       max: 1000,
       value: 0,
-      degreesTotal: 180,
+      degreesTotal: 270,
       active: false,
       type: "sine",
       optionTypes: ['sine', 'square', 'triangle', 'sawtooth'],
