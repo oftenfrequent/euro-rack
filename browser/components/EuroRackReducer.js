@@ -1,4 +1,4 @@
-const reducer = (state = initialState, action) => {
+const reducer = (state, action) => {
 	switch(action.type) {
 		case 'CONNECT_JACK' :
 			console.log('CONNECT_JACK')
@@ -17,8 +17,25 @@ const reducer = (state = initialState, action) => {
 					return action.selectedModule
 				}
 			})
-		case 'ELSE' :
-			return state
+
+
+
+
+		case 'CHANGE_OSC_TYPE' :
+			return state.setIn(['vco', 'type'], action.oscType )
+									.updateIn(['vco', 'oscillator'], (osc) => {
+										osc.type = action.oscType
+										return osc
+									})
+
+
+		case 'CHANGE_OSC_FREQ' :
+			return state.setIn(['vco', 'frequency'], action.frequency )
+									.updateIn(['vco', 'oscillator'], (osc) => {
+										osc.frequency.value = action.frequency
+										return osc
+									})
+
 	}
 	return state
 }

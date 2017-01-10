@@ -1,33 +1,33 @@
 .knob-container {
 	width: 100%;
 
-	.value-centering {
-		height: 0px;
-		width: 50px;
-		margin: 0 auto;
-		position: relative;
-		background: orange;
+	// .value-centering {
+	// 	height: 0px;
+	// 	width: 50px;
+	// 	margin: 0 auto;
+	// 	position: relative;
+	// 	background: orange;
 
-		.value-line {
-			height: 50px;
-			width: 50px;
-			border: 1px solid black;
-			border-radius: 50%;
+	// 	.value-line {
+	// 		height: 50px;
+	// 		width: 50px;
+	// 		border: 1px solid black;
+	// 		border-radius: 50%;
 
-			.line-container {
-		    position: relative;
-		    left: -5px;
+	// 		.line-container {
+	// 	    position: relative;
+	// 	    left: -5px;
 
-				.min-line {
-					position: absolute;
-					top: 25px;
-					height: 1px;
-					background: black;
-					width: 60px;
-				}
-			}
-		}
-	}
+	// 			.min-line {
+	// 				position: absolute;
+	// 				top: 25px;
+	// 				height: 1px;
+	// 				background: black;
+	// 				width: 60px;
+	// 			}
+	// 		}
+	// 	}
+	// }
 
 	.knob-centering {
 		width: 40px;

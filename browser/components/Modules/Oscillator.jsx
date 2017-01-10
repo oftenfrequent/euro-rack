@@ -1,8 +1,11 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import Tone from 'tone'
 
-import { connectJack } from '../EuroRackActions'
+import {
+  connectJack,
+  changeOscType,
+  changeOscFreq
+} from '../EuroRackActions'
 import ModuleContainer from '../ModuleComponents/ModuleContainer'
 import DisplayAmount from '../ModuleComponents/DisplayAmount'
 import DisplayTypeDropdown from '../ModuleComponents/DisplayTypeDropdown'
@@ -13,14 +16,7 @@ export class Oscillator extends React.Component {
   constructor(props){
     super(props)
     this.state = {
-      min: 0,
-      max: 1000,
-      value: 0,
-      degreesTotal: 270,
-      active: false,
-      type: "sine",
-      optionTypes: ['sine', 'square', 'triangle', 'sawtooth'],
-      osc: this.props.osc
+      active: false
     }
   }
 
@@ -28,49 +24,40 @@ export class Oscillator extends React.Component {
     this.setState({active: !this.state.active})
   }
 
-  onChangeType(type) {
-    this.setState({type}, () => {this.state.osc.type = type})
-  }
-
-  onChangeValue(value) {
-    this.setState({ active: false, value }, () => {
-      this.state.osc.frequency.value = value
-    })
-  }
-
   selectJack() {
-    this.props.connectJack(this.state.osc)
+    this.props.connectJack(this.props.vco.get('oscillator'))
   }
 
   render(){
+    console.log('vco', this.props.vco.get('typeOptions'))
     const style = {transform: `rotate(${this.state.degreesValue}deg)`}
 
     return (
       <ModuleContainer name='VCO'>
         <DisplayTypeDropdown
-          optionTypes={this.state.optionTypes}
-          changeType={(v) => this.onChangeType(v)}
+          optionTypes={this.props.vco.get('typeOptions')}
+          changeType={(v) => this.props.changeOscType(v)}
         />
         <DisplayAmount
           type={'number'}
-          min={this.state.min}
-          max={this.state.max}
-          value={this.state.value.toString()}
-          changeValue={(v) => this.onChangeValue(v)}
-          active={this.state.active}
+          min={this.props.vco.get('min')}
+          max={this.props.vco.get('max')}
+          value={this.props.vco.get('frequency').toString()}
+          changeValue={(v) => this.props.changeOscFreq(v)}
+          active={this.props.vco.get('active')}
           makeActive={() => this.onInputActive()}
         />
         <Knob
           name='Frequency'
-          min={this.state.min}
-          max={this.state.max}
-          value={this.state.value}
-          degreesTotal={this.state.degreesTotal}
+          min={this.props.vco.get('min')}
+          max={this.props.vco.get('max')}
+          value={this.props.vco.get('frequency')}
+          degreesTotal={270}
           sensitivity={100}
-          onNewValue={(v) => this.onChangeValue(v)}
+          onNewValue={(v) => this.props.changeOscFreq(v)}
         />
         <div className='oscillator-out-jack'>
-          <Jack name='out' onJackClick={() => this.selectJack()} />
+          <Jack name='out' onJackClick={() => this.props.connectJack(this.props.vco.get('oscillator'))} />
         </div>
       </ModuleContainer>
     )
@@ -79,12 +66,15 @@ export class Oscillator extends React.Component {
 
 function mapStateToProps(state) {
   return {
+    vco: state.get('vco')
   }
 }
 
 export default connect(
   mapStateToProps,
   {
-    connectJack
+    connectJack,
+    changeOscType,
+    changeOscFreq
   }
 )(Oscillator)

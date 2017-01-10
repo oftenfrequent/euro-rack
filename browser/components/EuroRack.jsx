@@ -14,7 +14,6 @@ export class App extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      osc: new Tone.Oscillator(0, 'sine').start(),
       env: new Tone.AmplitudeEnvelope(0, 0.2, 1, 0.6),
       filter: new Tone.Filter(0, 'lowpass', -12)
 
@@ -29,7 +28,7 @@ export class App extends React.Component {
   render(){
     return (
       <div>
-        <Oscillator osc={this.state.osc}/>
+        <Oscillator/>
         <EnvelopeGenerator
           env={this.state.env}
           onConnect={() => this.connectOscandEnv()}
