@@ -1,8 +1,9 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
-const KnobComponent = ({name, degreesValue, sensitivity, onChange}) => {
+const KnobComponent = ({name, degreesValue, degreesTotal, sensitivity, onChange}) => {
   let initialPositionOfYOnClickDown = 0
+  // let valueMarks = Math.floor(degreesTotal / 30) + 1
 
   const distanceToPercentageChange = (distance) => {
     return distance >= sensitivity ? 100 :
@@ -27,7 +28,9 @@ const KnobComponent = ({name, degreesValue, sensitivity, onChange}) => {
     <div className='knob-container'>
       <div className='value-centering'>
         <div className='value-line'>
-          <div className='min-line'></div>
+          <div className='line-container'>
+            <div className='min-line'></div>
+          </div>
           <div className='max-line'></div>
         </div>
       </div>

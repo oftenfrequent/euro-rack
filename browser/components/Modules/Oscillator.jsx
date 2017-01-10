@@ -2,11 +2,12 @@ import React from 'react'
 import { connect } from 'react-redux'
 import Tone from 'tone'
 
-
-import ModuleContainer from './ModuleComponents/ModuleContainer'
-import DisplayAmount from './ModuleComponents/DisplayAmount'
-import DisplayTypeDropdown from './ModuleComponents/DisplayTypeDropdown'
-import Knob from './ModuleComponents/Knob'
+import { connectJack } from '../EuroRackActions'
+import ModuleContainer from '../ModuleComponents/ModuleContainer'
+import DisplayAmount from '../ModuleComponents/DisplayAmount'
+import DisplayTypeDropdown from '../ModuleComponents/DisplayTypeDropdown'
+import Knob from '../ModuleComponents/Knob'
+import Jack from '../ModuleComponents/Jack'
 
 export class Oscillator extends React.Component {
   constructor(props){
@@ -37,6 +38,10 @@ export class Oscillator extends React.Component {
     })
   }
 
+  selectJack() {
+    this.props.connectJack(this.state.osc)
+  }
+
   render(){
     const style = {transform: `rotate(${this.state.degreesValue}deg)`}
 
@@ -64,6 +69,9 @@ export class Oscillator extends React.Component {
           sensitivity={100}
           onNewValue={(v) => this.onChangeValue(v)}
         />
+        <div className='oscillator-out-jack'>
+          <Jack name='out' onJackClick={() => this.selectJack()} />
+        </div>
       </ModuleContainer>
     )
   }
@@ -75,5 +83,8 @@ function mapStateToProps(state) {
 }
 
 export default connect(
-  mapStateToProps
+  mapStateToProps,
+  {
+    connectJack
+  }
 )(Oscillator)

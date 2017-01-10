@@ -25,6 +25,7 @@ const Knob = ({name, min, max, value, degreesTotal, sensitivity, onNewValue}) =>
   return (
     <KnobComponent
       degreesValue={calculateDegreesFromValue(value)}
+      degreesTotal={degreesTotal}
       sensitivity={sensitivity}
       onChange={(p) => onKnobTwist(p)}
       name={name}

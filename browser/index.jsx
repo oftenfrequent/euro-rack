@@ -6,23 +6,14 @@ import { Map, fromJS } from 'immutable'
 import logger from 'redux-logger'
 
 import EuroRack from './components/EuroRack'
+import Reducer from './components/EuroRackReducer'
 
-const initialState = fromJS({})
-const reducer = (state = initialState, action) => {
-	switch(action.type) {
-		case 'SOMETHING' :
-			return state
-		case 'ELSE' :
-			return state
-	}
-	return state
-}
-
+const initialState = fromJS({ selectedModule: null })
 
 const store = createStore(
-	reducer,
+	Reducer,
 	initialState,
-	compose(applyMiddleware(logger((state) => Map(state).toJS())))
+	compose(applyMiddleware(logger({stateTransformer:(state) => Map(state).toJS()})))
 )
 
 ReactDOM.render(

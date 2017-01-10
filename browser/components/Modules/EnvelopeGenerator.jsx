@@ -2,11 +2,12 @@ import React from 'react'
 import { connect } from 'react-redux'
 import Tone from 'tone'
 
-
-import ModuleContainer from './ModuleComponents/ModuleContainer'
-import DisplayAmount from './ModuleComponents/DisplayAmount'
-import DisplayTypeDropdown from './ModuleComponents/DisplayTypeDropdown'
-import Knob from './ModuleComponents/Knob'
+import { connectJack } from '../EuroRackActions'
+import ModuleContainer from '../ModuleComponents/ModuleContainer'
+import DisplayAmount from '../ModuleComponents/DisplayAmount'
+import DisplayTypeDropdown from '../ModuleComponents/DisplayTypeDropdown'
+import Knob from '../ModuleComponents/Knob'
+import Jack from '../ModuleComponents/Jack'
 
 export class EnvelopeGenerator extends React.Component {
   constructor(props){
@@ -34,6 +35,10 @@ export class EnvelopeGenerator extends React.Component {
     })
   }
 
+  selectJack() {
+    this.props.connectJack(this.state.env)
+  }
+
   render(){
     const style = {transform: `rotate(${this.state.degreesValue}deg)`}
     return (
@@ -49,7 +54,7 @@ export class EnvelopeGenerator extends React.Component {
           value={this.state.attack}
           degreesTotal={this.state.degreesTotal}
           sensitivity={100}
-          onNewValue={(p) => this.onValueChange(p, 'attack')}
+          onNewValue={(v) => this.onValueChange(v, 'attack')}
         />
         <Knob
           name='decay'
@@ -58,7 +63,7 @@ export class EnvelopeGenerator extends React.Component {
           value={this.state.decay}
           degreesTotal={this.state.degreesTotal}
           sensitivity={100}
-          onNewValue={(p) => this.onValueChange(p, 'decay')}
+          onNewValue={(v) => this.onValueChange(v, 'decay')}
         />
         <Knob
           name='sustain'
@@ -67,7 +72,7 @@ export class EnvelopeGenerator extends React.Component {
           value={this.state.sustain}
           degreesTotal={this.state.degreesTotal}
           sensitivity={100}
-          onNewValue={(p) => this.onValueChange(p, 'sustain')}
+          onNewValue={(v) => this.onValueChange(v, 'sustain')}
         />
         <Knob
           name='release'
@@ -76,9 +81,14 @@ export class EnvelopeGenerator extends React.Component {
           value={this.state.release}
           degreesTotal={this.state.degreesTotal}
           sensitivity={100}
-          onNewValue={(p) => this.onValueChange(p, 'release')}
+          onNewValue={(v) => this.onValueChange(v, 'release')}
         />
-        <button onClick={() => this.props.onConnect()}>connect to osc</button>
+        <div className='envelope-in-jack'>
+          <Jack name='in' onJackClick={() => this.selectJack()}/>
+        </div>
+        <div className='envelope-out-jack'>
+          <Jack name='out' onJackClick={() => this.selectJack()}/>
+        </div>
         <button onClick={() => this.props.triggerHit()}>triggerAttackRelease</button>
       </ModuleContainer>
     )
@@ -91,5 +101,8 @@ function mapStateToProps(state) {
 }
 
 export default connect(
-  mapStateToProps
+  mapStateToProps,
+  {
+    connectJack
+  }
 )(EnvelopeGenerator)
