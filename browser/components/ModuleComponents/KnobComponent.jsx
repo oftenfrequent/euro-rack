@@ -1,9 +1,9 @@
 import React from 'react'
 import { connect } from 'react-redux'
+// inspiration from http://codepen.io/blucube/pen/cudAz
 
 const KnobComponent = ({name, degreesValue, degreesTotal, sensitivity, onChange}) => {
   let initialPositionOfYOnClickDown = 0
-  // let valueMarks = Math.floor(degreesTotal / 30) + 1
 
   const distanceToPercentageChange = (distance) => {
     return distance >= sensitivity ? 100 :
@@ -26,14 +26,6 @@ const KnobComponent = ({name, degreesValue, degreesTotal, sensitivity, onChange}
 
   return (
     <div className='knob-container'>
-      <div className='value-centering'>
-        <div className='value-line'>
-          <div className='line-container'>
-            <div className='min-line'></div>
-          </div>
-          <div className='max-line'></div>
-        </div>
-      </div>
       <div className='knob-centering'>
         <div
           style={{transform: `rotate(${degreesValue}deg)`}}
@@ -41,6 +33,19 @@ const KnobComponent = ({name, degreesValue, degreesTotal, sensitivity, onChange}
           onMouseDown={(e) => onMouseDown(e)}
         >
           <div className='line'></div>
+        </div>
+
+        <div className={`ticks-container ticks-${degreesTotal}`}>
+          <div className="tick"></div>
+          <div className="tick"></div>
+          <div className="tick"></div>
+          <div className="tick"></div>
+          <div className="tick"></div>
+          <div className="tick"></div>
+          <div className="tick"></div>
+          <div className="tick"></div>
+          <div className="tick"></div>
+          <div className="tick"></div>
         </div>
       </div>
 

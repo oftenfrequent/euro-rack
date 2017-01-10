@@ -29,9 +29,6 @@ export class Oscillator extends React.Component {
   }
 
   render(){
-    console.log('vco', this.props.vco.get('typeOptions'))
-    const style = {transform: `rotate(${this.state.degreesValue}deg)`}
-
     return (
       <ModuleContainer name='VCO'>
         <DisplayTypeDropdown
@@ -44,7 +41,7 @@ export class Oscillator extends React.Component {
           max={this.props.vco.get('max')}
           value={this.props.vco.get('frequency').toString()}
           changeValue={(v) => this.props.changeOscFreq(v)}
-          active={this.props.vco.get('active')}
+          active={this.state.active}
           makeActive={() => this.onInputActive()}
         />
         <Knob

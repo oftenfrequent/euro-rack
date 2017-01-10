@@ -13,28 +13,15 @@ import '../app.scss'
 export class App extends React.Component {
   constructor(props){
     super(props);
-    this.state = {
-      env: new Tone.AmplitudeEnvelope(0, 0.2, 1, 0.6),
-      filter: new Tone.Filter(0, 'lowpass', -12)
-
-    }
 //    this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
-  }
-
-  triggerAttackRelease() {
-    this.state.env.triggerAttackRelease(0.8)
   }
 
   render(){
     return (
       <div>
         <Oscillator/>
-        <EnvelopeGenerator
-          env={this.state.env}
-          onConnect={() => this.connectOscandEnv()}
-          triggerHit={() => this.triggerAttackRelease()}
-        />
-        <Filter filter={this.state.filter} />
+        <EnvelopeGenerator/>
+        <Filter/>
         <MasterOut/>
       </div>
     );

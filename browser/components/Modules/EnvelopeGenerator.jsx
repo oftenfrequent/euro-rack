@@ -2,7 +2,12 @@ import React from 'react'
 import { connect } from 'react-redux'
 import Tone from 'tone'
 
-import { connectJack } from '../EuroRackActions'
+import {
+  connectJack,
+  changeCurve,
+  changeValue,
+  triggerAttackRelease
+} from '../EuroRackActions'
 import ModuleContainer from '../ModuleComponents/ModuleContainer'
 import DisplayAmount from '../ModuleComponents/DisplayAmount'
 import DisplayTypeDropdown from '../ModuleComponents/DisplayTypeDropdown'
@@ -12,84 +17,58 @@ import Jack from '../ModuleComponents/Jack'
 export class EnvelopeGenerator extends React.Component {
   constructor(props){
     super(props)
-    this.state = {
-      min: 0,
-      max: 1000,
-      degreesTotal: 180,
-      attack: 0,
-      decay: 0,
-      sustain: 0,
-      release: 0,
-      optionAttackTypes: ['linear', 'exponential', 'sine', 'ease', 'bounce', 'ripple', 'step'],
-      env: this.props.env
-    }
-  }
-
-  onChangeType(type) {
-    this.setState({type}, () => {this.state.env.attackCurve = type})
-  }
-
-  onValueChange(value, type) {
-    this.setState({ [type]:value }, () => {
-      this.state.env[type] = value / 1000
-    })
-  }
-
-  selectJack() {
-    this.props.connectJack(this.state.env)
   }
 
   render(){
-    const style = {transform: `rotate(${this.state.degreesValue}deg)`}
     return (
       <ModuleContainer name='Envelope'>
         <DisplayTypeDropdown
-          optionTypes={this.state.optionAttackTypes}
+          optionTypes={this.props.env.get('curveOptions')}
           changeType={(v) => this.onChangeType(v)}
         />
         <Knob
           name='attack'
-          min={this.state.min}
-          max={this.state.max}
-          value={this.state.attack}
-          degreesTotal={this.state.degreesTotal}
+          min={this.props.env.get('min')}
+          max={this.props.env.get('max')}
+          value={this.props.env.get('attack')}
+          degreesTotal={180}
           sensitivity={100}
-          onNewValue={(v) => this.onValueChange(v, 'attack')}
+          onNewValue={(v) => this.props.changeValue('attack', v)}
         />
         <Knob
           name='decay'
-          min={this.state.min}
-          max={this.state.max}
-          value={this.state.decay}
-          degreesTotal={this.state.degreesTotal}
+          min={this.props.env.get('min')}
+          max={this.props.env.get('max')}
+          value={this.props.env.get('decay')}
+          degreesTotal={180}
           sensitivity={100}
-          onNewValue={(v) => this.onValueChange(v, 'decay')}
+          onNewValue={(v) => this.props.changeValue('decay', v)}
         />
         <Knob
           name='sustain'
-          min={this.state.min}
-          max={this.state.max}
-          value={this.state.sustain}
-          degreesTotal={this.state.degreesTotal}
+          min={this.props.env.get('min')}
+          max={this.props.env.get('max')}
+          value={this.props.env.get('sustain')}
+          degreesTotal={180}
           sensitivity={100}
-          onNewValue={(v) => this.onValueChange(v, 'sustain')}
+          onNewValue={(v) => this.props.changeValue('sustain', v)}
         />
         <Knob
           name='release'
-          min={this.state.min}
-          max={this.state.max}
-          value={this.state.release}
-          degreesTotal={this.state.degreesTotal}
+          min={this.props.env.get('min')}
+          max={this.props.env.get('max')}
+          value={this.props.env.get('release')}
+          degreesTotal={180}
           sensitivity={100}
-          onNewValue={(v) => this.onValueChange(v, 'release')}
+          onNewValue={(v) => this.props.changeValue('release', v)}
         />
         <div className='envelope-in-jack'>
-          <Jack name='in' onJackClick={() => this.selectJack()}/>
+          <Jack name='in' onJackClick={() => this.props.connectJack(this.props.env.get('envelope'))}/>
         </div>
         <div className='envelope-out-jack'>
-          <Jack name='out' onJackClick={() => this.selectJack()}/>
+          <Jack name='out' onJackClick={() => this.props.connectJack(this.props.env.get('envelope'))}/>
         </div>
-        <button onClick={() => this.props.triggerHit()}>triggerAttackRelease</button>
+        <button onClick={() => this.props.triggerAttackRelease()}>triggerAttackRelease</button>
       </ModuleContainer>
     )
   }
@@ -97,12 +76,16 @@ export class EnvelopeGenerator extends React.Component {
 
 function mapStateToProps(state) {
   return {
+    env: state.get('env')
   }
 }
 
 export default connect(
   mapStateToProps,
   {
-    connectJack
+    connectJack,
+    changeCurve,
+    changeValue,
+    triggerAttackRelease
   }
 )(EnvelopeGenerator)

@@ -34,9 +34,16 @@ body {
 	height: 400px;
 	width: 200px;
 	text-align: center;
-	position:relative;
+	position: relative;
+
 	.module-container--content {
-		padding: 15px;
+		padding: 35px 15px 15px 15px;
+		z-index: 10;
+		position: absolute;
+		bottom: 0;
+		top: 0;
+		left: 0;
+		right: 0;
 	}
 
 	.module-name {
@@ -85,10 +92,33 @@ body {
 	margin-top: 5px;
 	width: 100%;
 	position:absolute;
+	z-index: 0;
+
 	&.screw-row--bottom {
 		bottom: 5px;
 	}
 }
+
+
+.speaker-hole-container {
+	width: 100%;
+
+	.speaker-hole-row {
+		display: flex;
+		margin: 0 auto;
+		justify-content: center;
+
+		.speaker-hole {
+			width: 5px;
+			height: 5px;
+			border-radius: 50%;
+			background: #444;
+			margin: 3px;
+			float: left;
+		}
+	}
+}
+
 
 .screw {
 	border-radius: 50%;

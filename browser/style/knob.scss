@@ -1,44 +1,21 @@
 .knob-container {
 	width: 100%;
 
-	// .value-centering {
-	// 	height: 0px;
-	// 	width: 50px;
-	// 	margin: 0 auto;
-	// 	position: relative;
-	// 	background: orange;
-
-	// 	.value-line {
-	// 		height: 50px;
-	// 		width: 50px;
-	// 		border: 1px solid black;
-	// 		border-radius: 50%;
-
-	// 		.line-container {
-	// 	    position: relative;
-	// 	    left: -5px;
-
-	// 			.min-line {
-	// 				position: absolute;
-	// 				top: 25px;
-	// 				height: 1px;
-	// 				background: black;
-	// 				width: 60px;
-	// 			}
-	// 		}
-	// 	}
-	// }
-
 	.knob-centering {
 		width: 40px;
 		height: 40px;
 		margin: 0 auto;
+		border-radius: 50%;
+		position: relative;
+
 		.knob {
-			height: 40px;
-			width: 40px;
+			position: absolute;
+			height: 100%;
+			width: 100%;
 			border: 5px solid $border-color;
 			border-radius: 50%;
-			margin-top: 5px;
+			z-index: 10;
+
 			.line{
 				height: 20px;
 		    width: 20px;
@@ -47,6 +24,55 @@
 		    margin-top: -3px;
 			}
 		}
+
+		.ticks-container{
+			z-index: 0;
+		}
+
+		.tick {
+		  position: absolute;
+		  width: 100%;
+		  height: 100%;
+		  top: 0;
+		  left: 0;
+		  z-index: 5;
+		  overflow: visible;
+
+			&:after {
+			  content: "";
+			  width: 1px;
+			  height: 4px;
+			  background-color: black;
+			  position: absolute;
+			  top: -5px;
+			  left: 50%;
+			  transition: all 180ms ease-out;
+			}
+		}
+
+		.ticks-270 {
+			.tick:nth-child(1)  { transform: rotate(-135deg); }
+			.tick:nth-child(2)  { transform: rotate(-105deg); }
+			.tick:nth-child(3)  { transform: rotate(-75deg); }
+			.tick:nth-child(4)  { transform: rotate(-45deg); }
+			.tick:nth-child(5)  { transform: rotate(-15deg);  }
+			.tick:nth-child(6)  { transform: rotate(15deg);  }
+			.tick:nth-child(7)  { transform: rotate(45deg);  }
+			.tick:nth-child(8)  { transform: rotate(75deg);  }
+			.tick:nth-child(9)  { transform: rotate(105deg);  }
+			.tick:nth-child(10)  { transform: rotate(135deg);  }
+		}
+
+		.ticks-180 {
+			.tick:nth-child(1)  { transform: rotate(-90deg); }
+			.tick:nth-child(2)  { transform: rotate(-60deg); }
+			.tick:nth-child(3)  { transform: rotate(-30deg); }
+			.tick:nth-child(4)  { transform: rotate(0deg); }
+			.tick:nth-child(5)  { transform: rotate(30deg);  }
+			.tick:nth-child(6)  { transform: rotate(60deg);  }
+			.tick:nth-child(7)  { transform: rotate(90deg);  }
+		}
+
 	}
 	.knob-name {
 		margin-top: 5px;

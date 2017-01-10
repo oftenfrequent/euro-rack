@@ -12,16 +12,7 @@ import Jack from '../ModuleComponents/Jack'
 export class MasterOut extends React.Component {
   constructor(props){
     super(props)
-    // this.state = {
-    //   min: 0,
-    //   max: 1000,
-    //   value: 0,
-    //   degreesTotal: 270,
-    //   active: false,
-    //   type: "sine",
-    //   optionTypes: ['sine', 'square', 'triangle', 'sawtooth'],
-    //   osc: this.props.osc
-    // }
+    this.speakerArray = [6,10,14,14,14,14,14,14,14,14,10,6]
   }
 
   selectJack() {
@@ -33,6 +24,14 @@ export class MasterOut extends React.Component {
       <ModuleContainer name='Master Out'>
         <div className='master-out-jack'>
           <Jack name='in' onJackClick={() => this.selectJack()} />
+        </div>
+        <div className='speaker-hole-container'>
+          {this.speakerArray.map( (num,i) =>
+            <div className='speaker-hole-row' key={i} >
+              {Array.from(Array(num)).map( (i,j) => <div className='speaker-hole' key={j}></div>)}
+            </div>
+
+          )}
         </div>
       </ModuleContainer>
     )

@@ -2,7 +2,12 @@ import React from 'react'
 import { connect } from 'react-redux'
 import Tone from 'tone'
 
-import { connectJack } from '../EuroRackActions'
+import {
+  connectJack,
+  changeFilType,
+  changeFilFreq,
+  changeFilRolloff
+} from '../EuroRackActions'
 import ModuleContainer from '../ModuleComponents/ModuleContainer'
 import DisplayAmount from '../ModuleComponents/DisplayAmount'
 import DisplayTypeDropdown from '../ModuleComponents/DisplayTypeDropdown'
@@ -12,43 +17,11 @@ import Jack from '../ModuleComponents/Jack'
 export class Filter extends React.Component {
   constructor(props){
     super(props)
-    this.state = {
-      min: 0,
-      max: 8000,
-      degreesTotal: 270,
-      frequency: 0,
-      typeOptions: ['lowpass', 'highpass', 'bandpass', 'lowshelf', 'highshelf', 'notch', 'allpass', 'peaking'],
-      type: 'lowpass',
-      active: false,
-      rolloffOptions: [-12, -24, -48, -96],
-      rolloff: -12,
-      filter: this.props.filter
-    }
+    this.state = { active: false }
   }
 
   onInputActive() {
     this.setState({active: !this.state.active})
-  }
-
-  onChangeType(type) {
-    this.setState({type}, () => {this.state.filter.type = type})
-  }
-
-  onChangeType(type) {
-    this.setState({type}, () => {this.state.filter.type = type})
-  }
-
-  selectJack() {
-    this.props.connectJack(this.state.filter)
-  }
-
-  onValueChange(value) {
-    this.setState({ frequency: value }, () => {
-      console.log('value', value)
-      console.log('this.state.filter', this.state.filter)
-      console.log('this.state.filter.frequency', this.state.filter.frequency)
-      this.state.filter.frequency.value = value
-    })
   }
 
   render(){
@@ -56,36 +29,36 @@ export class Filter extends React.Component {
     return (
       <ModuleContainer name='Filter'>
         <DisplayTypeDropdown
-          optionTypes={this.state.typeOptions}
-          changeType={(v) => this.onChangeType(v)}
+          optionTypes={this.props.fil.get('typeOptions')}
+          changeType={(v) => this.props.changeFilType(v)}
         />
         <DisplayTypeDropdown
-          optionTypes={this.state.rolloffOptions}
-          changeType={(v) => this.onChangeRolloff(v)}
+          optionTypes={this.props.fil.get('rolloffOptions')}
+          changeType={(v) => this.props.changeRolloff(v)}
         />
         <DisplayAmount
           type={'number'}
-          min={this.state.min}
-          max={this.state.max}
-          value={this.state.frequency.toString()}
-          changeValue={(v) => this.onValueChange(v)}
+          min={this.props.fil.get('min')}
+          max={this.props.fil.get('max')}
+          value={this.props.fil.get('frequency').toString()}
+          changeValue={(v) => this.props.changeFilFreq(v)}
           active={this.state.active}
           makeActive={() => this.onInputActive()}
         />
         <Knob
           name='Frequency'
-          min={this.state.min}
-          max={this.state.max}
-          value={this.state.frequency}
-          degreesTotal={this.state.degreesTotal}
+          min={this.props.fil.get('min')}
+          max={this.props.fil.get('max')}
+          value={this.props.fil.get('frequency')}
+          degreesTotal={270}
           sensitivity={100}
-          onNewValue={(v) => this.onValueChange(v)}
+          onNewValue={(v) => this.props.changeFilFreq(v)}
         />
         <div className='filter-in-jack'>
-          <Jack name='in' onJackClick={() => this.selectJack()} />
+          <Jack name='in' onJackClick={() => this.props.connectJack(this.props.fil.get('filter'))} />
         </div>
         <div className='filter-out-jack'>
-          <Jack name='out' onJackClick={() => this.selectJack()} />
+          <Jack name='out' onJackClick={() => this.props.connectJack(this.props.fil.get('filter'))} />
         </div>
       </ModuleContainer>
     )
@@ -94,12 +67,16 @@ export class Filter extends React.Component {
 
 function mapStateToProps(state) {
   return {
+    fil: state.get('fil')
   }
 }
 
 export default connect(
   mapStateToProps,
   {
-    connectJack
+    connectJack,
+    changeFilType,
+    changeFilFreq,
+    changeFilRolloff
   }
 )(Filter)
