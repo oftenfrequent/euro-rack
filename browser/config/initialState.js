@@ -8,7 +8,21 @@ const initialState = {
 			output: null,
 			color: null,
 			colorOptions: ['orange', 'royalblue', 'purple', 'red', 'yellowgreen', 'forestgreen' ],
-			error: null
+			error: null,
+			connections: {
+				// white: {
+				// 	input: {
+				// 		module: 'example',
+				// 		cvName: 'example',
+				// 		toneObject: 'example'
+				// 	},
+				// 	output: {
+				// 		module: 'example',
+				// 		cvName: 'example',
+				// 		toneObject: 'example'
+				// 	}
+				// }
+			}
 		},
 
 
@@ -39,7 +53,8 @@ const initialState = {
 			releaseCurve: 'exponential',
 	    curveOptions: ['linear', 'exponential', 'sine', 'ease', 'bounce', 'ripple', 'step'],
 			input: {
-				sound: null
+				sound: null,
+				frequency: null,
 			},
 			output: {
 				sound: null
@@ -82,11 +97,7 @@ const initialState = {
 				sound: null
 			}
 		}
-	}),
-
-	// connections: {
-	// 	example: ['input', 'output']
-	// }
+	})
 }
 
 export default initialState

@@ -6,7 +6,7 @@ import DisplayAmount from '../../ModuleComponents/DisplayAmount'
 import DisplayTypeDropdown from '../../ModuleComponents/DisplayTypeDropdown'
 import Knob from '../../ModuleComponents/Knob'
 import Jack from '../../ModuleComponents/Jack'
-import { connectJack } from '../../EuroRackActions'
+import { connectJack, disconnectJack } from '../../EuroRackActions'
 import {
   changeOscType,
   changeOscFreq
@@ -22,6 +22,16 @@ export class Oscillator extends React.Component {
 
   onInputActive() {
     this.setState({active: !this.state.active})
+  }
+
+  handleJackClick(e, module, direction, cvName, toneObject, color) {
+    e.preventDefault()
+    const eventType = e.type // click or contextmenu
+    if (!color && eventType === 'click') {
+      this.props.connectJack(module, direction, cvName, toneObject)
+    } else if (color && eventType === 'contextmenu') {
+      this.props.disconnectJack(color)
+    }
   }
 
   render(){
@@ -52,13 +62,13 @@ export class Oscillator extends React.Component {
         <div className='oscillator-in-jack'>
           <Jack name='in to freq'
             color={this.props.vco.getIn(['input', 'frequency'])}
-            onJackClick={() => this.props.connectJack('oscillator', 'input', 'frequency', this.props.vco.get('toneComponent').frequency)}
+            onJackClick={(e) => this.handleJackClick(e, 'oscillator', 'input', 'frequency', this.props.vco.get('toneComponent').frequency, this.props.vco.getIn(['input', 'frequency']))}
           />
         </div>
         <div className='oscillator-out-jack'>
           <Jack name='out'
             color={this.props.vco.getIn(['output', 'sound'])}
-            onJackClick={() => this.props.connectJack('oscillator', 'output', 'sound', this.props.vco.get('toneComponent'))}
+            onJackClick={(e) => this.handleJackClick(e, 'oscillator', 'output', 'sound', this.props.vco.get('toneComponent'), this.props.vco.getIn(['output', 'sound']))}
           />
         </div>
       </ModuleContainer>
@@ -77,6 +87,7 @@ export default connect(
   {
     connectJack,
     changeOscType,
-    changeOscFreq
+    changeOscFreq,
+    disconnectJack
   }
 )(Oscillator)

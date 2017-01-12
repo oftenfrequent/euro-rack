@@ -18,16 +18,22 @@ export class LFO extends React.Component {
   constructor(props){
     super(props)
     this.state = {
+      activeFreq: false,
       activeMin: false,
       activeMax: false
     }
   }
 
-  onInputActive() {
-    this.setState({active: !this.state.active})
+  shouldComponentUpdate(nextProps, nextState) {
+    return true
+  }
+
+  onInputActive(type) {
+    this.setState({[type]: !this.state[type]})
   }
 
   render(){
+    console.log("this.props.lfo.get('frequency')", this.props.lfo.get('frequency'))
     return (
       <ModuleContainer name='LFO'>
         <DisplayTypeDropdown
@@ -37,14 +43,32 @@ export class LFO extends React.Component {
         <DisplayAmount
           type={'number'}
           min={this.props.lfo.get('min')}
+          max={this.props.lfo.get('max')}
+          value={this.props.lfo.get('frequency').toString()}
+          changeValue={(v) => this.props.changeLfoFreq(v)}
+          active={this.state.activeFreq}
+          makeActive={() => this.onInputActive('activeFreq')}
+        />
+        <Knob
+          name='Frequency'
+          min={this.props.lfo.get('min')}
+          max={this.props.lfo.get('max')}
+          value={this.props.lfo.get('frequency')}
+          degreesTotal={270}
+          sensitivity={100}
+          onNewValue={(v) => this.props.changeLfoFreq(v)}
+        />
+        <DisplayAmount
+          type={'number'}
+          min={this.props.lfo.get('min')}
           max={this.props.lfo.get('maxValue')}
           value={this.props.lfo.get('minValue').toString()}
           changeValue={(v) => this.props.changeLfoMin(v)}
           active={this.state.activeMin}
-          makeActive={() => this.onInputActive()}
+          makeActive={() => this.onInputActive('activeMin')}
         />
         <Knob
-          name='Frequency'
+          name='Min Frequency'
           min={this.props.lfo.get('min')}
           max={this.props.lfo.get('maxValue')}
           value={this.props.lfo.get('minValue')}
@@ -59,10 +83,10 @@ export class LFO extends React.Component {
           value={this.props.lfo.get('maxValue').toString()}
           changeValue={(v) => this.props.changeLfoMax(v)}
           active={this.state.activeMax}
-          makeActive={() => this.onInputActive()}
+          makeActive={() => this.onInputActive('activeMax')}
         />
         <Knob
-          name='Frequency'
+          name='Max Frequency'
           min={this.props.lfo.get('minValue')}
           max={this.props.lfo.get('max')}
           value={this.props.lfo.get('maxValue')}

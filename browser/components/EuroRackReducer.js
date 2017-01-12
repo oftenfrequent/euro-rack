@@ -1,7 +1,13 @@
+import { fromJS } from 'immutable'
+
+
+
 const reducer = (state = {}, action) => {
 	switch(action.type) {
 		case 'CONNECT_JACK' :
 			return connectJack(state, action)
+		case 'DISCONNECT_JACK' :
+			return disconnectJack(state, action)
 
 
 	// OSCILLATOR
@@ -17,7 +23,6 @@ const reducer = (state = {}, action) => {
 										osc.frequency.value = action.frequency
 										return osc
 									})
-
 
 	// ENVELOPE
 		case 'CHANGE_ENV_CURVE_TYPE' :
@@ -39,7 +44,6 @@ const reducer = (state = {}, action) => {
 										env.triggerAttackRelease(0.8)
 										return env
 									})
-
 
 	// FILTER
 		case 'CHANGE_FIL_TYPE' :
@@ -83,50 +87,86 @@ const reducer = (state = {}, action) => {
 		case 'CHANGE_LFO_MAX' :
 			return state.setIn(['lfo', 'maxValue'], action.maxValue )
 									.updateIn(['lfo', 'toneComponent'], (lfo) => {
-										lfo.rolloff = action.maxValue
+										lfo.max = action.maxValue
 										return lfo
 									})
 	}
 	return state
 }
 
+const disconnectJack = (state, action) => {
+	const activeColor = state.getIn(['connectingCables', 'color'])
+	if (action.color === activeColor) {
+		console.log('ACTIVE')
+	}
+	// const connection = state.getIn([action.module, action.direction, action.cvName])
+	if (!action.color) {
+		return state.setIn(['connectingCables', 'error'], 'This jack in not currently connected!!')
+	} else {
+		console.log('HAS A COLOR? ',action.color)
+		return state
+	}
+
+
+	// if (!cableColor) {
+	// 	state = addColorToConnectingComponents(state)
+	// 	return state.setIn(['connectingCables', action.direction], action.toneObject)
+	// 							.setIn([action.module, action.direction, action.cvName], state.getIn(['connectingCables', 'color']))
+	// } else {
+	// 	state = addModuleOrError(state, action)
+	// 	state = makeConnectionIfPossible(state, action)
+	// 	return state
+	// }
+}
 
 const connectJack = (state, action) => {
-	if (!state.getIn(['connectingCables', 'color'])) {
+	let cableColor = state.getIn(['connectingCables', 'color'])
+	if (!cableColor) {
 		state = addColorToConnectingComponents(state)
-		return state.setIn(['connectingCables', action.direction], action.toneObject)
-								.setIn([action.module, action.direction, action.cvName], state.getIn(['connectingCables', 'color']))
+		cableColor = state.getIn(['connectingCables', 'color'])
+		return addConnectionObjectToDirection(state, action, cableColor)
+
 	} else {
-		state = addModuleOrError(state, action)
-		state = makeConnectionIfPossible(state, action)
+		state = addSecondModuleOrError(state, action, cableColor)
+		state = makeConnectionIfPossible(state, action, cableColor)
 		return state
 	}
 }
 
-const addModuleOrError = (state, action) => {
+const addConnectionObjectToDirection = (state, action, cableColor) => {
+	return state.setIn([action.module, action.direction, action.cvName], cableColor)
+							.setIn(['connectingCables', action.direction], fromJS({
+								module: action.module,
+								cvName: action.cvName,
+								toneObject: action.toneObject
+							}))
+
+}
+
+const addSecondModuleOrError = (state, action, cableColor) => {
 	if (!state.getIn(['connectingCables', action.direction])) {
-		return state.setIn(['connectingCables', action.direction], action.toneObject)
-								.setIn([action.module, action.direction, action.cvName], state.getIn(['connectingCables', 'color']))
+		return addConnectionObjectToDirection(state, action, cableColor)
 	} else {
 		return state.setIn(['connectingCables', 'error'], `You have already selected an ${action.direction}`)
 	}
 }
 
-const makeConnectionIfPossible = (state, action) => {
-	const output = state.getIn(['connectingCables', 'output'])
-	const input = state.getIn(['connectingCables', 'input'])
+const makeConnectionIfPossible = (state, action, cableColor) => {
+	const output = state.getIn(['connectingCables', 'output', 'toneObject'])
+	const input = state.getIn(['connectingCables', 'input', 'toneObject'])
 	if (input && output) {
 		output.connect(input)
-		return state.setIn(['connectingCables', 'input'], null)
+		return state.setIn(['connectingCables', 'connections', cableColor, 'input'], state.getIn(['connectingCables', 'input']))
+								.setIn(['connectingCables', 'connections', cableColor, 'output'], state.getIn(['connectingCables', 'output']))
+								.setIn(['connectingCables', 'input'], null)
 								.setIn(['connectingCables', 'output'], null)
 								.setIn(['connectingCables', 'color'], null)
 								.setIn(['connectingCables', 'error'], null)
+
 	} else {
-		console.log('HOW On EARTHHHTHHTTHTH!?!?!?!?')
 		return state
 	}
 }
-
 
 const addColorToConnectingComponents = (state) => {
 	const randomIndex = Math.floor( Math.random() * state.getIn(['connectingCables', 'colorOptions']).size )
@@ -138,6 +178,5 @@ const addColorToConnectingComponents = (state) => {
 								return arr.filter((c,i) => randomIndex !== i)
 							})
 }
-
 
 export default reducer

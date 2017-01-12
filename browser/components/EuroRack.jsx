@@ -20,6 +20,7 @@ export class App extends React.Component {
   render(){
     return (
       <div>
+        <div>{this.props.error}</div>
         <Oscillator/>
         <LFO/>
         <EnvelopeGenerator/>
@@ -32,6 +33,7 @@ export class App extends React.Component {
 
 function mapStateToProps(state) {
   return {
+    error: state.eurorack.getIn(['connectingCables', 'error'])
   }
 };
 

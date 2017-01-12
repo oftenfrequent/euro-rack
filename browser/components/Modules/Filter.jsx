@@ -54,6 +54,10 @@ export class Filter extends React.Component {
           onNewValue={(v) => this.props.changeFilFreq(v)}
         />
         <div className='filter-in-jack'>
+          <Jack name='lfo in'
+            color={this.props.fil.getIn(['input', 'frequency'])}
+            onJackClick={() => this.props.connectJack('filter', 'input', 'frequency', this.props.fil.get('toneComponent').frequency)}
+          />
           <Jack name='in'
             color={this.props.fil.getIn(['input', 'sound'])}
             onJackClick={() => this.props.connectJack('filter', 'input', 'sound', this.props.fil.get('toneComponent'))}

@@ -6,7 +6,7 @@ import KnobComponent from './KnobComponent'
 const Jack = ({name, color, onJackClick}) => {
 
   return (
-    <div className='jack-container' onClick={onJackClick} >
+    <div className='jack-container' onClick={onJackClick} onContextMenu={onJackClick}>
       <div className='color-connector'
         style={{background: `${color}`}}></div>
       <div

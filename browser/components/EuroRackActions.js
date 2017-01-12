@@ -7,6 +7,12 @@ export function connectJack(module, direction, cvName, toneObject) {
 		toneObject
 	}
 }
+export function disconnectJack(color) {
+	return {
+		type: 'DISCONNECT_JACK',
+		color
+	}
+}
 
 
 
