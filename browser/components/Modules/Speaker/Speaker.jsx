@@ -2,28 +2,25 @@ import React from 'react'
 import { connect } from 'react-redux'
 import Tone from 'tone'
 
-import { connectJack } from '../EuroRackActions'
-import ModuleContainer from '../ModuleComponents/ModuleContainer'
-import DisplayAmount from '../ModuleComponents/DisplayAmount'
-import DisplayTypeDropdown from '../ModuleComponents/DisplayTypeDropdown'
-import Knob from '../ModuleComponents/Knob'
-import Jack from '../ModuleComponents/Jack'
+import { connectJack } from '../../EuroRackActions'
+import ModuleContainer from '../../ModuleComponents/ModuleContainer'
+import Jack from '../../ModuleComponents/Jack'
 
-export class MasterOut extends React.Component {
+export class Speaker extends React.Component {
   constructor(props){
     super(props)
     this.speakerArray = [6,10,14,14,14,14,14,14,14,14,10,6]
   }
 
-  selectJack() {
-    this.props.connectJack('master')
-  }
-
   render(){
     return (
-      <ModuleContainer name='Master Out'>
+      <ModuleContainer name='Speaker'>
         <div className='master-out-jack'>
-          <Jack name='in' onJackClick={() => this.selectJack()} />
+          <Jack
+            name='in'
+            color={this.props.speaker.getIn(['input', 'sound'])}
+            onJackClick={() => this.props.connectJack('speaker', 'input', 'sound', this.props.speaker.get('toneComponent'))}
+          />
         </div>
         <div className='speaker-hole-container'>
           {this.speakerArray.map( (num,i) =>
@@ -40,6 +37,7 @@ export class MasterOut extends React.Component {
 
 function mapStateToProps(state) {
   return {
+    speaker: state.eurorack.get('speaker')
   }
 }
 
@@ -48,4 +46,4 @@ export default connect(
   {
     connectJack
   }
-)(MasterOut)
+)(Speaker)

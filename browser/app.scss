@@ -67,6 +67,9 @@ body {
 		height: 30px;
 		width: 12px;
 		background: #aaa;
+		&:nth-child(2)  { transform: rotate(45deg); }
+		&:nth-child(3)  { transform: rotate(90deg); }
+		&:nth-child(4)  { transform: rotate(135deg); }
 	}
 
 	.jack-center {

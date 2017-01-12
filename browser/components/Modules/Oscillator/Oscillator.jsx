@@ -1,16 +1,16 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
+import ModuleContainer from '../../ModuleComponents/ModuleContainer'
+import DisplayAmount from '../../ModuleComponents/DisplayAmount'
+import DisplayTypeDropdown from '../../ModuleComponents/DisplayTypeDropdown'
+import Knob from '../../ModuleComponents/Knob'
+import Jack from '../../ModuleComponents/Jack'
+import { connectJack } from '../../EuroRackActions'
 import {
-  connectJack,
   changeOscType,
   changeOscFreq
-} from '../EuroRackActions'
-import ModuleContainer from '../ModuleComponents/ModuleContainer'
-import DisplayAmount from '../ModuleComponents/DisplayAmount'
-import DisplayTypeDropdown from '../ModuleComponents/DisplayTypeDropdown'
-import Knob from '../ModuleComponents/Knob'
-import Jack from '../ModuleComponents/Jack'
+} from './OscillatorActions'
 
 export class Oscillator extends React.Component {
   constructor(props){
@@ -22,10 +22,6 @@ export class Oscillator extends React.Component {
 
   onInputActive() {
     this.setState({active: !this.state.active})
-  }
-
-  selectJack() {
-    this.props.connectJack(this.props.vco.get('oscillator'))
   }
 
   render(){
@@ -53,8 +49,17 @@ export class Oscillator extends React.Component {
           sensitivity={100}
           onNewValue={(v) => this.props.changeOscFreq(v)}
         />
+        <div className='oscillator-in-jack'>
+          <Jack name='in to freq'
+            color={this.props.vco.getIn(['input', 'frequency'])}
+            onJackClick={() => this.props.connectJack('oscillator', 'input', 'frequency', this.props.vco.get('toneComponent').frequency)}
+          />
+        </div>
         <div className='oscillator-out-jack'>
-          <Jack name='out' onJackClick={() => this.props.connectJack(this.props.vco.get('oscillator'))} />
+          <Jack name='out'
+            color={this.props.vco.getIn(['output', 'sound'])}
+            onJackClick={() => this.props.connectJack('oscillator', 'output', 'sound', this.props.vco.get('toneComponent'))}
+          />
         </div>
       </ModuleContainer>
     )
@@ -63,7 +68,7 @@ export class Oscillator extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    vco: state.get('vco')
+    vco: state.eurorack.get('oscillator')
   }
 }
 

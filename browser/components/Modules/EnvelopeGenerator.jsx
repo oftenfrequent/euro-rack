@@ -63,10 +63,16 @@ export class EnvelopeGenerator extends React.Component {
           onNewValue={(v) => this.props.changeValue('release', v)}
         />
         <div className='envelope-in-jack'>
-          <Jack name='in' onJackClick={() => this.props.connectJack(this.props.env.get('envelope'))}/>
+          <Jack name='in'
+            color={this.props.env.getIn(['input', 'sound'])}
+            onJackClick={() => this.props.connectJack('envelope', 'input', 'sound', this.props.env.get('toneComponent'))}
+          />
         </div>
         <div className='envelope-out-jack'>
-          <Jack name='out' onJackClick={() => this.props.connectJack(this.props.env.get('envelope'))}/>
+          <Jack name='out'
+            color={this.props.env.getIn(['output', 'sound'])}
+            onJackClick={() => this.props.connectJack('envelope', 'output', 'sound', this.props.env.get('toneComponent'))}
+          />
         </div>
         <button onClick={() => this.props.triggerAttackRelease()}>triggerAttackRelease</button>
       </ModuleContainer>
@@ -76,7 +82,7 @@ export class EnvelopeGenerator extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    env: state.get('env')
+    env: state.eurorack.get('envelope')
   }
 }
 

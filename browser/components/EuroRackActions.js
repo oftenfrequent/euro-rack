@@ -1,29 +1,16 @@
-export function connectJack(selectedModule) {
+export function connectJack(module, direction, cvName, toneObject) {
 	return {
 		type: 'CONNECT_JACK',
-		selectedModule
+		module,
+		direction,
+		cvName,
+		toneObject
 	}
 }
 
 
 
 
-
-
-//----Oscillator Actions-------------//
-export function changeOscType(oscType) {
-	return {
-		type: 'CHANGE_OSC_TYPE',
-		oscType
-	}
-}
-
-export function changeOscFreq(frequency) {
-	return {
-		type: 'CHANGE_OSC_FREQ',
-		frequency
-	}
-}
 
 
 
@@ -52,10 +39,10 @@ export function triggerAttackRelease() {
 
 
 //----Filter Actions-------------//
-export function changeFilType(oscType) {
+export function changeFilType(filterType) {
 	return {
 		type: 'CHANGE_FIL_TYPE',
-		oscType
+		filterType
 	}
 }
 
@@ -73,3 +60,32 @@ export function changeFilFreq(frequency) {
 	}
 }
 
+
+//----LFO Actions-------------//
+export function changeLfoType(oscType) {
+	return {
+		type: 'CHANGE_LFO_TYPE',
+		oscType
+	}
+}
+
+export function changeLfoFreq(frequency) {
+	return {
+		type: 'CHANGE_LFO_FREQ',
+		frequency
+	}
+}
+
+export function changeLfoMin(minValue) {
+	return {
+		type: 'CHANGE_LFO_MIN',
+		minValue
+	}
+}
+
+export function changeLfoMax(maxValue) {
+	return {
+		type: 'CHANGE_LFO_MAX',
+		maxValue
+	}
+}

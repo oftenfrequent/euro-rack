@@ -2,17 +2,17 @@ import React from 'react'
 import { connect } from 'react-redux'
 import Tone from 'tone'
 
+import ModuleContainer from '../ModuleComponents/ModuleContainer'
+import DisplayAmount from '../ModuleComponents/DisplayAmount'
+import DisplayTypeDropdown from '../ModuleComponents/DisplayTypeDropdown'
+import Knob from '../ModuleComponents/Knob'
+import Jack from '../ModuleComponents/Jack'
 import {
   connectJack,
   changeFilType,
   changeFilFreq,
   changeFilRolloff
 } from '../EuroRackActions'
-import ModuleContainer from '../ModuleComponents/ModuleContainer'
-import DisplayAmount from '../ModuleComponents/DisplayAmount'
-import DisplayTypeDropdown from '../ModuleComponents/DisplayTypeDropdown'
-import Knob from '../ModuleComponents/Knob'
-import Jack from '../ModuleComponents/Jack'
 
 export class Filter extends React.Component {
   constructor(props){
@@ -25,7 +25,6 @@ export class Filter extends React.Component {
   }
 
   render(){
-    const style = {transform: `rotate(${this.state.degreesValue}deg)`}
     return (
       <ModuleContainer name='Filter'>
         <DisplayTypeDropdown
@@ -55,10 +54,16 @@ export class Filter extends React.Component {
           onNewValue={(v) => this.props.changeFilFreq(v)}
         />
         <div className='filter-in-jack'>
-          <Jack name='in' onJackClick={() => this.props.connectJack(this.props.fil.get('filter'))} />
+          <Jack name='in'
+            color={this.props.fil.getIn(['input', 'sound'])}
+            onJackClick={() => this.props.connectJack('filter', 'input', 'sound', this.props.fil.get('toneComponent'))}
+          />
         </div>
         <div className='filter-out-jack'>
-          <Jack name='out' onJackClick={() => this.props.connectJack(this.props.fil.get('filter'))} />
+          <Jack name='out'
+            color={this.props.fil.getIn(['output', 'sound'])}
+            onJackClick={() => this.props.connectJack('filter', 'output', 'sound', this.props.fil.get('toneComponent'))}
+          />
         </div>
       </ModuleContainer>
     )
@@ -67,7 +72,7 @@ export class Filter extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    fil: state.get('fil')
+    fil: state.eurorack.get('filter')
   }
 }
 

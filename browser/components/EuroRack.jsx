@@ -3,10 +3,11 @@ import { connect } from 'react-redux';
 import Tone from 'tone'
 // import PureRenderMixin from 'react-addons-pure-render-mixin';
 
-import Oscillator from './Modules/Oscillator'
+import Oscillator from './Modules/Oscillator/Oscillator'
+import LFO from './Modules/LFO/LFO'
 import EnvelopeGenerator from './Modules/EnvelopeGenerator'
 import Filter from './Modules/Filter'
-import MasterOut from './Modules/MasterOut'
+import Speaker from './Modules/Speaker/Speaker'
 
 import '../app.scss'
 
@@ -20,9 +21,10 @@ export class App extends React.Component {
     return (
       <div>
         <Oscillator/>
+        <LFO/>
         <EnvelopeGenerator/>
         <Filter/>
-        <MasterOut/>
+        <Speaker/>
       </div>
     );
   }
