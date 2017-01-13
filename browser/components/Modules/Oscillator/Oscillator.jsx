@@ -35,6 +35,7 @@ export class Oscillator extends React.Component {
   }
 
   render(){
+    console.log("this.props.vco.getIn(['input', 'frequency'])", this.props.vco.getIn(['input', 'frequency']))
     return (
       <ModuleContainer name='VCO'>
         <DisplayTypeDropdown

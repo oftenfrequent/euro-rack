@@ -18,7 +18,7 @@ const DisplayTypeDropdown = ({optionTypes, changeType}) => {
 
 DisplayTypeDropdown.propTypes = {
   optionTypes: React.PropTypes.array.isRequired,
-  // changeType: React.PropTypes.function
+  changeType: React.PropTypes.function
 }
 
 export default DisplayTypeDropdown

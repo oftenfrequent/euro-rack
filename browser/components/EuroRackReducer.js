@@ -1,7 +1,5 @@
 import { fromJS } from 'immutable'
 
-
-
 const reducer = (state = {}, action) => {
 	switch(action.type) {
 		case 'CONNECT_JACK' :
@@ -95,28 +93,17 @@ const reducer = (state = {}, action) => {
 }
 
 const disconnectJack = (state, action) => {
-	const activeColor = state.getIn(['connectingCables', 'color'])
-	if (action.color === activeColor) {
-		console.log('ACTIVE')
-	}
-	// const connection = state.getIn([action.module, action.direction, action.cvName])
-	if (!action.color) {
-		return state.setIn(['connectingCables', 'error'], 'This jack in not currently connected!!')
-	} else {
-		console.log('HAS A COLOR? ',action.color)
-		return state
-	}
+	const input = state.getIn(['connectingCables', 'connections', action.color, 'input'])
+	const output = state.getIn(['connectingCables', 'connections', action.color, 'output'])
+	const inToneObj = input.get('toneObject')
+	const outToneObj = output.get('toneObject')
 
+	outToneObj.disconnect(inToneObj)
 
-	// if (!cableColor) {
-	// 	state = addColorToConnectingComponents(state)
-	// 	return state.setIn(['connectingCables', action.direction], action.toneObject)
-	// 							.setIn([action.module, action.direction, action.cvName], state.getIn(['connectingCables', 'color']))
-	// } else {
-	// 	state = addModuleOrError(state, action)
-	// 	state = makeConnectionIfPossible(state, action)
-	// 	return state
-	// }
+	return state.deleteIn(['connectingCables', 'connections', action.color])
+							.updateIn(['connectingCables', 'colorOptions'], (arr) => arr.push(action.color))
+							.setIn([input.get('module'), 'input', input.get('cvName')], null)
+							.setIn([output.get('module'), 'output', output.get('cvName')], null)
 }
 
 const connectJack = (state, action) => {
