@@ -95,3 +95,18 @@ export function changeLfoMax(maxValue) {
 		maxValue
 	}
 }
+
+
+//----MIDI Actions-------------//
+export function errorConnectingMidi(error) {
+	return {
+		type: 'MIDI_CONNECTION_ERROR',
+		error
+	}
+}
+export function setMidiInputDevice(input) {
+	return {
+		type: 'SET_MIDI_INPUT',
+		input
+	}
+}

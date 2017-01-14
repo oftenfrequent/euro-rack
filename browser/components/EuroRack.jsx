@@ -5,6 +5,7 @@ import Tone from 'tone'
 
 import Oscillator from './Modules/Oscillator/Oscillator'
 import LFO from './Modules/LFO/LFO'
+import MIDI from './Modules/MIDI/MIDIComponent'
 import EnvelopeGenerator from './Modules/EnvelopeGenerator'
 import Filter from './Modules/Filter'
 import Speaker from './Modules/Speaker/Speaker'
@@ -23,6 +24,7 @@ export class App extends React.Component {
         <div>{this.props.error}</div>
         <Oscillator/>
         <LFO/>
+        <MIDI/>
         <EnvelopeGenerator/>
         <Filter/>
         <Speaker/>

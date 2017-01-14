@@ -24,7 +24,14 @@ const initialState = {
 				// }
 			}
 		},
-
+		midi: {
+			inputDevice: null,
+			output: {
+				gate: null,
+				cvToFreq: null,
+			},
+			error: null
+		},
 
 		oscillator: {
 			toneComponent: new Tone.Oscillator(200, 'sine').start(),
@@ -55,6 +62,7 @@ const initialState = {
 			input: {
 				sound: null,
 				frequency: null,
+				trigger: null
 			},
 			output: {
 				sound: null

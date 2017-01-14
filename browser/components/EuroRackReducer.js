@@ -88,6 +88,13 @@ const reducer = (state = {}, action) => {
 										lfo.max = action.maxValue
 										return lfo
 									})
+	// MIDI
+		case 'MIDI_CONNECTION_ERROR' :
+			return state.setIn(['midi', 'error'], action.error)
+		case 'SET_MIDI_INPUT' :
+			return state.setIn(['midi', 'inputDevice'], action.input)
+									.setIn(['midi', 'error'], null)
+
 	}
 	return state
 }
