@@ -150,6 +150,13 @@ const makeConnectionIfPossible = (state, action, cableColor) => {
 	const input = state.getIn(['connectingCables', 'input', 'toneObject'])
 	if (input && output) {
 		output.connect(input)
+    // TODO: remove from master
+    if (state.getIn(['connectingCables', 'input', 'module']) === 'speaker') {
+      output.connect(state.getIn(['speaker', 'analyser']))
+      state.getIn(['speaker', 'analyser']).connect(input)
+    } else {
+      output.connect(input)
+    }
 		return state.setIn(['connectingCables', 'connections', cableColor, 'input'], state.getIn(['connectingCables', 'input']))
 								.setIn(['connectingCables', 'connections', cableColor, 'output'], state.getIn(['connectingCables', 'output']))
 								.setIn(['connectingCables', 'input'], null)
