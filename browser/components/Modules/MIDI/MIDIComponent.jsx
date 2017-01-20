@@ -6,49 +6,31 @@ import DisplayAmount from '../../ModuleComponents/DisplayAmount'
 import DisplayTypeDropdown from '../../ModuleComponents/DisplayTypeDropdown'
 import Jack from '../../ModuleComponents/Jack'
 import {
+  onMidiMessage,
+  formatToMidiMessage
+} from './MidiHelperFunctions'
+import {
   connectJack,
   disconnectJack,
   errorConnectingMidi,
   setMidiInputDevice
 } from '../../EuroRackActions'
 
+
 export class MIDI extends React.Component {
   constructor(props){
     super(props)
     this.state = {
       midiOptions: [],
+      midiDevice: 'keyboard'
     }
   }
 
   componentDidMount() { this.getMidiInputDevices() }
 
-  onMidiMessage(e) {
-    /**
-    * e.data is an array
-    * e.data[0] = on (144) / off (128) / detune (224)
-    * e.data[1] = midi note
-    * e.data[2] = velocity || detune
-    */
-    // TODO: use midi velocity
-    switch(e.data[0]) {
-      case 144:
-          console.log('NOTE HIT', this.midiToKey(e.data[1]))
-      break;
-      case 128:
-          console.log('NOTE RELEASE')
-      break;
-      case 224:
-          console.log('DETUNE')
-      break;
-    }
-  }
+  keydownFunction(e) { formatToMidiMessage(e, 0x09) }
 
-  midiToKey(midiKey) {
-      const keyArray = ["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"]
-      const key = keyArray[midiKey % 12]
-      const oct = Math.floor(midiKey / 12)
-      return key + oct.toString()
-  }
+  keyupFunction(e) { formatToMidiMessage(e, 0x08) }
 
   getMidiInputDevices(access) {
     this.connectMidiInBrowser()
@@ -75,8 +57,18 @@ export class MIDI extends React.Component {
   }
 
   setMidiDevice(e) {
-    this.state.midiOptions[e.target.value].onmidimessage = (e) => this.onMidiMessage(e)
-    this.props.setMidiInputDevice(this.state.midiOptions[e.target.value])
+    if (e.target.value === 'keyboard') {
+      console.log('ADHFASKLDFASL')
+      document.addEventListener('keydown', this.keydownFunction )
+      document.addEventListener('keyup', this.keyupFunction )
+      this.props.setMidiInputDevice('keyboard')
+    } else {
+      document.removeEventListener('keydown', this.keydownFunction )
+      document.removeEventListener('keyup', this.keyupFunction )
+      this.state.midiOptions[e.target.value].onmidimessage = (e) => onMidiMessage(e)
+      // this.props.setMidiInputDevice(this.state.midiOptions[e.target.value])
+    }
+
   }
 
   connectMidiInBrowser() {
@@ -95,7 +87,8 @@ export class MIDI extends React.Component {
           <select
             className='display-type-dropdown'
             onChange={(e) => this.setMidiDevice(e)}>
-              <option value={null}>Select Midi Device</option>
+              <option selected disabled>Select MIDI Device</option>
+              <option value='keyboard'>Laptop Keyboard Device</option>
             {this.state.midiOptions.map( (opt, i) =>
               <option key={opt.id} value={i}>{opt.name}</option>
             )}

@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+// import PureRenderMixin from 'react-addons-pure-render-mixin'
 
 import ModuleContainer from '../../ModuleComponents/ModuleContainer'
 import DisplayAmount from '../../ModuleComponents/DisplayAmount'
@@ -9,18 +10,20 @@ import Jack from '../../ModuleComponents/Jack'
 import { connectJack, disconnectJack } from '../../EuroRackActions'
 import {
   changeOscType,
-  changeOscFreq
+  changeOscFreq,
+  changeOscModFreq
 } from './OscillatorActions'
 
 export class Oscillator extends React.Component {
   constructor(props){
     super(props)
+   // this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this)
     this.state = {
       active: false
     }
   }
 
-  onInputActive() {
+  onChangeInputActive() {
     this.setState({active: !this.state.active})
   }
 
@@ -35,7 +38,7 @@ export class Oscillator extends React.Component {
   }
 
   render(){
-    console.log("this.props.vco.getIn(['input', 'frequency'])", this.props.vco.getIn(['input', 'frequency']))
+    console.log("this.props.vco.get('frequency')", this.props.vco.get('frequency'))
     return (
       <ModuleContainer name='VCO'>
         <DisplayTypeDropdown
@@ -45,11 +48,12 @@ export class Oscillator extends React.Component {
         <DisplayAmount
           type={'number'}
           min={this.props.vco.get('min')}
+          changeActive={() => this.onChangeInputActive()}
           max={this.props.vco.get('max')}
           value={this.props.vco.get('frequency').toString()}
           changeValue={(v) => this.props.changeOscFreq(v)}
           active={this.state.active}
-          makeActive={() => this.onInputActive()}
+          changeActive={() => this.onChangeInputActive()}
         />
         <Knob
           name='Frequency'
@@ -60,6 +64,19 @@ export class Oscillator extends React.Component {
           sensitivity={100}
           onNewValue={(v) => this.props.changeOscFreq(v)}
         />
+        {this.props.vco.get('type') === 'pwm'
+          ?
+            <Knob
+              name='Modulation'
+              min={0}
+              max={200}
+              value={this.props.vco.get('modulationFrequency')}
+              degreesTotal={270}
+              sensitivity={1000}
+              onNewValue={(v) => this.props.changeOscModFreq(v)}
+            />
+          : null
+        }
         <div className='oscillator-in-jack'>
           <Jack name='in to freq'
             color={this.props.vco.getIn(['input', 'frequency'])}
@@ -89,6 +106,7 @@ export default connect(
     connectJack,
     changeOscType,
     changeOscFreq,
+    changeOscModFreq,
     disconnectJack
   }
 )(Oscillator)

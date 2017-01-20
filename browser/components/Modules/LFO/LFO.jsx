@@ -28,7 +28,7 @@ export class LFO extends React.Component {
     return true
   }
 
-  onInputActive(type) {
+  onChangeInputActive(type) {
     this.setState({[type]: !this.state[type]})
   }
 
@@ -47,7 +47,7 @@ export class LFO extends React.Component {
           value={this.props.lfo.get('frequency').toString()}
           changeValue={(v) => this.props.changeLfoFreq(v)}
           active={this.state.activeFreq}
-          makeActive={() => this.onInputActive('activeFreq')}
+          changeActive={() => this.onChangeInputActive('activeFreq')}
         />
         <Knob
           name='Frequency'
@@ -65,7 +65,7 @@ export class LFO extends React.Component {
           value={this.props.lfo.get('minValue').toString()}
           changeValue={(v) => this.props.changeLfoMin(v)}
           active={this.state.activeMin}
-          makeActive={() => this.onInputActive('activeMin')}
+          changeActive={() => this.onChangeInputActive('activeMin')}
         />
         <Knob
           name='Min Frequency'
@@ -83,7 +83,7 @@ export class LFO extends React.Component {
           value={this.props.lfo.get('maxValue').toString()}
           changeValue={(v) => this.props.changeLfoMax(v)}
           active={this.state.activeMax}
-          makeActive={() => this.onInputActive('activeMax')}
+          changeActive={() => this.onChangeInputActive('activeMax')}
         />
         <Knob
           name='Max Frequency'

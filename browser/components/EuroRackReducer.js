@@ -21,6 +21,14 @@ const reducer = (state = {}, action) => {
 										osc.frequency.value = action.frequency
 										return osc
 									})
+		case 'CHANGE_OSC_MOD_FREQ' :
+			return state.setIn(['oscillator', 'modulationFrequency'], action.frequency )
+									.updateIn(['oscillator', 'toneComponent'], (osc) => {
+										if (osc.type === 'pwm') { osc.modulationFrequency.value = action.frequency }
+										console.log('osc', osc)
+										console.log('osc.modulationFrequency', osc.modulationFrequency)
+										return osc
+									})
 
 	// ENVELOPE
 		case 'CHANGE_ENV_CURVE_TYPE' :

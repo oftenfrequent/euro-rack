@@ -11,3 +11,10 @@ export function changeOscFreq(frequency) {
 		frequency
 	}
 }
+
+export function changeOscModFreq(frequency) {
+	return {
+		type: 'CHANGE_OSC_MOD_FREQ',
+		frequency
+	}
+}

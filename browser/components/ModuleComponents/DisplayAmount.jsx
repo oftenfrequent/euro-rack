@@ -2,9 +2,12 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import classNames from 'classnames'
 
-const DisplayAmount = ({type, min, max, value, changeValue, active, makeActive}) => {
-  const onBlur = (e) => changeValue(e.target.value)
-  const clickValue = (e) => makeActive()
+const DisplayAmount = ({type, min, max, value, changeValue, active, changeActive}) => {
+  const onBlur = (e) => {
+    changeActive()
+    changeValue(e.target.value)
+  }
+  const clickValue = (e) => changeActive()
 
   let viewClasses = classNames({'display-amount-view': true, 'hidden': active})
   let inputClasses = classNames({'display-amount-input': true, 'hidden': !active})

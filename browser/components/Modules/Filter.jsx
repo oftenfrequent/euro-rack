@@ -20,7 +20,7 @@ export class Filter extends React.Component {
     this.state = { active: false }
   }
 
-  onInputActive() {
+  onChangeInputActive() {
     this.setState({active: !this.state.active})
   }
 
@@ -42,7 +42,7 @@ export class Filter extends React.Component {
           value={this.props.fil.get('frequency').toString()}
           changeValue={(v) => this.props.changeFilFreq(v)}
           active={this.state.active}
-          makeActive={() => this.onInputActive()}
+          makeActive={() => this.onChangeInputActive()}
         />
         <Knob
           name='Frequency'

@@ -1,7 +1,6 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import Tone from 'tone'
-// import PureRenderMixin from 'react-addons-pure-render-mixin';
+import React from 'react'
+import { connect } from 'react-redux'
+// import PureRenderMixin from 'react-addons-pure-render-mixin'
 
 import Oscillator from './Modules/Oscillator/Oscillator'
 import LFO from './Modules/LFO/LFO'
