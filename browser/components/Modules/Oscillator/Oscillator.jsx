@@ -38,7 +38,6 @@ export class Oscillator extends React.Component {
   }
 
   render(){
-    console.log("this.props.vco.get('frequency')", this.props.vco.get('frequency'))
     return (
       <ModuleContainer name='VCO'>
         <DisplayTypeDropdown
@@ -46,7 +45,7 @@ export class Oscillator extends React.Component {
           changeType={(v) => this.props.changeOscType(v)}
         />
         <DisplayAmount
-          type={'number'}
+          type='number'
           min={this.props.vco.get('min')}
           changeActive={() => this.onChangeInputActive()}
           max={this.props.vco.get('max')}

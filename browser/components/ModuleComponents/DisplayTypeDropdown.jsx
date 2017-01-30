@@ -1,4 +1,5 @@
 import React from 'react'
+import ImmutablePropTypes from 'react-immutable-proptypes'
 
 const DisplayTypeDropdown = ({optionTypes, changeType}) => {
   const onChangeType = (e) => changeType(e.target.value)
@@ -17,8 +18,8 @@ const DisplayTypeDropdown = ({optionTypes, changeType}) => {
 }
 
 DisplayTypeDropdown.propTypes = {
-  optionTypes: React.PropTypes.array.isRequired,
-  changeType: React.PropTypes.function
+  optionTypes: ImmutablePropTypes.list.isRequired,
+  changeType: React.PropTypes.func
 }
 
 export default DisplayTypeDropdown

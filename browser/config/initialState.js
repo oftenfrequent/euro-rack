@@ -1,8 +1,5 @@
 import { fromJS } from 'immutable'
 import Tone from 'tone'
-
-const audioContext = Tone.context
-
 const initialState = {
 	eurorack: fromJS({
 		connectingCables: {
@@ -104,8 +101,7 @@ const initialState = {
 		},
 		speaker: {
 			toneComponent: Tone.Master,
-			// analyser: new Tone.Analyser('fft', 2048),
-			analyser: audioContext.createAnalyser(),
+			analyser: Tone.context.createAnalyser(),
 			input: {
 				sound: null
 			}

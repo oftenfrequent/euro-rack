@@ -87,7 +87,7 @@ export class MIDI extends React.Component {
           <select
             className='display-type-dropdown'
             onChange={(e) => this.setMidiDevice(e)}>
-              <option selected disabled>Select MIDI Device</option>
+              <option disabled>Select MIDI Device</option>
               <option value='keyboard'>Laptop Keyboard Device</option>
             {this.state.midiOptions.map( (opt, i) =>
               <option key={opt.id} value={i}>{opt.name}</option>

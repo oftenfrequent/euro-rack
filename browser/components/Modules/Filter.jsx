@@ -36,7 +36,7 @@ export class Filter extends React.Component {
           changeType={(v) => this.props.changeRolloff(v)}
         />
         <DisplayAmount
-          type={'number'}
+          type='number'
           min={this.props.fil.get('min')}
           max={this.props.fil.get('max')}
           value={this.props.fil.get('frequency').toString()}

@@ -33,7 +33,6 @@ export class LFO extends React.Component {
   }
 
   render(){
-    console.log("this.props.lfo.get('frequency')", this.props.lfo.get('frequency'))
     return (
       <ModuleContainer name='LFO'>
         <DisplayTypeDropdown
@@ -41,7 +40,7 @@ export class LFO extends React.Component {
           changeType={(v) => this.props.changeLfoType(v)}
         />
         <DisplayAmount
-          type={'number'}
+          type='number'
           min={this.props.lfo.get('min')}
           max={this.props.lfo.get('max')}
           value={this.props.lfo.get('frequency').toString()}
@@ -59,7 +58,7 @@ export class LFO extends React.Component {
           onNewValue={(v) => this.props.changeLfoFreq(v)}
         />
         <DisplayAmount
-          type={'number'}
+          type='number'
           min={this.props.lfo.get('min')}
           max={this.props.lfo.get('maxValue')}
           value={this.props.lfo.get('minValue').toString()}
@@ -77,7 +76,7 @@ export class LFO extends React.Component {
           onNewValue={(v) => this.props.changeLfoMin(v)}
         />
         <DisplayAmount
-          type={'number'}
+          type='number'
           min={this.props.lfo.get('minValue')}
           max={this.props.lfo.get('max')}
           value={this.props.lfo.get('maxValue').toString()}
