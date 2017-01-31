@@ -43,7 +43,7 @@ export class LFO extends React.Component {
           type='number'
           min={this.props.lfo.get('min')}
           max={this.props.lfo.get('max')}
-          value={this.props.lfo.get('frequency').toString()}
+          value={this.props.lfo.get('frequency')}
           changeValue={(v) => this.props.changeLfoFreq(v)}
           active={this.state.activeFreq}
           changeActive={() => this.onChangeInputActive('activeFreq')}
@@ -61,7 +61,7 @@ export class LFO extends React.Component {
           type='number'
           min={this.props.lfo.get('min')}
           max={this.props.lfo.get('maxValue')}
-          value={this.props.lfo.get('minValue').toString()}
+          value={this.props.lfo.get('minValue')}
           changeValue={(v) => this.props.changeLfoMin(v)}
           active={this.state.activeMin}
           changeActive={() => this.onChangeInputActive('activeMin')}
@@ -79,7 +79,7 @@ export class LFO extends React.Component {
           type='number'
           min={this.props.lfo.get('minValue')}
           max={this.props.lfo.get('max')}
-          value={this.props.lfo.get('maxValue').toString()}
+          value={this.props.lfo.get('maxValue')}
           changeValue={(v) => this.props.changeLfoMax(v)}
           active={this.state.activeMax}
           changeActive={() => this.onChangeInputActive('activeMax')}

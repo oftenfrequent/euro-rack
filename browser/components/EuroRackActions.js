@@ -37,12 +37,6 @@ export function changeValue(component, value) {
 	}
 }
 
-export function triggerAttackRelease() {
-	return {
-		type: 'TRIGGER_ATTACK_RELEASE'
-	}
-}
-
 
 //----Filter Actions-------------//
 export function changeFilType(filterType) {
@@ -110,3 +104,21 @@ export function setMidiInputDevice(input) {
 		input
 	}
 }
+export function midiGateAttackTrigger(freq) {
+	return {
+		type: 'MIDI_GATE_ATTACK_TRIGGER',
+		freq
+	}
+}
+export function midiGateReleaseTrigger(freq) {
+	return {
+		type: 'MIDI_GATE_RELEASE_TRIGGER',
+		freq
+	}
+}
+// export function midiFreqTrigger(freq) {
+// 	return {
+// 		type: 'MIDI_FREQ_TRIGGER',
+// 		freq
+// 	}
+// }

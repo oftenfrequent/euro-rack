@@ -5,8 +5,7 @@ import Tone from 'tone'
 import {
   connectJack,
   changeCurve,
-  changeValue,
-  triggerAttackRelease
+  changeValue
 } from '../EuroRackActions'
 import ModuleContainer from '../ModuleComponents/ModuleContainer'
 import DisplayAmount from '../ModuleComponents/DisplayAmount'
@@ -63,6 +62,10 @@ export class EnvelopeGenerator extends React.Component {
           onNewValue={(v) => this.props.changeValue('release', v)}
         />
         <div className='envelope-in-jack'>
+          <Jack name='trigger'
+            color={this.props.env.getIn(['input', 'trigger'])}
+            onJackClick={() => this.props.connectJack('envelope', 'input', 'trigger', this.props.env.get('toneComponent'))}
+          />
           <Jack name='in'
             color={this.props.env.getIn(['input', 'sound'])}
             onJackClick={() => this.props.connectJack('envelope', 'input', 'sound', this.props.env.get('toneComponent'))}
@@ -74,7 +77,6 @@ export class EnvelopeGenerator extends React.Component {
             onJackClick={() => this.props.connectJack('envelope', 'output', 'sound', this.props.env.get('toneComponent'))}
           />
         </div>
-        <button onClick={() => this.props.triggerAttackRelease()}>triggerAttackRelease</button>
       </ModuleContainer>
     )
   }
@@ -91,7 +93,6 @@ export default connect(
   {
     connectJack,
     changeCurve,
-    changeValue,
-    triggerAttackRelease
+    changeValue
   }
 )(EnvelopeGenerator)

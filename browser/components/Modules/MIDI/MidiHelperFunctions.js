@@ -1,5 +1,7 @@
 //Midi Helper Functions
 
+let octave = 0
+
 const laptopKeyMap = {
   81:  72, // q C5
   87:  74, // w D5
@@ -31,27 +33,36 @@ const laptopKeyMap = {
   77:  71, // m B4
   188: 72, // , C5
   190: 74, // . D5
-  191: 76  // / E5
+  191: 76, // / E5
 }
 
 // Keep track of keydown and keyup events so that the keydown event doesn't
 // send messages repeatedly until keyup.
 const flags = {};
 
-export const formatToMidiMessage = (e, command) => {
-  // Check the event key against the midi map.
-  const note = laptopKeyMap[ (typeof e.which === 'number')? e.which : e.keyCode ]
+export const formatToMidiMessage = (e, command, cb) => {
+  const keyCode = (typeof e.which === 'number')? e.which : e.keyCode
 
-  // If the key doesn't exist in the midi map, or we're trying to send a
-  // noteOn event without having most recently sent a noteOff, end here.
-  if (note === undefined || (flags[note] && command === 0x9)) { return false }
+  const note = laptopKeyMap[keyCode]
+
+  if (keyCode === 189 && command !== 0x08) {
+    octave -= 1
+    return false
+  } else if (keyCode === 187 && command !== 0x08) {
+    octave += 1
+    return false
+  } else if (note === undefined || (flags[note] && command === 0x9)) {
+    return false
+  }
 
   // Build the data
   const data = new Uint8Array(3)
 
   data[0] = (command << 4) + 0x00  // Send the command on channel 0
-  data[1] = note                   // Attach the midi note
+  data[1] = note + (octave * 12)   // Attach the midi note
   data[2] = 127                    // Keyboard keys default to 127 velocity.
+
+  console.log('data[1]', data[1])
 
   // Package the message
   const msg = {
@@ -60,14 +71,14 @@ export const formatToMidiMessage = (e, command) => {
   }
 
   // Send it
-  onMidiMessage(msg)
+  onMidiMessage(msg, cb)
 
   // Update the flag table
   if (command === 0x9) { flags[note] = true }
   else { flags[note] = false }
 }
 
-export const onMidiMessage = (e) => {
+export const onMidiMessage = (e, cb) => {
   /**
   * e.data is an array
   * e.data[0] = on (144) / off (128) / detune (224)
@@ -77,10 +88,10 @@ export const onMidiMessage = (e) => {
   // TODO: use midi velocity
   switch(e.data[0]) {
     case 144:
-        console.log('NOTE HIT', midiToKey(e.data[1]))
+        console.log('NOTE HIT', cb(midiToKey(e.data[1])))
     break;
     case 128:
-        console.log('NOTE RELEASE')
+        console.log('NOTE RELEASE', cb(midiToKey(e.data[1])))
     break;
     case 224:
         console.log('DETUNE')

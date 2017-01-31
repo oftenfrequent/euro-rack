@@ -39,7 +39,7 @@ export class Filter extends React.Component {
           type='number'
           min={this.props.fil.get('min')}
           max={this.props.fil.get('max')}
-          value={this.props.fil.get('frequency').toString()}
+          value={this.props.fil.get('frequency')}
           changeValue={(v) => this.props.changeFilFreq(v)}
           active={this.state.active}
           makeActive={() => this.onChangeInputActive()}

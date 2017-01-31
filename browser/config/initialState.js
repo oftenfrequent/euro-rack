@@ -29,7 +29,9 @@ const initialState = {
 				gate: null,
 				cvToFreq: null,
 			},
-			error: null
+			error: null,
+			freq: null,
+			notesDown: []
 		},
 
 		oscillator: {
@@ -87,11 +89,11 @@ const initialState = {
 		},
 
 		lfo: {
-			toneComponent: new Tone.LFO(300, 0, 4000).start(),
+			toneComponent: new Tone.LFO(300, 0, 1000).start(),
 			minValue: 0,
-			maxValue: 4000,
+			maxValue: 1000,
 			min: 0,
-			max: 8000,
+			max: 1000,
 			frequency: 300,
 			type: 'sine',
 			typeOptions: ['sine', 'square', 'triangle', 'sawtooth'],

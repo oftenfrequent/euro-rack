@@ -14,12 +14,12 @@ const DisplayAmount = ({type, min, max, value, changeValue, active, changeActive
 
   return (
     <div className='display-amount-container'>
-      <div className={viewClasses} onClick={(e) => clickValue(e)}>{value}</div>
+      <div className={viewClasses} onClick={(e) => clickValue(e)}>{Math.round(value * 100) / 100}</div>
       {active
         ?(<input
             className={inputClasses}
             type={type || 'number'}
-            defaultValue={value}
+            defaultValue={Math.round(value * 100) / 100}
             min={min}
             max={max}
             onBlur={(e) => onBlur(e)}
@@ -34,7 +34,7 @@ DisplayAmount.propTypes = {
   type: React.PropTypes.string,
   min: React.PropTypes.number,
   max: React.PropTypes.number,
-  value: React.PropTypes.string,
+  value: React.PropTypes.number,
   // changeValue: React.PropTypes.function
 }
 

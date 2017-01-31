@@ -49,7 +49,7 @@ export class Oscillator extends React.Component {
           min={this.props.vco.get('min')}
           changeActive={() => this.onChangeInputActive()}
           max={this.props.vco.get('max')}
-          value={this.props.vco.get('frequency').toString()}
+          value={this.props.vco.get('frequency')}
           changeValue={(v) => this.props.changeOscFreq(v)}
           active={this.state.active}
           changeActive={() => this.onChangeInputActive()}
