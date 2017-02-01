@@ -2,17 +2,16 @@ import React from 'react'
 import { connect } from 'react-redux'
 import Tone from 'tone'
 
-import ModuleContainer from '../ModuleComponents/ModuleContainer'
-import DisplayAmount from '../ModuleComponents/DisplayAmount'
-import DisplayTypeDropdown from '../ModuleComponents/DisplayTypeDropdown'
-import Knob from '../ModuleComponents/Knob'
-import Jack from '../ModuleComponents/Jack'
+import ModuleContainer from '../../ModuleComponents/ModuleContainer'
+import DisplayAmount from '../../ModuleComponents/DisplayAmount'
+import DisplayTypeDropdown from '../../ModuleComponents/DisplayTypeDropdown'
+import Knob from '../../ModuleComponents/Knob'
+import Jack from '../../ModuleComponents/Jack'
 import {
-  connectJack,
   changeFilType,
   changeFilFreq,
   changeFilRolloff
-} from '../EuroRackActions'
+} from './FilterActions'
 
 export class Filter extends React.Component {
   constructor(props){
@@ -29,18 +28,18 @@ export class Filter extends React.Component {
       <ModuleContainer name='Filter'>
         <DisplayTypeDropdown
           optionTypes={this.props.fil.get('typeOptions')}
-          changeType={(v) => this.props.changeFilType(v)}
+          changeType={(v) => this.props.changeFilType(this.props.id, v)}
         />
         <DisplayTypeDropdown
           optionTypes={this.props.fil.get('rolloffOptions')}
-          changeType={(v) => this.props.changeRolloff(v)}
+          changeType={(v) => this.props.changeFilRolloff(this.props.id, v)}
         />
         <DisplayAmount
           type='number'
           min={this.props.fil.get('min')}
           max={this.props.fil.get('max')}
           value={this.props.fil.get('frequency')}
-          changeValue={(v) => this.props.changeFilFreq(v)}
+          changeValue={(v) => this.props.changeFilFreq(this.props.id, v)}
           active={this.state.active}
           makeActive={() => this.onChangeInputActive()}
         />
@@ -51,22 +50,22 @@ export class Filter extends React.Component {
           value={this.props.fil.get('frequency')}
           degreesTotal={270}
           sensitivity={100}
-          onNewValue={(v) => this.props.changeFilFreq(v)}
+          onNewValue={(v) => this.props.changeFilFreq(this.props.id, v)}
         />
         <div className='filter-in-jack'>
           <Jack name='lfo in'
             color={this.props.fil.getIn(['input', 'frequency'])}
-            onJackClick={() => this.props.connectJack('filter', 'input', 'frequency', this.props.fil.get('toneComponent').frequency)}
+            onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'input', 'frequency', this.props.fil.get('toneComponent').frequency)}
           />
           <Jack name='in'
             color={this.props.fil.getIn(['input', 'sound'])}
-            onJackClick={() => this.props.connectJack('filter', 'input', 'sound', this.props.fil.get('toneComponent'))}
+            onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'input', 'sound', this.props.fil.get('toneComponent'))}
           />
         </div>
         <div className='filter-out-jack'>
           <Jack name='out'
             color={this.props.fil.getIn(['output', 'sound'])}
-            onJackClick={() => this.props.connectJack('filter', 'output', 'sound', this.props.fil.get('toneComponent'))}
+            onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'output', 'sound', this.props.fil.get('toneComponent'))}
           />
         </div>
       </ModuleContainer>
@@ -74,16 +73,15 @@ export class Filter extends React.Component {
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state, props) {
   return {
-    fil: state.eurorack.get('filter')
+    fil: state.filters.get(props.id)
   }
 }
 
 export default connect(
   mapStateToProps,
   {
-    connectJack,
     changeFilType,
     changeFilFreq,
     changeFilRolloff

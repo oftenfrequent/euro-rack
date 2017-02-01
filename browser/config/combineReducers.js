@@ -1,11 +1,20 @@
 import { combineReducers } from 'redux'
 
-// import OscillatorReducer from '../components/Modules/Oscillator/OscillatorReducer'
-// import SpeakerReducer from '../components/Modules/Speaker/SpeakerReducer'
 import EuroRackReducer from '../components/EuroRackReducer'
+import OscillatorReducer from '../components/Modules/Oscillator/OscillatorReducer'
+import LFOReducer from '../components/Modules/LFO/LFOReducer'
+import EnvelopeReducer from '../components/Modules/Envelope/EnvelopeReducer'
+import FilterReducer from '../components/Modules/Filter/FilterReducer'
+import SpeakerReducer from '../components/Modules/Speaker/SpeakerReducer'
+import MIDIReducer from '../components/Modules/MIDI/MIDIReducer'
 
 export default combineReducers({
 	eurorack: EuroRackReducer,
-	// oscillator: OscillatorReducer
+	oscillators: OscillatorReducer,
+	lfos: LFOReducer,
+	envelopes: EnvelopeReducer,
+	filters: FilterReducer,
+	speaker: SpeakerReducer,
+	midis: MIDIReducer
 })
 

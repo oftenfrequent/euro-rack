@@ -40,7 +40,7 @@ const laptopKeyMap = {
 // send messages repeatedly until keyup.
 const flags = {};
 
-export const formatToMidiMessage = (e, command, cb) => {
+export const formatToMidiMessage = (e, command, cb, id, gateColor, freqColor) => {
   const keyCode = (typeof e.which === 'number')? e.which : e.keyCode
 
   const note = laptopKeyMap[keyCode]
@@ -62,8 +62,6 @@ export const formatToMidiMessage = (e, command, cb) => {
   data[1] = note + (octave * 12)   // Attach the midi note
   data[2] = 127                    // Keyboard keys default to 127 velocity.
 
-  console.log('data[1]', data[1])
-
   // Package the message
   const msg = {
     data: data,
@@ -71,14 +69,14 @@ export const formatToMidiMessage = (e, command, cb) => {
   }
 
   // Send it
-  onMidiMessage(msg, cb)
+  onMidiMessage(msg, cb, id, gateColor, freqColor)
 
   // Update the flag table
   if (command === 0x9) { flags[note] = true }
   else { flags[note] = false }
 }
 
-export const onMidiMessage = (e, cb) => {
+export const onMidiMessage = (e, cb, id, gateColor, freqColor) => {
   /**
   * e.data is an array
   * e.data[0] = on (144) / off (128) / detune (224)
@@ -88,13 +86,15 @@ export const onMidiMessage = (e, cb) => {
   // TODO: use midi velocity
   switch(e.data[0]) {
     case 144:
-        console.log('NOTE HIT', cb(midiToKey(e.data[1])))
+      console.log('NOTE HIT')
+      cb(id, midiToKey(e.data[1]), gateColor, freqColor)
     break;
     case 128:
-        console.log('NOTE RELEASE', cb(midiToKey(e.data[1])))
+      console.log('NOTE RELEASE')
+      cb(id, midiToKey(e.data[1]), gateColor, freqColor)
     break;
     case 224:
-        console.log('DETUNE')
+      console.log('DETUNE')
     break;
   }
 }

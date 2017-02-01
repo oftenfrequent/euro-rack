@@ -5,7 +5,7 @@ import classNames from 'classnames'
 const DisplayAmount = ({type, min, max, value, changeValue, active, changeActive}) => {
   const onBlur = (e) => {
     changeActive()
-    changeValue(e.target.value)
+    changeValue(parseInt(e.target.value))
   }
   const clickValue = (e) => changeActive()
 

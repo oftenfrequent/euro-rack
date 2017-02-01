@@ -2,16 +2,15 @@ import React from 'react'
 import { connect } from 'react-redux'
 import Tone from 'tone'
 
+import ModuleContainer from '../../ModuleComponents/ModuleContainer'
+import DisplayAmount from '../../ModuleComponents/DisplayAmount'
+import DisplayTypeDropdown from '../../ModuleComponents/DisplayTypeDropdown'
+import Knob from '../../ModuleComponents/Knob'
+import Jack from '../../ModuleComponents/Jack'
 import {
-  connectJack,
   changeCurve,
   changeValue
-} from '../EuroRackActions'
-import ModuleContainer from '../ModuleComponents/ModuleContainer'
-import DisplayAmount from '../ModuleComponents/DisplayAmount'
-import DisplayTypeDropdown from '../ModuleComponents/DisplayTypeDropdown'
-import Knob from '../ModuleComponents/Knob'
-import Jack from '../ModuleComponents/Jack'
+} from './EnvelopeActions'
 
 export class EnvelopeGenerator extends React.Component {
   constructor(props){
@@ -23,7 +22,7 @@ export class EnvelopeGenerator extends React.Component {
       <ModuleContainer name='Envelope'>
         <DisplayTypeDropdown
           optionTypes={this.props.env.get('curveOptions')}
-          changeType={(v) => this.onChangeType(v)}
+          changeType={(v) => this.onChangeType(this.props.id, v)}
         />
         <Knob
           name='attack'
@@ -32,7 +31,7 @@ export class EnvelopeGenerator extends React.Component {
           value={this.props.env.get('attack')}
           degreesTotal={180}
           sensitivity={100}
-          onNewValue={(v) => this.props.changeValue('attack', v)}
+          onNewValue={(v) => this.props.changeValue(this.props.id, 'attack', v)}
         />
         <Knob
           name='decay'
@@ -41,7 +40,7 @@ export class EnvelopeGenerator extends React.Component {
           value={this.props.env.get('decay')}
           degreesTotal={180}
           sensitivity={100}
-          onNewValue={(v) => this.props.changeValue('decay', v)}
+          onNewValue={(v) => this.props.changeValue(this.props.id, 'decay', v)}
         />
         <Knob
           name='sustain'
@@ -50,7 +49,7 @@ export class EnvelopeGenerator extends React.Component {
           value={this.props.env.get('sustain')}
           degreesTotal={180}
           sensitivity={100}
-          onNewValue={(v) => this.props.changeValue('sustain', v)}
+          onNewValue={(v) => this.props.changeValue(this.props.id, 'sustain', v)}
         />
         <Knob
           name='release'
@@ -59,22 +58,22 @@ export class EnvelopeGenerator extends React.Component {
           value={this.props.env.get('release')}
           degreesTotal={180}
           sensitivity={100}
-          onNewValue={(v) => this.props.changeValue('release', v)}
+          onNewValue={(v) => this.props.changeValue(this.props.id, 'release', v)}
         />
         <div className='envelope-in-jack'>
           <Jack name='trigger'
             color={this.props.env.getIn(['input', 'trigger'])}
-            onJackClick={() => this.props.connectJack('envelope', 'input', 'trigger', this.props.env.get('toneComponent'))}
+            onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'input', 'trigger', this.props.env.get('toneComponent'))}
           />
           <Jack name='in'
             color={this.props.env.getIn(['input', 'sound'])}
-            onJackClick={() => this.props.connectJack('envelope', 'input', 'sound', this.props.env.get('toneComponent'))}
+            onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'input', 'sound', this.props.env.get('toneComponent'))}
           />
         </div>
         <div className='envelope-out-jack'>
           <Jack name='out'
             color={this.props.env.getIn(['output', 'sound'])}
-            onJackClick={() => this.props.connectJack('envelope', 'output', 'sound', this.props.env.get('toneComponent'))}
+            onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'output', 'sound', this.props.env.get('toneComponent'))}
           />
         </div>
       </ModuleContainer>
@@ -82,16 +81,15 @@ export class EnvelopeGenerator extends React.Component {
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state, props) {
   return {
-    env: state.eurorack.get('envelope')
+    env: state.envelopes.get(props.id)
   }
 }
 
 export default connect(
   mapStateToProps,
   {
-    connectJack,
     changeCurve,
     changeValue
   }

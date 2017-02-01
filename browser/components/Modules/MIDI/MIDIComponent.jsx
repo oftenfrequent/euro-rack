@@ -10,13 +10,11 @@ import {
   formatToMidiMessage
 } from './MidiHelperFunctions'
 import {
-  connectJack,
-  disconnectJack,
   errorConnectingMidi,
   setMidiInputDevice,
   midiGateAttackTrigger,
   midiGateReleaseTrigger
-} from '../../EuroRackActions'
+} from './MIDIActions'
 
 
 export class MIDI extends React.Component {
@@ -32,9 +30,9 @@ export class MIDI extends React.Component {
 
   componentDidMount() { this.getMidiInputDevices() }
 
-  keydownFunction(e) { formatToMidiMessage(e, 0x09, this.props.midiGateAttackTrigger) }
+  keydownFunction(e) { formatToMidiMessage(e, 0x09, this.props.midiGateAttackTrigger, this.props.id, this.props.midi.getIn(['output', 'gate']), this.props.midi.getIn(['output', 'cvToFreq'])) }
 
-  keyupFunction(e) { formatToMidiMessage(e, 0x08, this.props.midiGateReleaseTrigger) }
+  keyupFunction(e) { formatToMidiMessage(e, 0x08, this.props.midiGateReleaseTrigger, this.props.id, this.props.midi.getIn(['output', 'gate']), this.props.midi.getIn(['output', 'cvToFreq'])) }
 
   getMidiInputDevices(access) {
     this.connectMidiInBrowser()
@@ -56,7 +54,7 @@ export class MIDI extends React.Component {
         }
       }).catch((err) => {
         console.log('err', err)
-        this.props.errorConnectingMidi(err)
+        this.props.errorConnectingMidi(this.props.id, err)
       })
   }
 
@@ -64,12 +62,12 @@ export class MIDI extends React.Component {
     if (e.target.value === 'keyboard') {
       document.addEventListener('keydown', this.state.attackFn )
       document.addEventListener('keyup', this.state.releaseFn )
-      this.props.setMidiInputDevice('keyboard')
+      this.props.setMidiInputDevice(this.props.id, 'keyboard')
     } else {
       document.removeEventListener('keydown', this.state.attackFn )
       document.removeEventListener('keyup', this.state.releaseFn )
       this.state.midiOptions[e.target.value].onmidimessage = (e) => onMidiMessage(e)
-      this.props.setMidiInputDevice(this.state.midiOptions[e.target.value])
+      this.props.setMidiInputDevice(this.props.id, this.state.midiOptions[e.target.value])
     }
 
   }
@@ -104,13 +102,13 @@ export class MIDI extends React.Component {
         <div className='gate-out-jack'>
           <Jack name='gate'
             color={this.props.midi.getIn(['output', 'gate'])}
-            onJackClick={(e) => this.props.connectJack('midi', 'output', 'gate', 'connectThisToTriggerEnvelope', this.props.midi.getIn(['output', 'gate']))}
+            onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'output', 'gate', 'connectThisToTriggerEnvelope', this.props.midi.getIn(['output', 'gate']))}
           />
         </div>
         <div className='cv-out-jack'>
           <Jack name='cv out'
             color={this.props.midi.getIn(['output', 'cvToFreq'])}
-            onJackClick={(e) => this.props.connectJack('midi', 'output', 'cvToFreq', 'connectThisToControlFreqOfOscOrLFO', this.props.midi.getIn(['output', 'cvToFreq']))}
+            onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'output', 'cvToFreq', 'connectThisToControlFreqOfOscOrLFO', this.props.midi.getIn(['output', 'cvToFreq']))}
           />
         </div>
       </ModuleContainer>
@@ -118,17 +116,15 @@ export class MIDI extends React.Component {
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state, props) {
   return {
-    midi: state.eurorack.get('midi')
+    midi: state.midis.get(props.id)
   }
 }
 
 export default connect(
   mapStateToProps,
   {
-    connectJack,
-    disconnectJack,
     errorConnectingMidi,
     setMidiInputDevice,
     midiGateAttackTrigger,

@@ -1,113 +1,58 @@
 import { fromJS } from 'immutable'
+import uuid from 'uuid'
 import Tone from 'tone'
+
+import OscillatorInitialState from '../components/Modules/Oscillator/OscillatorInitialState'
+import LFOInitialState from '../components/Modules/LFO/LFOInitialState'
+import EnvelopeInitialState from '../components/Modules/Envelope/EnvelopeInitialState'
+import FilterInitialState from '../components/Modules/Filter/FilterInitialState'
+import SpeakerInitialState from '../components/Modules/Speaker/SpeakerInitialState'
+import MIDIInitialState from '../components/Modules/MIDI/MIDIInitialState'
+
 const initialState = {
+	oscillators: fromJS({
+		[uuid.v4()]: OscillatorInitialState
+	}),
+	lfos: fromJS({
+		[uuid.v4()]: LFOInitialState
+	}),
+	envelopes: fromJS({
+		[uuid.v4()]: EnvelopeInitialState
+	}),
+	filters: fromJS({
+		[uuid.v4()]: FilterInitialState
+	}),
+	speaker: fromJS({
+		only: SpeakerInitialState
+	}),
+	midis: fromJS({
+		[uuid.v4()]: MIDIInitialState
+	}),
 	eurorack: fromJS({
-		connectingCables: {
+		patchCables: {
+			active: false,
 			input: null,
 			output: null,
-			color: null,
-			colorOptions: ['orange', 'royalblue', 'purple', 'red', 'yellowgreen', 'forestgreen' ],
+			color: 'darkred',
+			colorOptions: ['orange', 'royalblue', 'purple', 'red', 'yellowgreen', 'forestgreen', 'fuscia', 'peachpuff' ],
 			error: null,
 			connections: {
 				// white: {
 				// 	input: {
 				// 		module: 'example',
+				// 		id: 'example',
 				// 		cvName: 'example',
 				// 		toneObject: 'example'
 				// 	},
 				// 	output: {
 				// 		module: 'example',
+				// 		id: 'example',
 				// 		cvName: 'example',
 				// 		toneObject: 'example'
 				// 	}
 				// }
 			}
 		},
-		midi: {
-			inputDevice: null,
-			output: {
-				gate: null,
-				cvToFreq: null,
-			},
-			error: null,
-			freq: null,
-			notesDown: []
-		},
-
-		oscillator: {
-			toneComponent: new Tone.OmniOscillator(200, 'sine').start(),
-	    min: 0,
-	    max: 1000,
-			frequency: 200,
-			modulationFrequency: 0,
-			type: 'sine',
-			typeOptions: ['sine', 'square', 'triangle', 'sawtooth', 'pwm'],
-			input: {
-				frequency: null
-			},
-			output: {
-				sound: null
-			}
-		},
-
-		envelope: {
-			toneComponent: new Tone.AmplitudeEnvelope(0.01, 0.2, 1, 0.6),
-	    min: 10,
-	    max: 1000,
-	    attack: 0,
-	    decay: 200,
-	    sustain: 1000,
-	    release: 600,
-			attackCurve: 'linear',
-			releaseCurve: 'exponential',
-	    curveOptions: ['linear', 'exponential', 'sine', 'ease', 'bounce', 'ripple', 'step'],
-			input: {
-				sound: null,
-				frequency: null,
-				trigger: null
-			},
-			output: {
-				sound: null
-			}
-		},
-
-		filter: {
-	    toneComponent: new Tone.Filter(400, 'lowpass', -12),
-		  min: 0,
-		  max: 1000,
-		  frequency: 400,
-		  type: 'lowpass',
-		  typeOptions: ['lowpass', 'highpass', 'bandpass', 'lowshelf', 'highshelf', 'notch', 'allpass', 'peaking'],
-		  rolloffOptions: [-12, -24, -48, -96],
-		  rolloff: -12,
-			input: {
-				sound: null
-			},
-			output: {
-				sound: null
-			}
-		},
-
-		lfo: {
-			toneComponent: new Tone.LFO(300, 0, 1000).start(),
-			minValue: 0,
-			maxValue: 1000,
-			min: 0,
-			max: 1000,
-			frequency: 300,
-			type: 'sine',
-			typeOptions: ['sine', 'square', 'triangle', 'sawtooth'],
-			output: {
-				lfo: null
-			}
-		},
-		speaker: {
-			toneComponent: Tone.Master,
-			analyser: Tone.context.createAnalyser(),
-			input: {
-				sound: null
-			}
-		}
 	})
 }
 

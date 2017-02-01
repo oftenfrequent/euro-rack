@@ -7,12 +7,11 @@ import DisplayTypeDropdown from '../../ModuleComponents/DisplayTypeDropdown'
 import Knob from '../../ModuleComponents/Knob'
 import Jack from '../../ModuleComponents/Jack'
 import {
-  connectJack,
   changeLfoType,
   changeLfoFreq,
   changeLfoMin,
   changeLfoMax
-} from '../../EuroRackActions'
+} from './LFOActions'
 
 export class LFO extends React.Component {
   constructor(props){
@@ -37,14 +36,14 @@ export class LFO extends React.Component {
       <ModuleContainer name='LFO'>
         <DisplayTypeDropdown
           optionTypes={this.props.lfo.get('typeOptions')}
-          changeType={(v) => this.props.changeLfoType(v)}
+          changeType={(v) => this.props.changeLfoType(this.props.id, v)}
         />
         <DisplayAmount
           type='number'
           min={this.props.lfo.get('min')}
           max={this.props.lfo.get('max')}
           value={this.props.lfo.get('frequency')}
-          changeValue={(v) => this.props.changeLfoFreq(v)}
+          changeValue={(v) => this.props.changeLfoFreq(this.props.id, v)}
           active={this.state.activeFreq}
           changeActive={() => this.onChangeInputActive('activeFreq')}
         />
@@ -55,14 +54,14 @@ export class LFO extends React.Component {
           value={this.props.lfo.get('frequency')}
           degreesTotal={270}
           sensitivity={100}
-          onNewValue={(v) => this.props.changeLfoFreq(v)}
+          onNewValue={(v) => this.props.changeLfoFreq(this.props.id, v)}
         />
         <DisplayAmount
           type='number'
           min={this.props.lfo.get('min')}
           max={this.props.lfo.get('maxValue')}
           value={this.props.lfo.get('minValue')}
-          changeValue={(v) => this.props.changeLfoMin(v)}
+          changeValue={(v) => this.props.changeLfoMin(this.props.id, v)}
           active={this.state.activeMin}
           changeActive={() => this.onChangeInputActive('activeMin')}
         />
@@ -73,14 +72,14 @@ export class LFO extends React.Component {
           value={this.props.lfo.get('minValue')}
           degreesTotal={270}
           sensitivity={100}
-          onNewValue={(v) => this.props.changeLfoMin(v)}
+          onNewValue={(v) => this.props.changeLfoMin(this.props.id, v)}
         />
         <DisplayAmount
           type='number'
           min={this.props.lfo.get('minValue')}
           max={this.props.lfo.get('max')}
           value={this.props.lfo.get('maxValue')}
-          changeValue={(v) => this.props.changeLfoMax(v)}
+          changeValue={(v) => this.props.changeLfoMax(this.props.id, v)}
           active={this.state.activeMax}
           changeActive={() => this.onChangeInputActive('activeMax')}
         />
@@ -91,12 +90,12 @@ export class LFO extends React.Component {
           value={this.props.lfo.get('maxValue')}
           degreesTotal={270}
           sensitivity={100}
-          onNewValue={(v) => this.props.changeLfoMax(v)}
+          onNewValue={(v) => this.props.changeLfoMax(this.props.id, v)}
         />
         <div className='oscillator-out-jack'>
           <Jack name='out'
             color={this.props.lfo.getIn(['output', 'lfo'])}
-            onJackClick={() => this.props.connectJack('lfo', 'output', 'lfo', this.props.lfo.get('toneComponent'))}
+            onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'output', 'lfo', this.props.lfo.get('toneComponent'))}
           />
         </div>
       </ModuleContainer>
@@ -104,16 +103,15 @@ export class LFO extends React.Component {
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state, props) {
   return {
-    lfo: state.eurorack.get('lfo')
+    lfo: state.lfos.get(props.id)
   }
 }
 
 export default connect(
   mapStateToProps,
   {
-    connectJack,
     changeLfoType,
     changeLfoFreq,
     changeLfoMin,

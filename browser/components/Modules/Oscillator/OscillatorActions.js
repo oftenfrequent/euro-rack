@@ -1,20 +1,23 @@
-export function changeOscType(oscType) {
+export function changeOscType(oscType, id) {
 	return {
 		type: 'CHANGE_OSC_TYPE',
-		oscType
+		oscType,
+		id
 	}
 }
 
-export function changeOscFreq(frequency) {
+export function changeOscFreq(frequency, id) {
 	return {
 		type: 'CHANGE_OSC_FREQ',
-		frequency
+		frequency,
+		id
 	}
 }
 
-export function changeOscModFreq(frequency) {
+export function changeOscModFreq(frequency, id) {
 	return {
 		type: 'CHANGE_OSC_MOD_FREQ',
-		frequency
+		frequency,
+		id
 	}
 }

@@ -2,9 +2,9 @@ import React from 'react'
 import { connect } from 'react-redux'
 import Tone from 'tone'
 
-import { connectJack } from '../../EuroRackActions'
 import ModuleContainer from '../../ModuleComponents/ModuleContainer'
 import Jack from '../../ModuleComponents/Jack'
+import { initSpeaker } from './SpeakerActions'
 import {
   visualize,
   stopVisualization
@@ -21,6 +21,7 @@ export class Speaker extends React.Component {
   }
 
   componentDidMount() {
+    this.props.initSpeaker()
     const canvas = document.querySelector('.oscilloscope')
     const canvasCtx = canvas.getContext('2d')
     this.setState({ canvas, canvasCtx, }, () => {
@@ -35,7 +36,7 @@ export class Speaker extends React.Component {
           <Jack
             name='in'
             color={this.props.speaker.getIn(['input', 'sound'])}
-            onJackClick={() => this.props.connectJack('speaker', 'input', 'sound', this.props.speaker.get('toneComponent'))}
+            onJackClick={(e) => this.props.onJackClick(e, 'only', 'input', 'sound', this.props.speaker.get('analyser'))}
           />
         </div>
         <div className='canvas-container'>
@@ -57,13 +58,13 @@ export class Speaker extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    speaker: state.eurorack.get('speaker')
+    speaker: state.speaker.get('only')
   }
 }
 
 export default connect(
   mapStateToProps,
   {
-    connectJack
+    initSpeaker
   }
 )(Speaker)

@@ -27,22 +27,22 @@ export class Oscillator extends React.Component {
     this.setState({active: !this.state.active})
   }
 
-  handleJackClick(e, module, direction, cvName, toneObject, color) {
-    e.preventDefault()
-    const eventType = e.type // click or contextmenu
-    if (!color && eventType === 'click') {
-      this.props.connectJack(module, direction, cvName, toneObject)
-    } else if (color && eventType === 'contextmenu') {
-      this.props.disconnectJack(color)
-    }
-  }
+  // handleJackClick(e, module, id, direction, cvName, toneObject, color) {
+  //   e.preventDefault()
+  //   const eventType = e.type // click or contextmenu
+  //   if (!color && eventType === 'click') {
+  //     this.props.connectJack(module, id, direction, cvName, toneObject)
+  //   } else if (color && eventType === 'contextmenu') {
+  //     this.props.disconnectJack(color)
+  //   }
+  // }
 
   render(){
     return (
       <ModuleContainer name='VCO'>
         <DisplayTypeDropdown
           optionTypes={this.props.vco.get('typeOptions')}
-          changeType={(v) => this.props.changeOscType(v)}
+          changeType={(v) => this.props.changeOscType(v, this.props.id)}
         />
         <DisplayAmount
           type='number'
@@ -50,7 +50,7 @@ export class Oscillator extends React.Component {
           changeActive={() => this.onChangeInputActive()}
           max={this.props.vco.get('max')}
           value={this.props.vco.get('frequency')}
-          changeValue={(v) => this.props.changeOscFreq(v)}
+          changeValue={(v) => this.props.changeOscFreq(v, this.props.id)}
           active={this.state.active}
           changeActive={() => this.onChangeInputActive()}
         />
@@ -61,7 +61,7 @@ export class Oscillator extends React.Component {
           value={this.props.vco.get('frequency')}
           degreesTotal={270}
           sensitivity={100}
-          onNewValue={(v) => this.props.changeOscFreq(v)}
+          onNewValue={(v) => this.props.changeOscFreq(v, this.props.id)}
         />
         {this.props.vco.get('type') === 'pwm'
           ?
@@ -72,20 +72,20 @@ export class Oscillator extends React.Component {
               value={this.props.vco.get('modulationFrequency')}
               degreesTotal={270}
               sensitivity={1000}
-              onNewValue={(v) => this.props.changeOscModFreq(v)}
+              onNewValue={(v) => this.props.changeOscModFreq(v, this.props.id)}
             />
           : null
         }
         <div className='oscillator-in-jack'>
           <Jack name='in to freq'
             color={this.props.vco.getIn(['input', 'frequency'])}
-            onJackClick={(e) => this.handleJackClick(e, 'oscillator', 'input', 'frequency', this.props.vco.get('toneComponent').frequency, this.props.vco.getIn(['input', 'frequency']))}
+            onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'input', 'frequency', this.props.vco.get('toneComponent').frequency, this.props.vco.getIn(['input', 'frequency']))}
           />
         </div>
         <div className='oscillator-out-jack'>
           <Jack name='out'
             color={this.props.vco.getIn(['output', 'sound'])}
-            onJackClick={(e) => this.handleJackClick(e, 'oscillator', 'output', 'sound', this.props.vco.get('toneComponent'), this.props.vco.getIn(['output', 'sound']))}
+            onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'output', 'sound', this.props.vco.get('toneComponent'), this.props.vco.getIn(['output', 'sound']))}
           />
         </div>
       </ModuleContainer>
@@ -93,9 +93,10 @@ export class Oscillator extends React.Component {
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state, props) {
   return {
-    vco: state.eurorack.get('oscillator')
+    vco: state.oscillators.get(props.id),
+    currentJackColor: state.eurorack.get()
   }
 }
 
