@@ -72,8 +72,12 @@ export class EnvelopeGenerator extends React.Component {
         </div>
         <div className='envelope-out-jack'>
           <Jack name='out'
-            color={this.props.env.getIn(['output', 'sound'])}
-            onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'output', 'sound', this.props.env.get('toneComponent'))}
+            color={this.props.env.getIn(['output', 'amplitude1'])}
+            onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'output', 'amplitude1', this.props.env.get('toneComponent'))}
+          />
+          <Jack name='out'
+            color={this.props.env.getIn(['output', 'amplitude2'])}
+            onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'output', 'amplitude2', this.props.env.get('toneComponent'))}
           />
         </div>
       </ModuleContainer>

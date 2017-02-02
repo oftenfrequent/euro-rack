@@ -7,7 +7,6 @@ import DisplayAmount from '../../ModuleComponents/DisplayAmount'
 import DisplayTypeDropdown from '../../ModuleComponents/DisplayTypeDropdown'
 import Knob from '../../ModuleComponents/Knob'
 import Jack from '../../ModuleComponents/Jack'
-import { connectJack, disconnectJack } from '../../EuroRackActions'
 import {
   changeOscType,
   changeOscFreq,
@@ -26,16 +25,6 @@ export class Oscillator extends React.Component {
   onChangeInputActive() {
     this.setState({active: !this.state.active})
   }
-
-  // handleJackClick(e, module, id, direction, cvName, toneObject, color) {
-  //   e.preventDefault()
-  //   const eventType = e.type // click or contextmenu
-  //   if (!color && eventType === 'click') {
-  //     this.props.connectJack(module, id, direction, cvName, toneObject)
-  //   } else if (color && eventType === 'contextmenu') {
-  //     this.props.disconnectJack(color)
-  //   }
-  // }
 
   render(){
     return (
@@ -103,10 +92,8 @@ function mapStateToProps(state, props) {
 export default connect(
   mapStateToProps,
   {
-    connectJack,
     changeOscType,
     changeOscFreq,
-    changeOscModFreq,
-    disconnectJack
+    changeOscModFreq
   }
 )(Oscillator)

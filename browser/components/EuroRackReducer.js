@@ -1,6 +1,6 @@
 import { fromJS } from 'immutable'
 import uuid from 'uuid'
-import tone from 'tone'
+import Tone from 'tone'
 import OscillatorInitialState from './Modules/Oscillator/OscillatorInitialState'
 import LFOInitialState from './Modules/LFO/LFOInitialState'
 import EnvelopeInitialState from './Modules/Envelope/EnvelopeInitialState'
@@ -28,6 +28,33 @@ const reducer = (state = {}, action) => {
 			return triggerFreqCV(state, action)
 		case 'MIDI_GATE_RELEASE_TRIGGER' :
 			return triggerRelease(state, action)
+
+		case 'TESTING_STUFF' :
+			console.log('ASLDFHASLD')
+			const osc = new Tone.OmniOscillator(200).start()
+			const gain = new Tone.Gain(0)
+			const lfo = new Tone.LFO('1m').start()
+			const env = new Tone.Envelope(0.01, 0.1, 0.5, 0.1)
+
+			osc.connect(gain)
+			lfo.connect(gain.gain)
+			env.connect(lfo.amplitude)
+
+			setInterval(() => {
+				console.log('TRIGGGERERR')
+				env.triggerAttackRelease(2)
+			}, 7000)
+
+			// setInterval(() => {
+			// 	console.log('gain.gain.value', gain.gain.value)
+			// }, 70)
+
+			// const lfo = new Tone.LFO(200).start()
+
+			gain.toMaster()
+
+			return state
+
 	}
 	return state
 }

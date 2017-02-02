@@ -7,6 +7,7 @@ import LFO from './Modules/LFO/LFO'
 import MIDI from './Modules/MIDI/MIDIComponent'
 import EnvelopeGenerator from './Modules/Envelope/Envelope'
 import Filter from './Modules/Filter/Filter'
+import VCA from './Modules/VCA/VCA'
 import Speaker from './Modules/Speaker/Speaker'
 import JackClickHelper from './Helpers/JackClickHelper'
 import {
@@ -52,6 +53,13 @@ export class App extends React.Component {
             onJackClick={(e, id, direction, cvName, toneComponent, currentColor) => this.handleJackClick(e, 'oscillators', id, direction, cvName, toneComponent, currentColor)}
           />
         )}
+        {Array.from(this.props.vcas.keys()).map((name,index) =>
+          <VCA
+            id={name}
+            key={index}
+            onJackClick={(e, id, direction, cvName, toneComponent, currentColor) => this.handleJackClick(e, 'vcas', id, direction, cvName, toneComponent, currentColor)}
+          />
+        )}
         {Array.from(this.props.lfos.keys()).map((name,index) =>
           <LFO
             id={name}
@@ -83,6 +91,7 @@ export class App extends React.Component {
         <Speaker
           onJackClick={(e, id, direction, cvName, toneComponent, currentColor) => this.handleJackClick(e, 'speaker', id, direction, cvName, toneComponent, currentColor)}
         />
+        <button onClick={() => this.props.testing()}>TESTING STUFF</button>
       </div>
     );
   }
@@ -95,6 +104,7 @@ function mapStateToProps(state) {
     lfos: state.lfos,
     envelopes: state.envelopes,
     filters: state.filters,
+    vcas: state.vcas,
     midis: state.midis,
     patchCables: state.eurorack.get('patchCables')
   }
@@ -106,5 +116,13 @@ export default connect(
     connectJack,
     disconnectJack,
     errorConnectingJack,
+    testing
   }
 )(App);
+
+
+function testing () {
+  return {
+    type: 'TESTING_STUFF'
+  }
+}

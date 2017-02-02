@@ -6,6 +6,7 @@ import OscillatorInitialState from '../components/Modules/Oscillator/OscillatorI
 import LFOInitialState from '../components/Modules/LFO/LFOInitialState'
 import EnvelopeInitialState from '../components/Modules/Envelope/EnvelopeInitialState'
 import FilterInitialState from '../components/Modules/Filter/FilterInitialState'
+import VCAInitialState from '../components/Modules/VCA/VCAInitialState'
 import SpeakerInitialState from '../components/Modules/Speaker/SpeakerInitialState'
 import MIDIInitialState from '../components/Modules/MIDI/MIDIInitialState'
 
@@ -22,6 +23,9 @@ const initialState = {
 	filters: fromJS({
 		[uuid.v4()]: FilterInitialState
 	}),
+	vcas: fromJS({
+		[uuid.v4()]: VCAInitialState
+	}),
 	speaker: fromJS({
 		only: SpeakerInitialState
 	}),
@@ -34,7 +38,7 @@ const initialState = {
 			input: null,
 			output: null,
 			color: 'darkred',
-			colorOptions: ['orange', 'royalblue', 'purple', 'red', 'yellowgreen', 'forestgreen', 'fuscia', 'peachpuff' ],
+			colorOptions: ['orange', 'royalblue', 'purple', 'red', 'yellowgreen', 'forestgreen', 'violet', 'peachpuff' ],
 			error: null,
 			connections: {
 				// white: {

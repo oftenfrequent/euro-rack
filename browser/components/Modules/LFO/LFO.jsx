@@ -38,8 +38,12 @@ export class LFO extends React.Component {
           optionTypes={this.props.lfo.get('typeOptions')}
           changeType={(v) => this.props.changeLfoType(this.props.id, v)}
         />
+        <DisplayTypeDropdown
+          optionTypes={this.props.lfo.get('valueOptions')}
+          changeType={(v) => this.props.changeLfoFreq(this.props.id, v)}
+        />
         <DisplayAmount
-          type='number'
+          type='string'
           min={this.props.lfo.get('min')}
           max={this.props.lfo.get('max')}
           value={this.props.lfo.get('frequency')}
@@ -92,6 +96,12 @@ export class LFO extends React.Component {
           sensitivity={100}
           onNewValue={(v) => this.props.changeLfoMax(this.props.id, v)}
         />
+        <div className='oscillator-in-jack'>
+          <Jack name='amplitude'
+            color={this.props.lfo.getIn(['input', 'lfo'])}
+            onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'input', 'lfo', this.props.lfo.get('toneComponent').amplitude)}
+          />
+        </div>
         <div className='oscillator-out-jack'>
           <Jack name='out'
             color={this.props.lfo.getIn(['output', 'lfo'])}

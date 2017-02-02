@@ -1,7 +1,7 @@
 import Tone from 'tone'
 
 export default {
-	toneComponent: new Tone.AmplitudeEnvelope(0.01, 0.2, 1, 0.6),
+	toneComponent: new Tone.Envelope(0.01, 0.2, 1, 0.6),
   min: 10,
   max: 1000,
   attack: 0,
@@ -17,6 +17,7 @@ export default {
 		trigger: null
 	},
 	output: {
-		sound: null
+		amplitude1: null,
+		amplitude2: null
 	}
 }
