@@ -6,11 +6,13 @@ export function changeOscType(oscType, id) {
 	}
 }
 
-export function changeOscFreq(frequency, id) {
+export function changeOscFreq(frequency, id, freqInputColor, cvInputColor) {
 	return {
 		type: 'CHANGE_OSC_FREQ',
 		frequency,
-		id
+		id,
+		freqInputColor,
+		cvInputColor
 	}
 }
 

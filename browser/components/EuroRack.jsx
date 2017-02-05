@@ -53,18 +53,18 @@ export class App extends React.Component {
             onJackClick={(e, id, direction, cvName, toneComponent, currentColor) => this.handleJackClick(e, 'oscillators', id, direction, cvName, toneComponent, currentColor)}
           />
         )}
-        {Array.from(this.props.vcas.keys()).map((name,index) =>
-          <VCA
-            id={name}
-            key={index}
-            onJackClick={(e, id, direction, cvName, toneComponent, currentColor) => this.handleJackClick(e, 'vcas', id, direction, cvName, toneComponent, currentColor)}
-          />
-        )}
         {Array.from(this.props.lfos.keys()).map((name,index) =>
           <LFO
             id={name}
             key={index}
             onJackClick={(e, id, direction, cvName, toneComponent, currentColor) => this.handleJackClick(e, 'lfos', id, direction, cvName, toneComponent, currentColor)}
+          />
+        )}
+        {Array.from(this.props.vcas.keys()).map((name,index) =>
+          <VCA
+            id={name}
+            key={index}
+            onJackClick={(e, id, direction, cvName, toneComponent, currentColor) => this.handleJackClick(e, 'vcas', id, direction, cvName, toneComponent, currentColor)}
           />
         )}
         {Array.from(this.props.envelopes.keys()).map((name,index) =>
@@ -74,13 +74,6 @@ export class App extends React.Component {
             onJackClick={(e, id, direction, cvName, toneComponent, currentColor) => this.handleJackClick(e, 'envelopes', id, direction, cvName, toneComponent, currentColor)}
           />
         )}
-        {Array.from(this.props.midis.keys()).map((name,index) =>
-          <MIDI
-            id={name}
-            key={index}
-            onJackClick={(e, id, direction, cvName, toneComponent, currentColor) => this.handleJackClick(e, 'midis', id, direction, cvName, toneComponent, currentColor)}
-          />
-        )}
         {Array.from(this.props.filters.keys()).map((name,index) =>
           <Filter
             id={name}
@@ -88,12 +81,19 @@ export class App extends React.Component {
             onJackClick={(e, id, direction, cvName, toneComponent, currentColor) => this.handleJackClick(e, 'filters', id, direction, cvName, toneComponent, currentColor)}
           />
         )}
+        {Array.from(this.props.midis.keys()).map((name,index) =>
+          <MIDI
+            id={name}
+            key={index}
+            onJackClick={(e, id, direction, cvName, toneComponent, currentColor) => this.handleJackClick(e, 'midis', id, direction, cvName, toneComponent, currentColor)}
+          />
+        )}
         <Speaker
           onJackClick={(e, id, direction, cvName, toneComponent, currentColor) => this.handleJackClick(e, 'speaker', id, direction, cvName, toneComponent, currentColor)}
         />
         <button onClick={() => this.props.testing()}>TESTING STUFF</button>
       </div>
-    );
+    )
   }
 };
 

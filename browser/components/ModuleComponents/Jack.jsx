@@ -20,7 +20,7 @@ const Jack = ({name, color, onJackClick}) => {
         className='color-connector'
         style={{background: `${color}`}}></div>
       <div className='jack-center'></div>
-      <h5 className='jack-name'>{name}</h5>
+      <div className='jack-name'>{name}</div>
     </div>
   )
 }

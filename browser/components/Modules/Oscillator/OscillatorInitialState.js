@@ -9,7 +9,9 @@ export default  {
 	type: 'sine',
 	typeOptions: ['sine', 'square', 'triangle', 'sawtooth', 'pwm'],
 	input: {
-		frequency: null
+		frequency: null,
+		pwModulation: null,
+		cv: null
 	},
 	output: {
 		sound: null

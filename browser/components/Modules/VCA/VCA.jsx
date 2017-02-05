@@ -38,7 +38,7 @@ export class VCA extends React.Component {
           changeActive={() => this.onChangeInputActive()}
         />
         <Knob
-          name='Frequency'
+          name='Gain'
           min={this.props.vca.get('min')}
           max={this.props.vca.get('max')}
           value={this.props.vca.get('value')}

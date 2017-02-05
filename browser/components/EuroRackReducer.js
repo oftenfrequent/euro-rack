@@ -31,19 +31,20 @@ const reducer = (state = {}, action) => {
 
 		case 'TESTING_STUFF' :
 			console.log('ASLDFHASLD')
-			const osc = new Tone.OmniOscillator(200).start()
-			const gain = new Tone.Gain(0)
+			const osc = new Tone.OmniOscillator(200, 'pwm').start()
+			const gain = new Tone.Gain()
 			const lfo = new Tone.LFO('1m').start()
 			const env = new Tone.Envelope(0.01, 0.1, 0.5, 0.1)
 
 			osc.connect(gain)
-			lfo.connect(gain.gain)
-			env.connect(lfo.amplitude)
+			lfo.connect(osc.modulationFrequency)
+			// lfo.connect(gain.gain)
+			// env.connect(lfo.amplitude)
 
-			setInterval(() => {
-				console.log('TRIGGGERERR')
-				env.triggerAttackRelease(2)
-			}, 7000)
+			// setInterval(() => {
+			// 	console.log('TRIGGGERERR')
+			// 	env.triggerAttackRelease(2)
+			// }, 7000)
 
 			// setInterval(() => {
 			// 	console.log('gain.gain.value', gain.gain.value)

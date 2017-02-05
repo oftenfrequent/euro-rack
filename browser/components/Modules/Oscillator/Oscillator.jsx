@@ -39,7 +39,7 @@ export class Oscillator extends React.Component {
           changeActive={() => this.onChangeInputActive()}
           max={this.props.vco.get('max')}
           value={this.props.vco.get('frequency')}
-          changeValue={(v) => this.props.changeOscFreq(v, this.props.id)}
+          changeValue={(v) => this.props.changeOscFreq(v, this.props.id, this.props.vco.getIn(['input', 'frequency']), this.props.vco.getIn(['input', 'cv']))}
           active={this.state.active}
           changeActive={() => this.onChangeInputActive()}
         />
@@ -50,7 +50,7 @@ export class Oscillator extends React.Component {
           value={this.props.vco.get('frequency')}
           degreesTotal={270}
           sensitivity={100}
-          onNewValue={(v) => this.props.changeOscFreq(v, this.props.id)}
+          onNewValue={(v) => this.props.changeOscFreq(v, this.props.id, this.props.vco.getIn(['input', 'frequency']), this.props.vco.getIn(['input', 'cv']))}
         />
         {this.props.vco.get('type') === 'pwm'
           ?
@@ -70,6 +70,18 @@ export class Oscillator extends React.Component {
             color={this.props.vco.getIn(['input', 'frequency'])}
             onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'input', 'frequency', this.props.vco.get('toneComponent').frequency, this.props.vco.getIn(['input', 'frequency']))}
           />
+          <Jack name='cv'
+            color={this.props.vco.getIn(['input', 'cv'])}
+            onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'input', 'cv', this.props.vco.get('toneComponent').frequency, this.props.vco.getIn(['input', 'cv']))}
+          />
+          {this.props.vco.get('type') === 'pwm'
+            ?
+              <Jack name='pulse modulation'
+                color={this.props.vco.getIn(['input', 'pwModulation'])}
+                onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'input', 'pwModulation', this.props.vco.get('toneComponent').modulationFrequency, this.props.vco.getIn(['input', 'pwModulation']))}
+              />
+            : null
+          }
         </div>
         <div className='oscillator-out-jack'>
           <Jack name='out'

@@ -7,6 +7,15 @@ export function connectJack(color, module, id, direction, cvName, toneObject) {
 		direction,
 		cvName,
 		toneObject
+
+		// isLFO
+
+		// if lfo
+		// lfoID
+		// midValue
+		// minValue
+		// maxValue
+		// distance
 	}
 }
 

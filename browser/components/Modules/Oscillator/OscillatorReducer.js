@@ -25,8 +25,8 @@ export default (state = {}, action) => {
 									})
 
 
-		case 'MIDI_GATE_ATTACK_TRIGGER' :
-			return isChangeFreqApplicable(state, action)
+		// case 'MIDI_GATE_ATTACK_TRIGGER' :
+		// 	return isChangeFreqApplicable(state, action)
 	}
 	return state
 }

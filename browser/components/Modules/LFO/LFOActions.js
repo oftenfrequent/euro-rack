@@ -14,18 +14,18 @@ export function changeLfoFreq(id, frequency) {
 	}
 }
 
-export function changeLfoMin(id, minValue) {
+export function changeLfoPercent(id, percent) {
 	return {
-		type: 'CHANGE_LFO_MIN',
+		type: 'CHANGE_LFO_PERCENT',
 		id,
-		minValue
+		percent
 	}
 }
 
-export function changeLfoMax(id, maxValue) {
+export function changeLfoMidValue(id, midValue) {
 	return {
-		type: 'CHANGE_LFO_MAX',
+		type: 'CHANGE_LFO_MIDVALUE',
 		id,
-		maxValue
+		midValue
 	}
 }

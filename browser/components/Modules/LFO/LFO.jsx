@@ -9,8 +9,7 @@ import Jack from '../../ModuleComponents/Jack'
 import {
   changeLfoType,
   changeLfoFreq,
-  changeLfoMin,
-  changeLfoMax
+  changeLfoPercent
 } from './LFOActions'
 
 export class LFO extends React.Component {
@@ -60,41 +59,14 @@ export class LFO extends React.Component {
           sensitivity={100}
           onNewValue={(v) => this.props.changeLfoFreq(this.props.id, v)}
         />
-        <DisplayAmount
-          type='number'
-          min={this.props.lfo.get('min')}
-          max={this.props.lfo.get('maxValue')}
-          value={this.props.lfo.get('minValue')}
-          changeValue={(v) => this.props.changeLfoMin(this.props.id, v)}
-          active={this.state.activeMin}
-          changeActive={() => this.onChangeInputActive('activeMin')}
-        />
         <Knob
-          name='Min Frequency'
-          min={this.props.lfo.get('min')}
-          max={this.props.lfo.get('maxValue')}
-          value={this.props.lfo.get('minValue')}
+          name='Change'
+          min={0}
+          max={100}
+          value={this.props.lfo.get('percentChange')}
           degreesTotal={270}
           sensitivity={100}
-          onNewValue={(v) => this.props.changeLfoMin(this.props.id, v)}
-        />
-        <DisplayAmount
-          type='number'
-          min={this.props.lfo.get('minValue')}
-          max={this.props.lfo.get('max')}
-          value={this.props.lfo.get('maxValue')}
-          changeValue={(v) => this.props.changeLfoMax(this.props.id, v)}
-          active={this.state.activeMax}
-          changeActive={() => this.onChangeInputActive('activeMax')}
-        />
-        <Knob
-          name='Max Frequency'
-          min={this.props.lfo.get('minValue')}
-          max={this.props.lfo.get('max')}
-          value={this.props.lfo.get('maxValue')}
-          degreesTotal={270}
-          sensitivity={100}
-          onNewValue={(v) => this.props.changeLfoMax(this.props.id, v)}
+          onNewValue={(v) => this.props.changeLfoPercent(this.props.id, v)}
         />
         <div className='oscillator-in-jack'>
           <Jack name='amplitude'
@@ -105,7 +77,7 @@ export class LFO extends React.Component {
         <div className='oscillator-out-jack'>
           <Jack name='out'
             color={this.props.lfo.getIn(['output', 'lfo'])}
-            onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'output', 'lfo', this.props.lfo.get('toneComponent'))}
+            onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'output', 'lfo', this.props.lfo.get('toneComponent'), this.props.lfo.getIn(['output', 'lfo']))}
           />
         </div>
       </ModuleContainer>
@@ -124,7 +96,6 @@ export default connect(
   {
     changeLfoType,
     changeLfoFreq,
-    changeLfoMin,
-    changeLfoMax
+    changeLfoPercent
   }
 )(LFO)
