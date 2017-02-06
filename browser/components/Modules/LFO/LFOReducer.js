@@ -49,7 +49,6 @@ const setLFOParamsOnConnection = (state, action) => {
 
 const changeToneLFOParamters = (id, state) => {
 	return state.updateIn([id, 'toneComponent'], (lfo) => {
-									// console.log('lfo', lfo)
 									const totalDifference = state.getIn([id, 'maxValue']) - state.getIn([id, 'minValue'])
 									const difference = ((state.getIn([id, 'percentChange'])*totalDifference)/100)/2
 									// console.log('totalAmount', totalDifference)
@@ -59,6 +58,7 @@ const changeToneLFOParamters = (id, state) => {
 									const maxValue = midValue + difference
 									lfo.min = minValue < state.getIn([id, 'minValue']) ? state.getIn([id, 'minValue']) : minValue
 									lfo.max = maxValue > state.getIn([id, 'maxValue']) ? state.getIn([id, 'maxValue']) : maxValue
+									console.log('lfo', lfo)
 									return lfo
 								})
 }

@@ -27,6 +27,7 @@ export class Oscillator extends React.Component {
   }
 
   render(){
+    console.log("this.props.vco.getIn(['output', 'sound'])", this.props.vco.getIn(['output', 'sound']))
     return (
       <ModuleContainer name='VCO'>
         <DisplayTypeDropdown
@@ -71,8 +72,8 @@ export class Oscillator extends React.Component {
             onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'input', 'frequency', this.props.vco.get('toneComponent').frequency, this.props.vco.getIn(['input', 'frequency']))}
           />
           <Jack name='cv'
-            color={this.props.vco.getIn(['input', 'cv'])}
-            onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'input', 'cv', this.props.vco.get('toneComponent').frequency, this.props.vco.getIn(['input', 'cv']))}
+            color={this.props.vco.getIn(['input', 'cvFrequency'])}
+            onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'input', 'cvFrequency', this.props.vco.get('toneComponent').frequency, this.props.vco.getIn(['input', 'cvFrequency']))}
           />
           {this.props.vco.get('type') === 'pwm'
             ?

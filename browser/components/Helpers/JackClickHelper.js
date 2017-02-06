@@ -3,7 +3,9 @@ export default (e, patchingActive, currentCableColor, inputJackStatus, outputJac
   const eventType = e.type // click or contextmenu
 
 	if (currentColor && eventType === 'contextmenu') {
+		e.preventDefault()
 		console.log('DISCONNECT')
+		disconnectJackCallback(currentColor)
 		// disconnect patchCable
 	} else if (!currentColor && eventType === 'click') {
 		if (patchingActive) {

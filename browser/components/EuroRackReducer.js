@@ -31,28 +31,31 @@ const reducer = (state = {}, action) => {
 
 		case 'TESTING_STUFF' :
 			console.log('ASLDFHASLD')
-			const osc = new Tone.OmniOscillator(200, 'pwm').start()
-			const gain = new Tone.Gain()
-			const lfo = new Tone.LFO('1m').start()
-			const env = new Tone.Envelope(0.01, 0.1, 0.5, 0.1)
+			const osc = new Tone.OmniOscillator(200, 'pwm').start().toMaster()
+			// const osc1 = new Tone.OmniOscillator(700, 'pwm').start()
+			// const gain = new Tone.Gain().toMaster()
+			const lfo = new Tone.LFO('1m', 100, 300).start()
+			// const env = new Tone.Envelope(0.01, 0.1, 0.5, 0.1)
 
-			osc.connect(gain)
-			lfo.connect(osc.modulationFrequency)
+
+			// osc1.connect(gain)
+			// lfo.connect(osc.modulationFrequency)
 			// lfo.connect(gain.gain)
 			// env.connect(lfo.amplitude)
 
-			// setInterval(() => {
-			// 	console.log('TRIGGGERERR')
+			setTimeout(() => {
+				console.log('connect lfo')
+				lfo.connect(osc.frequency)
 			// 	env.triggerAttackRelease(2)
-			// }, 7000)
+			}, 7000)
 
-			// setInterval(() => {
-			// 	console.log('gain.gain.value', gain.gain.value)
-			// }, 70)
+			setInterval(() => {
+				console.log('osc freq', osc.frequency.value)
+			}, 70)
 
 			// const lfo = new Tone.LFO(200).start()
 
-			gain.toMaster()
+			// gain.toMaster()
 
 			return state
 
@@ -79,17 +82,15 @@ const triggerRelease = (state, action) => {
 }
 
 const disconnectJack = (state, action) => {
-	const input = state.getIn(['patchCables', 'connections', action.color, 'input'])
-	const output = state.getIn(['patchCables', 'connections', action.color, 'output'])
-	const inToneObj = input.get('toneObject')
-	const outToneObj = output.get('toneObject')
+	// const input = state.getIn(['patchCables', 'connections', action.color, 'input'])
+	// const output = state.getIn(['patchCables', 'connections', action.color, 'output'])
+	// const inToneObj = input.get('toneObject')
+	// const outToneObj = output.get('toneObject')
 
-	outToneObj.disconnect(inToneObj)
+	action.outputToneObject.disconnect(action.inputToneObj)
 
 	return state.deleteIn(['patchCables', 'connections', action.color])
 							.updateIn(['patchCables', 'colorOptions'], (arr) => arr.push(action.color))
-							.setIn([input.get('module'), 'input', input.get('cvName')], null)
-							.setIn([output.get('module'), 'output', output.get('cvName')], null)
 }
 
 const connectJack = (state, action) => {

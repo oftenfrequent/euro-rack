@@ -1,36 +1,59 @@
+import {fromJS} from 'immutable'
+import Tone from 'tone'
+import { changeOscFreq } from '../components/Modules/Oscillator/OscillatorActions'
+import { changeLfoMidValue } from '../components/Modules/LFO/LFOActions'
 
 
 export const connectJackMiddleWare = store => next => action => {
   const state = store.getState()
+
   if (action.type === 'CONNECT_JACK') {
-    if ((action.module === 'lfos' ||
-        (state.eurorack.getIn(['patchCables', 'output']) && state.eurorack.getIn(['patchCables', 'output', 'module']) === 'lfos')
-      ) && state.eurorack.getIn(['patchCables', 'active']) //make sure making actual connection
-    ) {
-      const input = state[action.module].getIn([action.id])
-      const lfoID =  state.eurorack.getIn(['patchCables', 'output']) ? state.eurorack.getIn(['patchCables', 'output', 'id']) : action.id
-      // const inputToneComponent = input.get('toneComponent')
+    if (state.eurorack.getIn(['patchCables', 'active'])) {
+      const outputConnectionObj = state.eurorack.getIn(['patchCables', 'output']) ? state.eurorack.getIn(['patchCables', 'output']) : fromJS(action)
+      const inputConnectionObj = state.eurorack.getIn(['patchCables', 'input']) ? state.eurorack.getIn(['patchCables', 'input']) : fromJS(action)
+      if (outputConnectionObj.get('module') === 'lfos') {
+        // output is an LFO
+        action['isLFO'] = true
+        action['lfoID'] = outputConnectionObj.get('id')
 
-      // console.log('inputToneComponent', inputToneComponent)
-      // const modulatedValue = inputToneComponent.value
-      // console.log('modulatedValue', modulatedValue)
-      action['midValue'] = input.get('toneComponent').frequency.value
-      action['minValue'] = input.get('min')
-      action['maxValue'] = input.get('max')
-      action['isLFO'] = true
-      action['lfoID'] = lfoID
+        if (inputConnectionObj.get('cvName') === 'frequency' || inputConnectionObj.get('cvName') === 'cvFrequency') {
+          const input = state[inputConnectionObj.get('module')].getIn([inputConnectionObj.get('id')])
+          console.log('input', input.toJS())
+          action['midValue'] = input.get('toneComponent').frequency.value
+          action['minValue'] = input.get('min')
+          action['maxValue'] = input.get('max')
+        }
+        if (inputConnectionObj.get('cvName') === 'pwModulation') {
+          const input = state[inputConnectionObj.get('module')].getIn([inputConnectionObj.get('id')])
+          console.log('input', input.toJS())
+          action['midValue'] = 0.5
+          action['minValue'] = 0
+          action['maxValue'] = 1
+        }
 
-    } else {
-      action['isLFO'] = false
+      } else {
+        action['isLFO'] = false
+      }
     }
+  } else if (action.type === 'DISCONNECT_JACK') {
+    const inputModule  = state.eurorack.getIn(['patchCables', 'connections', action.color, 'input'])
+    const outputModule = state.eurorack.getIn(['patchCables', 'connections', action.color, 'output'])
+
+    action['inputModule']     = inputModule.get('module')
+    action['inputId']         = inputModule.get('id')
+    action['inputToneObject'] = inputModule.get('toneObject')
+    action['inputCvName']     = inputModule.get('cvName')
+
+    action['outputModule']      = outputModule.get('module')
+    action['outputId']          = outputModule.get('id')
+    action['outputToneObject']  = outputModule.get('toneObject')
+    action['outputCvName']      = outputModule.get('cvName')
+
   }
 
   return next(action)
 }
 
-import Tone from 'tone'
-import { changeOscFreq } from '../components/Modules/Oscillator/OscillatorActions'
-import { changeLfoMidValue } from '../components/Modules/LFO/LFOActions'
 
 export const patchingMiddleWare = store => next => action => {
   const state = store.getState()
@@ -52,8 +75,6 @@ export const patchingMiddleWare = store => next => action => {
   } else if (action.type === 'CHANGE_OSC_FREQ') {
     if (action.freqInputColor) {
       const outputModule = state.eurorack.getIn(['patchCables', 'connections', action.freqInputColor, 'output'])
-      console.log('action.freqColor', action.freqInputColor)
-      console.log('outputModule', outputModule)
       if (outputModule.get('module') === 'lfos') {
         store.dispatch(changeLfoMidValue(outputModule.get('id'), action.frequency))
       }
@@ -71,8 +92,8 @@ export default {
 
 
 // possible pairing
+// -------TO BE DONE------------
 // midi -> OSC.freq
-// lfo -> OSC.pwModulation
-  //min: 0 max: 1 -- default
+// ----------DONE---------------
 // lfo -> OSC.frequency
-  //min: 0 max: 1 -- default
+// lfo -> OSC.pwModulation

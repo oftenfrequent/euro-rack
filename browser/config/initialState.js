@@ -12,10 +12,10 @@ import MIDIInitialState from '../components/Modules/MIDI/MIDIInitialState'
 
 const initialState = {
 	oscillators: fromJS({
-		[uuid.v4()]: OscillatorInitialState
+		[uuid.v4()]: OscillatorInitialState()
 	}),
 	lfos: fromJS({
-		[uuid.v4()]: LFOInitialState
+		[uuid.v4()]: LFOInitialState()
 	}),
 	envelopes: fromJS({
 		[uuid.v4()]: EnvelopeInitialState

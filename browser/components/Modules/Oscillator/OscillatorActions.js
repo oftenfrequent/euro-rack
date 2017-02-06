@@ -1,3 +1,7 @@
+export function addOscillator() {
+	return { type: 'ADD_OSC' }
+}
+
 export function changeOscType(oscType, id) {
 	return {
 		type: 'CHANGE_OSC_TYPE',

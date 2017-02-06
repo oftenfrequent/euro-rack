@@ -1,13 +1,26 @@
+import { fromJS } from 'immutable'
 import Tone from 'tone'
+import uuid from 'uuid'
+import OscillatorInitialState from './OscillatorInitialState'
 
 export default (state = {}, action) => {
 	switch(action.type) {
+		case 'ADD_OSC' :
+			const newID = uuid.v4()
+			return state.set(newID, fromJS(OscillatorInitialState()))
 
 		case 'CONNECT_JACK' :
 			if (action.module === 'oscillators') {
 				return state.setIn([action.id, action.direction, action.cvName], action.color )
 			} else {
 				return state
+			}
+		case 'DISCONNECT_JACK' :
+
+			if (action.inputModule === 'oscillators') {
+				return state.setIn([action.inputId, 'input', action.inputCvName], null)
+			} else if (action.outputModule === 'oscillators') {
+				return state.setIn([action.outputId, 'output', action.outputCvName], null)
 			}
 		case 'CHANGE_OSC_TYPE' :
 			return state.setIn([action.id, 'type'], action.oscType )
@@ -24,21 +37,7 @@ export default (state = {}, action) => {
 										return osc
 									})
 
-
-		// case 'MIDI_GATE_ATTACK_TRIGGER' :
-		// 	return isChangeFreqApplicable(state, action)
 	}
-	return state
-}
-
-
-const isChangeFreqApplicable = (state, action) => {
-	Array.from(state.keys()).map( (id, index) => {
-		const color = state.getIn([id, 'input', 'frequency'])
-		if (color && color === action.freqColor) {
-			state = changeFrequency(state, Tone.Frequency(action.freq).toFrequency(), id)
-		}
-	})
 	return state
 }
 

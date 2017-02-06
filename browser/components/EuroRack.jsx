@@ -10,6 +10,7 @@ import Filter from './Modules/Filter/Filter'
 import VCA from './Modules/VCA/VCA'
 import Speaker from './Modules/Speaker/Speaker'
 import JackClickHelper from './Helpers/JackClickHelper'
+import AddNewComponent from './Modules/AddNew/AddNew'
 import {
   connectJack,
   disconnectJack,
@@ -91,6 +92,7 @@ export class App extends React.Component {
         <Speaker
           onJackClick={(e, id, direction, cvName, toneComponent, currentColor) => this.handleJackClick(e, 'speaker', id, direction, cvName, toneComponent, currentColor)}
         />
+        <AddNewComponent/>
         <button onClick={() => this.props.testing()}>TESTING STUFF</button>
       </div>
     )

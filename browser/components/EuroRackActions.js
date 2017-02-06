@@ -22,7 +22,22 @@ export function connectJack(color, module, id, direction, cvName, toneObject) {
 export function disconnectJack(color) {
 	return {
 		type: 'DISCONNECT_JACK',
-		color
+		color,
+
+		// ADDED BY MIDDLEWARE
+		// inputModule,
+		// inputId,
+		// inputToneObject,
+		// inputCvName,
+
+		// outputModule,
+		// outputId,
+		// outputToneObject,
+		// outputCvName
+
+
+		// // inputDirection,
+		// // outputDirection,
 	}
 }
 
