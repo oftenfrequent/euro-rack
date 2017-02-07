@@ -7,8 +7,14 @@ export default (state = {}, action) => {
 			} else {
 				return state
 			}
-
-	// MIDI
+		case 'DISCONNECT_JACK' :
+			if (action.inputModule === 'midis') {
+				return state.setIn([action.inputId, 'input', action.inputCvName], null)
+			} else if (action.outputModule === 'midis') {
+				return state.setIn([action.outputId, 'output', action.outputCvName], null)
+			} else {
+				return state
+			}
 		case 'MIDI_CONNECTION_ERROR' :
 			return state.setIn([action.id, 'error'], action.error)
 		case 'SET_MIDI_INPUT' :

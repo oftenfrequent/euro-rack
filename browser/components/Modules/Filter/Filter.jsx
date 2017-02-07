@@ -55,17 +55,17 @@ export class Filter extends React.Component {
         <div className='filter-in-jack'>
           <Jack name='lfo in'
             color={this.props.fil.getIn(['input', 'frequency'])}
-            onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'input', 'frequency', this.props.fil.get('toneComponent').frequency)}
+            onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'input', 'frequency', this.props.fil.get('toneComponent').frequency, this.props.fil.getIn(['input', 'frequency']))}
           />
           <Jack name='in'
             color={this.props.fil.getIn(['input', 'sound'])}
-            onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'input', 'sound', this.props.fil.get('toneComponent'))}
+            onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'input', 'sound', this.props.fil.get('toneComponent'), this.props.fil.getIn(['input', 'sound']))}
           />
         </div>
         <div className='filter-out-jack'>
           <Jack name='out'
             color={this.props.fil.getIn(['output', 'sound'])}
-            onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'output', 'sound', this.props.fil.get('toneComponent'))}
+            onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'output', 'sound', this.props.fil.get('toneComponent'), this.props.fil.getIn(['output', 'sound']))}
           />
         </div>
       </ModuleContainer>

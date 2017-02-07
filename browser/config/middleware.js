@@ -38,7 +38,8 @@ export const connectJackMiddleWare = store => next => action => {
   } else if (action.type === 'DISCONNECT_JACK') {
     const inputModule  = state.eurorack.getIn(['patchCables', 'connections', action.color, 'input'])
     const outputModule = state.eurorack.getIn(['patchCables', 'connections', action.color, 'output'])
-
+    console.log('inputModule', inputModule.toJS())
+    console.log('outputModule', outputModule.toJS())
     action['inputModule']     = inputModule.get('module')
     action['inputId']         = inputModule.get('id')
     action['inputToneObject'] = inputModule.get('toneObject')

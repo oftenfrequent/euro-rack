@@ -2,29 +2,29 @@ import { fromJS } from 'immutable'
 import uuid from 'uuid'
 import Tone from 'tone'
 
-import OscillatorInitialState from '../components/Modules/Oscillator/OscillatorInitialState'
-import LFOInitialState from '../components/Modules/LFO/LFOInitialState'
-import EnvelopeInitialState from '../components/Modules/Envelope/EnvelopeInitialState'
-import FilterInitialState from '../components/Modules/Filter/FilterInitialState'
-import VCAInitialState from '../components/Modules/VCA/VCAInitialState'
+import OscillatorInitialStateCreator from '../components/Modules/Oscillator/OscillatorInitialState'
+import LFOInitialStateCreator from '../components/Modules/LFO/LFOInitialState'
+import EnvelopeInitialStateCreator from '../components/Modules/Envelope/EnvelopeInitialState'
+import FilterInitialStateCreator from '../components/Modules/Filter/FilterInitialState'
+import VCAInitialStateCreator from '../components/Modules/VCA/VCAInitialState'
 import SpeakerInitialState from '../components/Modules/Speaker/SpeakerInitialState'
 import MIDIInitialState from '../components/Modules/MIDI/MIDIInitialState'
 
 const initialState = {
 	oscillators: fromJS({
-		[uuid.v4()]: OscillatorInitialState()
+		[uuid.v4()]: OscillatorInitialStateCreator()
 	}),
 	lfos: fromJS({
-		[uuid.v4()]: LFOInitialState()
+		[uuid.v4()]: LFOInitialStateCreator()
 	}),
 	envelopes: fromJS({
-		[uuid.v4()]: EnvelopeInitialState
+		[uuid.v4()]: EnvelopeInitialStateCreator()
 	}),
 	filters: fromJS({
-		[uuid.v4()]: FilterInitialState
+		[uuid.v4()]: FilterInitialStateCreator()
 	}),
 	vcas: fromJS({
-		[uuid.v4()]: VCAInitialState
+		[uuid.v4()]: VCAInitialStateCreator()
 	}),
 	speaker: fromJS({
 		only: SpeakerInitialState

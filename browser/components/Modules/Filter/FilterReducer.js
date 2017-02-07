@@ -1,5 +1,13 @@
+import uuid from 'uuid'
+import {fromJS} from 'immutable'
+
+import FilterInitialStateCreator from './FilterInitialState'
+
 export default (state = {}, action) => {
 	switch(action.type) {
+		case 'ADD_FIL' :
+			const newID = uuid.v4()
+			return state.set(newID, fromJS(FilterInitialStateCreator()))
 
 		case 'CONNECT_JACK' :
 			if (action.module === 'filters') {
@@ -7,7 +15,14 @@ export default (state = {}, action) => {
 			} else {
 				return state
 			}
-
+		case 'DISCONNECT_JACK' :
+			if (action.inputModule === 'filters') {
+				state = state.setIn([action.inputId, 'input', action.inputCvName], null)
+			}
+			if (action.outputModule === 'filters') {
+				state = state.setIn([action.outputId, 'output', action.outputCvName], null)
+			}
+			return state
 		case 'CHANGE_FIL_TYPE' :
 			return state.setIn([action.id, 'type'], action.filterType )
 									.updateIn([action.id, 'toneComponent'], (fil) => {

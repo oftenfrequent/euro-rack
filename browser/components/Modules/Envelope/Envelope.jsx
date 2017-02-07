@@ -63,21 +63,21 @@ export class EnvelopeGenerator extends React.Component {
         <div className='envelope-in-jack'>
           <Jack name='trigger'
             color={this.props.env.getIn(['input', 'trigger'])}
-            onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'input', 'trigger', this.props.env.get('toneComponent'))}
+            onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'input', 'trigger', this.props.env.get('toneComponent'), this.props.env.getIn(['input', 'trigger']))}
           />
           <Jack name='in'
             color={this.props.env.getIn(['input', 'sound'])}
-            onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'input', 'sound', this.props.env.get('toneComponent'))}
+            onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'input', 'sound', this.props.env.get('toneComponent'), this.props.env.getIn(['input', 'sound']))}
           />
         </div>
         <div className='envelope-out-jack'>
           <Jack name='out'
             color={this.props.env.getIn(['output', 'amplitude1'])}
-            onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'output', 'amplitude1', this.props.env.get('toneComponent'))}
+            onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'output', 'amplitude1', this.props.env.get('toneComponent'), this.props.env.getIn(['output', 'amplitude1']))}
           />
           <Jack name='out'
             color={this.props.env.getIn(['output', 'amplitude2'])}
-            onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'output', 'amplitude2', this.props.env.get('toneComponent'))}
+            onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'output', 'amplitude2', this.props.env.get('toneComponent'), this.props.env.getIn(['output', 'amplitude2']))}
           />
         </div>
       </ModuleContainer>

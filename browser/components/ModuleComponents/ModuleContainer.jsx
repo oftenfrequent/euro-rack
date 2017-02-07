@@ -1,4 +1,5 @@
 import React from 'react'
+import classNames from 'classnames'
 
 export class ModuleContainer extends React.Component {
   constructor(props){
@@ -6,15 +7,13 @@ export class ModuleContainer extends React.Component {
     this.screwArr = [0,0,0,0].map(() => Math.floor(Math.random() * 180))
   }
 
-  generateRandomDegrees() {
-    return Math.floor(Math.random() * 180)
-  }
-
-
-
   render(){
+    const contClassNames = classNames({
+      'module-container': true,
+      [this.props.containerClass]: this.props.containerClass ? true : false
+    })
     return (
-      <div className='module-container'>
+      <div className={contClassNames} >
         <div className='screw-row'>
           <div
             className='screw'

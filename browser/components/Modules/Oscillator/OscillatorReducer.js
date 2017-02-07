@@ -1,6 +1,6 @@
-import { fromJS } from 'immutable'
-import Tone from 'tone'
 import uuid from 'uuid'
+import { fromJS } from 'immutable'
+
 import OscillatorInitialState from './OscillatorInitialState'
 
 export default (state = {}, action) => {
@@ -16,11 +16,12 @@ export default (state = {}, action) => {
 				return state
 			}
 		case 'DISCONNECT_JACK' :
-
 			if (action.inputModule === 'oscillators') {
 				return state.setIn([action.inputId, 'input', action.inputCvName], null)
 			} else if (action.outputModule === 'oscillators') {
 				return state.setIn([action.outputId, 'output', action.outputCvName], null)
+			} else {
+				return state
 			}
 		case 'CHANGE_OSC_TYPE' :
 			return state.setIn([action.id, 'type'], action.oscType )

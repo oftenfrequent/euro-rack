@@ -16,7 +16,8 @@ export class Speaker extends React.Component {
     this.state = {
       speakerArray: [6,10,14,14,14,14,14,14,14,14,10,6],
       canvas: null,
-      canvasCtx: null
+      canvasCtx: null,
+      oscilloscopeOn: false
     }
   }
 
@@ -24,9 +25,21 @@ export class Speaker extends React.Component {
     this.props.initSpeaker()
     const canvas = document.querySelector('.oscilloscope')
     const canvasCtx = canvas.getContext('2d')
-    this.setState({ canvas, canvasCtx, }, () => {
+    this.setState({ canvas, canvasCtx, oscilloscopeOn: true }, () => {
       visualize(this.state.canvas, this.state.canvasCtx, this.props.speaker.get('analyser'))
     })
+  }
+
+  toggleVisualization() {
+    if (this.state.oscilloscopeOn) {
+      this.setState({ oscilloscopeOn: false }, () => {
+        stopVisualization()
+      })
+    } else {
+      this.setState({ oscilloscopeOn: true }, () => {
+        visualize(this.state.canvas, this.state.canvasCtx, this.props.speaker.get('analyser'))
+      })
+    }
   }
 
   render(){
@@ -40,9 +53,10 @@ export class Speaker extends React.Component {
           />
         </div>
         <div className='canvas-container'>
-          <canvas className='oscilloscope'/>
+          <canvas className='oscilloscope'
+            onClick={() => this.toggleVisualization()}
+          />
         </div>
-        <button onClick={() => stopVisualization()}>STOP DRAW</button>
         <div className='speaker-hole-container'>
           {this.state.speakerArray.map( (num,i) =>
             <div className='speaker-hole-row' key={i} >

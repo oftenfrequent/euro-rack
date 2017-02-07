@@ -1,3 +1,7 @@
+export function addLFO() {
+	return { type: 'ADD_LFO' }
+}
+
 export function changeLfoType(id, oscType) {
 	return {
 		type: 'CHANGE_LFO_TYPE',

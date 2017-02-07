@@ -1,13 +1,28 @@
+import uuid from 'uuid'
+import {fromJS} from 'immutable'
+
+import LFOInitialStateCreator from './LFOInitialState'
+
 export default (state = {}, action) => {
 	switch(action.type) {
+		case 'ADD_LFO' :
+			const newID = uuid.v4()
+			return state.set(newID, fromJS(LFOInitialStateCreator()))
 
 		case 'CONNECT_JACK' :
 			if (action.isLFO) {
-				return setLFOParamsOnConnection(state, action)
+				state = setLFOParamsOnConnection(state, action)
 			}
-
 			if (action.module === 'lfos') {
 				return state.setIn([action.id, action.direction, action.cvName], action.color )
+			} else {
+				return state
+			}
+		case 'DISCONNECT_JACK' :
+			if (action.inputModule === 'lfos') {
+				return state.setIn([action.inputId, 'input', action.inputCvName], null)
+			} else if (action.outputModule === 'lfos') {
+				return state.setIn([action.outputId, 'output', action.outputCvName], null)
 			} else {
 				return state
 			}

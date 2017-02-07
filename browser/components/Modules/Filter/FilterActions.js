@@ -1,3 +1,7 @@
+export function addFilter() {
+	return { type: 'ADD_FIL' }
+}
+
 export function changeFilType(id, filterType) {
 	return {
 		type: 'CHANGE_FIL_TYPE',

@@ -26,6 +26,7 @@ export class App extends React.Component {
   }
 
   handleJackClick(e, module, id, direction, cvName, toneComponent, currentColor) {
+    console.log('JACKCLICK id', id)
     JackClickHelper(e,
       this.props.patchCables.get('active'),
       this.props.patchCables.get('color'),

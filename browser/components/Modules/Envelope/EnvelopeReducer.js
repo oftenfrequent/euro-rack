@@ -1,9 +1,24 @@
+import uuid from 'uuid'
+import {fromJS} from 'immutable'
+
+import EnvelopeInitialStateCreator from './EnvelopeInitialState'
+
 export default (state = {}, action) => {
 	switch(action.type) {
-
+		case 'ADD_ENV' :
+			const newID = uuid.v4()
+			return state.set(newID, fromJS(EnvelopeInitialStateCreator()))
 		case 'CONNECT_JACK' :
 			if (action.module === 'envelopes') {
 				return state.setIn([action.id, action.direction, action.cvName], action.color )
+			} else {
+				return state
+			}
+		case 'DISCONNECT_JACK' :
+			if (action.inputModule === 'envelopes') {
+				return state.setIn([action.inputId, 'input', action.inputCvName], null)
+			} else if (action.outputModule === 'envelopes') {
+				return state.setIn([action.outputId, 'output', action.outputCvName], null)
 			} else {
 				return state
 			}
