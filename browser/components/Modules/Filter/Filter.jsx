@@ -24,8 +24,14 @@ export class Filter extends React.Component {
   }
 
   render(){
+    const order = this.props.fil.get('flexOrder') ? this.props.fil.get('flexOrder') : this.props.order
     return (
-      <ModuleContainer name='Filter'>
+      <ModuleContainer
+        name='Filter'
+        id={this.props.id}
+        order={order}
+        changeOrder={(n) => this.props.changeOrder(n)}
+      >
         <DisplayTypeDropdown
           optionTypes={this.props.fil.get('typeOptions')}
           changeType={(v) => this.props.changeFilType(this.props.id, v)}

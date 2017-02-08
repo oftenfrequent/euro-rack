@@ -3,6 +3,7 @@ import Tone from 'tone'
 const initialState = () => {
 	return {
 		toneComponent: new Tone.Gain(),
+		flexOrder: 0,
 	  min: 0,
 	  max: 1000,
 		value: 1000,

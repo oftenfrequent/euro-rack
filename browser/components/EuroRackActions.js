@@ -47,3 +47,12 @@ export function errorConnectingJack(error) {
 		error
 	}
 }
+
+export function changeOrderOfModule(orderNumber, module, id) {
+	return {
+		type: 'CHANGE_ORDER',
+		orderNumber,
+		module,
+		id
+	}
+}

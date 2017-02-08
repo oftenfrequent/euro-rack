@@ -27,9 +27,14 @@ export class Oscillator extends React.Component {
   }
 
   render(){
-    console.log("this.props.vco.getIn(['output', 'sound'])", this.props.vco.getIn(['output', 'sound']))
+    const order = this.props.vco.get('flexOrder') ? this.props.vco.get('flexOrder') : this.props.order
     return (
-      <ModuleContainer name='VCO'>
+      <ModuleContainer
+        name='VCO'
+        id={this.props.id}
+        order={order}
+        changeOrder={(n) => this.props.changeOrder(n)}
+      >
         <DisplayTypeDropdown
           optionTypes={this.props.vco.get('typeOptions')}
           changeType={(v) => this.props.changeOscType(v, this.props.id)}

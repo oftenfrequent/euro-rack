@@ -11,17 +11,30 @@ import VCA from './Modules/VCA/VCA'
 import Speaker from './Modules/Speaker/Speaker'
 import JackClickHelper from './Helpers/JackClickHelper'
 import AddNewComponent from './Modules/AddNew/AddNew'
+import dnd from './Helpers/dragAndDropSetAndGet'
 import {
   connectJack,
   disconnectJack,
   errorConnectingJack,
+  changeOrderOfModule
 } from './EuroRackActions'
 
 import '../app.scss'
 
 export class App extends React.Component {
   constructor(props){
-    super(props);
+    super(props)
+    const order = [
+      Array.from(props.oscillators.keys()),
+      Array.from(props.lfos.keys()),
+      Array.from(props.vcas.keys()),
+      Array.from(props.envelopes.keys()),
+      Array.from(props.filters.keys()),
+      Array.from(props.midis.keys())
+    ]
+    this.state = {
+      order: [].concat.apply([], order)
+    }
 //    this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
   }
 
@@ -44,14 +57,29 @@ export class App extends React.Component {
     )
   }
 
+  changeOrder(newIndex) {
+    const oldIndex = this.state.order.indexOf(dnd.getActiveModuleId())
+    if (oldIndex !== newIndex)  {
+      let newArray = this.state.order
+      const newModuleId = newArray.splice(oldIndex, 1)[0]
+      newArray.splice(newIndex, 0, newModuleId)
+      this.setState({ order: newArray })
+
+    }
+  }
+
   render(){
+    console.log('state.order', this.state.order)
+    let i = 0
     return (
-      <div>
+      <div className='euro-rack-container'>
         <div>{this.props.error}</div>
         {Array.from(this.props.oscillators.keys()).map((name,index) =>
           <Oscillator
             id={name}
             key={index}
+            order={this.state.order.indexOf(name)}
+            changeOrder={(n) => this.changeOrder(n)}
             onJackClick={(e, id, direction, cvName, toneComponent, currentColor) => this.handleJackClick(e, 'oscillators', id, direction, cvName, toneComponent, currentColor)}
           />
         )}
@@ -59,6 +87,8 @@ export class App extends React.Component {
           <LFO
             id={name}
             key={index}
+            order={this.state.order.indexOf(name)}
+            changeOrder={(n) => this.changeOrder(n)}
             onJackClick={(e, id, direction, cvName, toneComponent, currentColor) => this.handleJackClick(e, 'lfos', id, direction, cvName, toneComponent, currentColor)}
           />
         )}
@@ -66,6 +96,8 @@ export class App extends React.Component {
           <VCA
             id={name}
             key={index}
+            order={this.state.order.indexOf(name)}
+            changeOrder={(n) => this.changeOrder(n)}
             onJackClick={(e, id, direction, cvName, toneComponent, currentColor) => this.handleJackClick(e, 'vcas', id, direction, cvName, toneComponent, currentColor)}
           />
         )}
@@ -73,6 +105,8 @@ export class App extends React.Component {
           <EnvelopeGenerator
             id={name}
             key={index}
+            order={this.state.order.indexOf(name)}
+            changeOrder={(n) => this.changeOrder(n)}
             onJackClick={(e, id, direction, cvName, toneComponent, currentColor) => this.handleJackClick(e, 'envelopes', id, direction, cvName, toneComponent, currentColor)}
           />
         )}
@@ -80,6 +114,8 @@ export class App extends React.Component {
           <Filter
             id={name}
             key={index}
+            order={this.state.order.indexOf(name)}
+            changeOrder={(n) => this.changeOrder(n)}
             onJackClick={(e, id, direction, cvName, toneComponent, currentColor) => this.handleJackClick(e, 'filters', id, direction, cvName, toneComponent, currentColor)}
           />
         )}
@@ -87,16 +123,20 @@ export class App extends React.Component {
           <MIDI
             id={name}
             key={index}
+            order={this.state.order.indexOf(name)}
+            changeOrder={(n) => this.changeOrder(n)}
             onJackClick={(e, id, direction, cvName, toneComponent, currentColor) => this.handleJackClick(e, 'midis', id, direction, cvName, toneComponent, currentColor)}
           />
         )}
         <Speaker
+          order={9999}
+          changeOrder={(n) => this.changeOrder(n)}
           onJackClick={(e, id, direction, cvName, toneComponent, currentColor) => this.handleJackClick(e, 'speaker', id, direction, cvName, toneComponent, currentColor)}
         />
         <AddNewComponent/>
-        <button onClick={() => this.props.testing()}>TESTING STUFF</button>
       </div>
     )
+        // <button onClick={() => this.props.testing()}>TESTING STUFF</button>
   }
 };
 
@@ -119,6 +159,7 @@ export default connect(
     connectJack,
     disconnectJack,
     errorConnectingJack,
+    changeOrderOfModule,
     testing
   }
 )(App);

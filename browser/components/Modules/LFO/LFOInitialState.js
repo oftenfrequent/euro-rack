@@ -3,6 +3,7 @@ import Tone from 'tone'
 const initialState = () => {
 	return {
 		toneComponent: new Tone.LFO('4n', 0, 1).start(),
+		flexOrder: 0,
 		min: 0, // TODO: get rid of
 		max: 1000, // TODO: get rid of
 		minValue: 0,

@@ -25,8 +25,14 @@ export class VCA extends React.Component {
   }
 
   render(){
+    const order = this.props.vca.get('flexOrder') ? this.props.vca.get('flexOrder') : this.props.order
     return (
-      <ModuleContainer name='VCA'>
+      <ModuleContainer
+        name='VCA'
+        id={this.props.id}
+        order={order}
+        changeOrder={(n) => this.props.changeOrder(n)}
+      >
         <DisplayAmount
           type='number'
           min={this.props.vca.get('min')}

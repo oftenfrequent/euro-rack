@@ -78,8 +78,14 @@ export class MIDI extends React.Component {
   }
 
   render(){
+    const order = this.props.midi.get('flexOrder') ? this.props.midi.get('flexOrder') : this.props.order
     return (
-      <ModuleContainer name='MIDI'>
+      <ModuleContainer
+        name='MIDI'
+        id={this.props.id}
+        order={order}
+        changeOrder={(n) => this.props.changeOrder(n)}
+      >
         {this.props.midi.get('error')
           ? <div>{this.props.midi.get('error')}</div>
           : null

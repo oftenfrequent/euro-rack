@@ -43,8 +43,9 @@ export class Speaker extends React.Component {
   }
 
   render(){
+    const order = this.props.speaker.get('flexOrder') ? this.props.speaker.get('flexOrder') : this.props.order
     return (
-      <ModuleContainer name='Speaker'>
+      <ModuleContainer name='Speaker' order={order}>
         <div className='master-out-jack'>
           <Jack
             name='in'

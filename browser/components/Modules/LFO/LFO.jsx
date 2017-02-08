@@ -31,8 +31,14 @@ export class LFO extends React.Component {
   }
 
   render(){
+    const order = this.props.lfo.get('flexOrder') ? this.props.lfo.get('flexOrder') : this.props.order
     return (
-      <ModuleContainer name='LFO'>
+      <ModuleContainer
+        name='LFO'
+        id={this.props.id}
+        order={order}
+        changeOrder={(n) => this.props.changeOrder(n)}
+      >
         <DisplayTypeDropdown
           optionTypes={this.props.lfo.get('typeOptions')}
           changeType={(v) => this.props.changeLfoType(this.props.id, v)}

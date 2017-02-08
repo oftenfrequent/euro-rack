@@ -18,8 +18,14 @@ export class EnvelopeGenerator extends React.Component {
   }
 
   render(){
+    const order = this.props.env.get('flexOrder') ? this.props.env.get('flexOrder') : this.props.order
     return (
-      <ModuleContainer name='Envelope'>
+      <ModuleContainer
+        name='Envelope'
+        id={this.props.id}
+        order={order}
+        changeOrder={(n) => this.props.changeOrder(n)}
+      >
         <DisplayTypeDropdown
           optionTypes={this.props.env.get('curveOptions')}
           changeType={(v) => this.onChangeType(this.props.id, v)}

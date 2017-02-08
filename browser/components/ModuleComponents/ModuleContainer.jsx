@@ -1,19 +1,53 @@
 import React from 'react'
 import classNames from 'classnames'
+import { findDOMNode } from 'react-dom'
+
+import dnd from '../Helpers/dragAndDropSetAndGet'
 
 export class ModuleContainer extends React.Component {
   constructor(props){
     super(props)
     this.screwArr = [0,0,0,0].map(() => Math.floor(Math.random() * 180))
+    this.state = { moving: false }
+  }
+
+  dragStart(e) {
+    e.dataTransfer.effectAllowed = 'move'
+    this.setState({moving: true})
+    dnd.setActiveModuleId(this.props.id)
+  }
+
+  dragEnd(e) { this.setState({moving: false}) }
+
+  dragEnter(e) {
+    const moduleComponentBounds = findDOMNode(this).getBoundingClientRect()
+    const mousePositionY = e.clientY
+    const mousePositionX = e.clientX
+
+    const verticallyInBounds = moduleComponentBounds.top < mousePositionY && moduleComponentBounds.bottom > mousePositionY
+    const notSameModule = dnd.getActiveModuleId !== this.props.id
+    if (verticallyInBounds && notSameModule) {
+      if (mousePositionX < moduleComponentBounds.right &&
+          mousePositionX > moduleComponentBounds.left) {
+        this.props.changeOrder(this.props.order)
+      }
+    }
   }
 
   render(){
-    const contClassNames = classNames({
-      'module-container': true,
+    const contClassNames = classNames('module-container', {
+      'moving': this.state.moving,
       [this.props.containerClass]: this.props.containerClass ? true : false
     })
     return (
-      <div className={contClassNames} >
+      <div
+        draggable='true'
+        className={contClassNames}
+        onDragStart={(e) => this.dragStart(e)}
+        onDragEnd={(e) => this.dragEnd(e)}
+        onDragEnter={(e) => this.dragEnter(e)}
+        style={{'order': this.props.order}}
+      >
         <div className='screw-row'>
           <div
             className='screw'

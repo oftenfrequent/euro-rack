@@ -3,6 +3,7 @@ import Tone from 'tone'
 const initialState = () => {
   return {
     toneComponent: new Tone.Filter(400, 'lowpass', -12),
+    flexOrder: 0,
     min: 0,
     max: 1000,
     frequency: 400,
