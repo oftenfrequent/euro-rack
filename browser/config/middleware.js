@@ -30,6 +30,13 @@ export const connectJackMiddleWare = store => next => action => {
           action['minValue'] = 0
           action['maxValue'] = 1
         }
+        if (inputConnectionObj.get('cvName') === 'resonance') {
+          const input = state[inputConnectionObj.get('module')].getIn([inputConnectionObj.get('id')])
+          console.log('input', input.toJS())
+          action['midValue'] = 6
+          action['minValue'] = 0
+          action['maxValue'] = 12
+        }
 
       } else {
         action['isLFO'] = false

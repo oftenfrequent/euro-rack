@@ -16,6 +16,7 @@ export default (state = {}, action) => {
 				return state
 			}
 		case 'INIT_SPEAKER' :
+			state.getIn(['only', 'blankToneComponent']).connect(state.getIn(['only', 'analyser']))
 			state.getIn(['only', 'analyser']).connect(state.getIn(['only', 'toneComponent']))
 			return state
 	}

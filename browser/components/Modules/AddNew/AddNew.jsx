@@ -39,7 +39,11 @@ export class AddNewComponent extends React.Component {
 
   render(){
     return (
-        <ModuleContainer name='' containerClass='addModule'>
+        <ModuleContainer
+          name=''
+          containerClass='addModule'
+          draggable={false}
+        >
           <DisplayTypeDropdown
             optionTypes={fromJS(['vco', 'lfo', 'envelope', 'filter', 'vca'])}
             changeType={(v) => this.changeStateModule(v)}

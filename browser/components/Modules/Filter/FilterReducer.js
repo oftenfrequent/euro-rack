@@ -41,6 +41,12 @@ export default (state = {}, action) => {
 										fil.rolloff = action.rolloff
 										return fil
 									})
+		case 'CHANGE_FIL_RESONANCE' :
+			return state.setIn([action.id, 'q'], action.q )
+									.updateIn([action.id, 'toneComponent'], (fil) => {
+										fil.Q.value = action.q
+										return fil
+									})
 	}
 	return state
 }

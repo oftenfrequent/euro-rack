@@ -39,9 +39,10 @@ export class ModuleContainer extends React.Component {
       'moving': this.state.moving,
       [this.props.containerClass]: this.props.containerClass ? true : false
     })
+    const isNotDraggable = this.props.draggable === false
     return (
       <div
-        draggable='true'
+        draggable={isNotDraggable ? false : true}
         className={contClassNames}
         onDragStart={(e) => this.dragStart(e)}
         onDragEnd={(e) => this.dragEnd(e)}

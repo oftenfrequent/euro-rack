@@ -45,12 +45,16 @@ export class Speaker extends React.Component {
   render(){
     const order = this.props.speaker.get('flexOrder') ? this.props.speaker.get('flexOrder') : this.props.order
     return (
-      <ModuleContainer name='Speaker' order={order}>
+      <ModuleContainer
+        name='Speaker'
+        order={order}
+        draggable={false}
+      >
         <div className='master-out-jack'>
           <Jack
             name='in'
             color={this.props.speaker.getIn(['input', 'sound'])}
-            onJackClick={(e) => this.props.onJackClick(e, 'only', 'input', 'sound', this.props.speaker.get('analyser'))}
+            onJackClick={(e) => this.props.onJackClick(e, 'only', 'input', 'sound', this.props.speaker.get('analyser'), this.props.speaker.getIn(['input', 'sound']))}
           />
         </div>
         <div className='canvas-container'>

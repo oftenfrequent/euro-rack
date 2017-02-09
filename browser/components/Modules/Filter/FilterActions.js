@@ -25,3 +25,11 @@ export function changeFilFreq(id, frequency) {
 		frequency
 	}
 }
+
+export function changeFilResonace(id, q) {
+	return {
+		type: 'CHANGE_FIL_RESONANCE',
+		id,
+		q
+	}
+}

@@ -10,7 +10,8 @@ import Jack from '../../ModuleComponents/Jack'
 import {
   changeFilType,
   changeFilFreq,
-  changeFilRolloff
+  changeFilRolloff,
+  changeFilResonace
 } from './FilterActions'
 
 export class Filter extends React.Component {
@@ -58,14 +59,27 @@ export class Filter extends React.Component {
           sensitivity={100}
           onNewValue={(v) => this.props.changeFilFreq(this.props.id, v)}
         />
+        <Knob
+          name='Resonance'
+          min={this.props.fil.get('minQ')*1000}
+          max={this.props.fil.get('maxQ')*1000}
+          value={this.props.fil.get('q')*1000}
+          degreesTotal={270}
+          sensitivity={100}
+          onNewValue={(v) => this.props.changeFilResonace(this.props.id, (v/1000))}
+        />
         <div className='filter-in-jack'>
-          <Jack name='lfo in'
+          <Jack name='audio in'
+            color={this.props.fil.getIn(['input', 'sound'])}
+            onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'input', 'sound', this.props.fil.get('toneComponent'), this.props.fil.getIn(['input', 'sound']))}
+          />
+          <Jack name='freq cv'
             color={this.props.fil.getIn(['input', 'frequency'])}
             onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'input', 'frequency', this.props.fil.get('toneComponent').frequency, this.props.fil.getIn(['input', 'frequency']))}
           />
-          <Jack name='in'
-            color={this.props.fil.getIn(['input', 'sound'])}
-            onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'input', 'sound', this.props.fil.get('toneComponent'), this.props.fil.getIn(['input', 'sound']))}
+          <Jack name='res cv'
+            color={this.props.fil.getIn(['input', 'resonance'])}
+            onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'input', 'resonance', this.props.fil.get('toneComponent').Q, this.props.fil.getIn(['input', 'resonance']))}
           />
         </div>
         <div className='filter-out-jack'>
@@ -90,6 +104,7 @@ export default connect(
   {
     changeFilType,
     changeFilFreq,
-    changeFilRolloff
+    changeFilRolloff,
+    changeFilResonace
   }
 )(Filter)
