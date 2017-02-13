@@ -41,12 +41,26 @@ export function disconnectJack(color) {
 	}
 }
 
-export function errorConnectingJack(error) {
+export function setModuleOrder(order) {
 	return {
-		type: 'DISCONNECT_JACK',
-		error
+		type: 'SET_ORDER',
+		order
 	}
 }
+
+export function pushIdToOrder(id) {
+	return {
+		type: 'PUSH_ORDER',
+		id
+	}
+}
+
+// export function errorConnectingJack(error) {
+// 	return {
+// 		type: 'DISCONNECT_JACK',
+// 		error
+// 	}
+// }
 
 export function changeOrderOfModule(orderNumber, module, id) {
 	return {

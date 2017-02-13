@@ -33,9 +33,15 @@ export default (state = {}, action) => {
 										return lfo
 									})
 		case 'CHANGE_LFO_FREQ' :
-			return state.setIn([action.id, 'frequency'], action.frequency )
+			const isTimeline = state.getIn([action.id, 'timelineBased'])
+			const nameType = isTimeline ? 'timelineFrequency' : 'frequency'
+			return state.setIn([action.id, nameType], action.frequency )
 									.updateIn([action.id, 'toneComponent'], (lfo) => {
-										lfo.frequency.value = action.frequency
+										if (isTimeline) {
+											lfo.frequency.value = action.frequency
+										} else {
+											lfo.frequency.value = action.frequency / 100
+										}
 										return lfo
 									})
 		case 'CHANGE_LFO_MIDVALUE' :
@@ -45,12 +51,18 @@ export default (state = {}, action) => {
 		case 'CHANGE_LFO_PERCENT' :
 			state = state.setIn([action.id, 'percentChange'], action.percent )
 			return changeToneLFOParamters(action.id, state, action)
-			// return state.setIn([action.id, 'percentChange'], action.percent )
-			// 						.updateIn([action.id, 'toneComponent'], (lfo) => {
-			// 							console.log('change min and max based on midValue')
-			// 							// lfo.frequency.value = action.frequency
-			// 							return lfo
-			// 						})
+
+		case 'TOGGLE_LFO_TIME_FREQ' :
+			const wasTimeline = state.getIn([action.id, 'timelineBased'])
+			return state.updateIn([action.id, 'toneComponent'], (lfo) => {
+										if (wasTimeline) {
+											lfo.frequency.value = state.getIn([action.id, 'frequency']) / 100
+										} else {
+											lfo.frequency.value = state.getIn([action.id, 'timelineFrequency'])
+										}
+										return lfo
+									})
+									.updateIn([action.id, 'timelineBased'], v => !v)
 	}
 	return state
 }
@@ -77,13 +89,3 @@ const changeToneLFOParamters = (id, state) => {
 									return lfo
 								})
 }
-
-// const ifFreqChangeAffectsLFO = (state, action) => {
-// 	Array.from(state.keys()).map( id => {
-// 		const color = state.getIn([id, 'output', 'lfo'])
-// 		if (color && color === action.cvInputColor) {
-// 			console.log('CHANGE MIN AND MAX BASED ON freq:', action.frequency)
-// 			state = changeFrequency(state, Tone.Frequency(action.freq).toFrequency(), id)
-// 		}
-// 	})
-// }

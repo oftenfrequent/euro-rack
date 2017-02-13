@@ -1,9 +1,5 @@
 import { fromJS } from 'immutable'
-import uuid from 'uuid'
 import Tone from 'tone'
-import OscillatorInitialState from './Modules/Oscillator/OscillatorInitialState'
-import LFOInitialState from './Modules/LFO/LFOInitialState'
-import EnvelopeInitialState from './Modules/Envelope/EnvelopeInitialState'
 
 
 const reducer = (state = {}, action) => {
@@ -12,22 +8,15 @@ const reducer = (state = {}, action) => {
 			return connectJack(state, action)
 		case 'DISCONNECT_JACK' :
 			return disconnectJack(state, action)
-
-		// case 'ADD_OSCILLATOR' :
-		// 	return state.update('oscillators', (map) => map.set(uuid.v4(), fromJS(OscillatorInitialState)))
-
-		// case 'ADD_LFO' :
-		// 	return state.update('lfos', (map) => map.set(uuid.v4(), fromJS(LFOInitialState)))
-
-		// case 'ADD_ENVELOPE' :
-		// 	return state.update('envelopes', (map) => map.set(uuid.v4(), fromJS(EnvelopeInitialState)))
-
-
+		case 'SET_ORDER' :
+			return state.set('order', fromJS(action.order))
+		case 'PUSH_ORDER' :
+			return state.update('order', (o) => o.push(action.id))
 		// MIDI
-		case 'MIDI_GATE_ATTACK_TRIGGER' :
-			return triggerFreqCV(state, action)
-		case 'MIDI_GATE_RELEASE_TRIGGER' :
-			return triggerRelease(state, action)
+		// case 'MIDI_GATE_ATTACK_TRIGGER' :
+		// 	return triggerFreqCV(state, action)
+		// case 'MIDI_GATE_RELEASE_TRIGGER' :
+		// 	return triggerRelease(state, action)
 
 		case 'TESTING_STUFF' :
 			console.log('ASLDFHASLD')

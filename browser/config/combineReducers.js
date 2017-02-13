@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux'
 
-import EuroRackReducer from '../components/EuroRackReducer'
+import EuroRackReducer from '../components/EuroRack/EuroRackReducer'
 import OscillatorReducer from '../components/Modules/Oscillator/OscillatorReducer'
 import LFOReducer from '../components/Modules/LFO/LFOReducer'
 import EnvelopeReducer from '../components/Modules/Envelope/EnvelopeReducer'

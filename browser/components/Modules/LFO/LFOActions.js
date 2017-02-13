@@ -18,6 +18,13 @@ export function changeLfoFreq(id, frequency) {
 	}
 }
 
+export function toggleLfoTimeAndFreq(id) {
+	return {
+		type: 'TOGGLE_LFO_TIME_FREQ',
+		id
+	}
+}
+
 export function changeLfoPercent(id, percent) {
 	return {
 		type: 'CHANGE_LFO_PERCENT',

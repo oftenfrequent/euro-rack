@@ -9,6 +9,7 @@ import FilterInitialStateCreator from '../components/Modules/Filter/FilterInitia
 import VCAInitialStateCreator from '../components/Modules/VCA/VCAInitialState'
 import SpeakerInitialState from '../components/Modules/Speaker/SpeakerInitialState'
 import MIDIInitialState from '../components/Modules/MIDI/MIDIInitialState'
+import EuroRackInitialState from '../components/EuroRack/EuroRackInitialState'
 
 const initialState = {
 	oscillators: fromJS({
@@ -32,32 +33,7 @@ const initialState = {
 	midis: fromJS({
 		[uuid.v4()]: MIDIInitialState
 	}),
-	eurorack: fromJS({
-		patchCables: {
-			active: false,
-			input: null,
-			output: null,
-			color: 'darkred',
-			colorOptions: ['orange', 'royalblue', 'purple', 'red', 'yellowgreen', 'forestgreen', 'violet', 'peachpuff' ],
-			error: null,
-			connections: {
-				// white: {
-				// 	input: {
-				// 		module: 'example',
-				// 		id: 'example',
-				// 		cvName: 'example',
-				// 		toneObject: 'example'
-				// 	},
-				// 	output: {
-				// 		module: 'example',
-				// 		id: 'example',
-				// 		cvName: 'example',
-				// 		toneObject: 'example'
-				// 	}
-				// }
-			}
-		},
-	})
+	eurorack: fromJS(EuroRackInitialState)
 }
 
 export default initialState

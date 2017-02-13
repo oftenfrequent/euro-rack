@@ -6,8 +6,8 @@ export const visualize = (canvas, canvasCtx, analyser) => {
   const HEIGHT = canvas.height
   const bufferLength = 2048
 
-  analyser.minDecibels = -90
-  analyser.maxDecibels = -10
+  analyser.minDecibels = -110
+  analyser.maxDecibels = 0
   analyser.smoothingTimeConstant = 0.85
 
   const dataArray = new Uint8Array(bufferLength)
