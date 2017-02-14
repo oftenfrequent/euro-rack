@@ -12,12 +12,6 @@ const reducer = (state = {}, action) => {
 			return state.set('order', fromJS(action.order))
 		case 'PUSH_ORDER' :
 			return state.update('order', (o) => o.push(action.id))
-		// MIDI
-		// case 'MIDI_GATE_ATTACK_TRIGGER' :
-		// 	return triggerFreqCV(state, action)
-		// case 'MIDI_GATE_RELEASE_TRIGGER' :
-		// 	return triggerRelease(state, action)
-
 		case 'TESTING_STUFF' :
 			console.log('ASLDFHASLD')
 			const osc = new Tone.OmniOscillator(200, 'pwm').start().toMaster()
@@ -49,24 +43,6 @@ const reducer = (state = {}, action) => {
 			return state
 
 	}
-	return state
-}
-
-const triggerFreqCV = (state, action) => {
-	if (action.gateColor) {
-		const inputToneObj = state.getIn(['patchCables', 'connections', action.gateColor, 'input', 'toneObject'])
-		inputToneObj.triggerAttack()
-	}
-
-	return state
-}
-
-const triggerRelease = (state, action) => {
-	if (action.gateColor) {
-		const inputToneObj = state.getIn(['patchCables', 'connections', action.gateColor, 'input', 'toneObject'])
-		inputToneObj.triggerRelease()
-	}
-
 	return state
 }
 

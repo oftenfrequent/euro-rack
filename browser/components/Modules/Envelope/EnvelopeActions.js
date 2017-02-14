@@ -18,3 +18,17 @@ export function changeValue(id, component, value) {
 		value
 	}
 }
+
+export function triggerAttack(id) {
+	return {
+		type: 'TRIGGER_ENV_ATTACK',
+		id
+	}
+}
+
+export function triggerRelease(id) {
+	return {
+		type: 'TRIGGER_ENV_RELEASE',
+		id
+	}
+}

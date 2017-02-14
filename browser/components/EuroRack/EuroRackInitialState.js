@@ -5,7 +5,28 @@ export default {
 		input: null,
 		output: null,
 		color: 'darkred',
-		colorOptions: ['orange', 'royalblue', 'purple', 'red', 'yellowgreen', 'forestgreen', 'violet', 'peachpuff' ],
+		colorOptions: [
+			'red',
+			'orange',
+			'gold',
+			'sandybrown',
+			'yellowgreen',
+			'springgreen',
+			'forestgreen',
+			'aquamarine',
+			'lightblue',
+			'darkcyan',
+			'mediumblue',
+			'midnightblue',
+			'purple',
+			'violet',
+			'plum',
+			'deeppink'
+			// 'cadetblue',
+			// 'royalblue',
+			// 'violet',
+			// 'peachpuff'
+		],
 		error: null,
 		connections: {
 			// white: {

@@ -40,7 +40,7 @@ const laptopKeyMap = {
 // send messages repeatedly until keyup.
 const flags = {};
 
-export const formatToMidiMessage = (e, command, cb, id, gateColor, freqColor) => {
+export const formatToMidiMessage = (e, command, cb, id, gateColor1, gateColor2, freqColor1, freqColor2) => {
   const keyCode = (typeof e.which === 'number')? e.which : e.keyCode
 
   const note = laptopKeyMap[keyCode]
@@ -69,14 +69,14 @@ export const formatToMidiMessage = (e, command, cb, id, gateColor, freqColor) =>
   }
 
   // Send it
-  onMidiMessage(msg, cb, id, gateColor, freqColor)
+  onMidiMessage(msg, cb, id, gateColor1, gateColor2, freqColor1, freqColor2)
 
   // Update the flag table
   if (command === 0x9) { flags[note] = true }
   else { flags[note] = false }
 }
 
-export const onMidiMessage = (e, cb, id, gateColor, freqColor) => {
+export const onMidiMessage = (e, cb, id, gateColor1, gateColor2, freqColor1, freqColor2) => {
   /**
   * e.data is an array
   * e.data[0] = on (144) / off (128) / detune (224)
@@ -87,11 +87,11 @@ export const onMidiMessage = (e, cb, id, gateColor, freqColor) => {
   switch(e.data[0]) {
     case 144:
       console.log('NOTE HIT')
-      cb(id, midiToKey(e.data[1]), gateColor, freqColor)
+      cb(id, midiToKey(e.data[1]), gateColor1, gateColor2, freqColor1, freqColor2)
     break;
     case 128:
       console.log('NOTE RELEASE')
-      cb(id, midiToKey(e.data[1]), gateColor, freqColor)
+      cb(id, midiToKey(e.data[1]), gateColor1, gateColor2, freqColor1, freqColor2)
     break;
     case 224:
       console.log('DETUNE')

@@ -51,7 +51,14 @@ export const visualize = (canvas, canvasCtx, analyser) => {
 
 }
 
-export const stopVisualization = () => {
+export const stopVisualization = (canvas, canvasCtx) => {
   cancelAnimationFrame(requestFrameId)
   requestFrameId = null
+  canvasCtx.fillStyle = 'rgb(200, 200, 200)'
+  canvasCtx.fillRect(0, 0, canvas.width, canvas.height)
+  canvasCtx.lineWidth = 2
+  canvasCtx.beginPath()
+  canvasCtx.moveTo(0,canvas.height)
+  canvasCtx.lineTo(canvas.width, canvas.height)
+  canvasCtx.stroke()
 }

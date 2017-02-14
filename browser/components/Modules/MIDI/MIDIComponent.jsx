@@ -30,9 +30,27 @@ export class MIDI extends React.Component {
 
   componentDidMount() { this.getMidiInputDevices() }
 
-  keydownFunction(e) { formatToMidiMessage(e, 0x09, this.props.midiGateAttackTrigger, this.props.id, this.props.midi.getIn(['output', 'gate']), this.props.midi.getIn(['output', 'cvToFreq'])) }
+  keydownFunction(e) {
+    formatToMidiMessage(e, 0x09,
+      this.props.midiGateAttackTrigger,
+      this.props.id,
+      this.props.midi.getIn(['output', 'gate1']),
+      this.props.midi.getIn(['output', 'gate2']),
+      this.props.midi.getIn(['output', 'cvToFreq1']),
+      this.props.midi.getIn(['output', 'cvToFreq2'])
+    )
+  }
 
-  keyupFunction(e) { formatToMidiMessage(e, 0x08, this.props.midiGateReleaseTrigger, this.props.id, this.props.midi.getIn(['output', 'gate']), this.props.midi.getIn(['output', 'cvToFreq'])) }
+  keyupFunction(e) {
+    formatToMidiMessage(e, 0x08,
+      this.props.midiGateReleaseTrigger,
+      this.props.id,
+      this.props.midi.getIn(['output', 'gate1']),
+      this.props.midi.getIn(['output', 'gate2']),
+      this.props.midi.getIn(['output', 'cvToFreq1']),
+      this.props.midi.getIn(['output', 'cvToFreq2'])
+    )
+  }
 
   getMidiInputDevices(access) {
     this.connectMidiInBrowser()
@@ -107,14 +125,22 @@ export class MIDI extends React.Component {
 
         <div className='gate-out-jack'>
           <Jack name='gate'
-            color={this.props.midi.getIn(['output', 'gate'])}
-            onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'output', 'gate', 'connectThisToTriggerEnvelope', this.props.midi.getIn(['output', 'gate']))}
+            color={this.props.midi.getIn(['output', 'gate1'])}
+            onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'output', 'gate1', 'connectThisToTriggerEnvelope', this.props.midi.getIn(['output', 'gate1']))}
+          />
+          <Jack name='gate'
+            color={this.props.midi.getIn(['output', 'gate2'])}
+            onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'output', 'gate2', 'connectThisToTriggerEnvelope', this.props.midi.getIn(['output', 'gate2']))}
           />
         </div>
         <div className='cv-out-jack'>
           <Jack name='cv out'
-            color={this.props.midi.getIn(['output', 'cvToFreq'])}
-            onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'output', 'cvToFreq', 'connectThisToControlFreqOfOscOrLFO', this.props.midi.getIn(['output', 'cvToFreq']))}
+            color={this.props.midi.getIn(['output', 'cvToFreq1'])}
+            onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'output', 'cvToFreq1', 'connectThisToControlFreqOfOscOrLFO', this.props.midi.getIn(['output', 'cvToFreq1']))}
+          />
+          <Jack name='cv out'
+            color={this.props.midi.getIn(['output', 'cvToFreq2'])}
+            onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'output', 'cvToFreq2', 'connectThisToControlFreqOfOscOrLFO', this.props.midi.getIn(['output', 'cvToFreq2']))}
           />
         </div>
       </ModuleContainer>

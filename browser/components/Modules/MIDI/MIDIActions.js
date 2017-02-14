@@ -12,20 +12,23 @@ export function setMidiInputDevice(id, input) {
 		input
 	}
 }
-export function midiGateAttackTrigger(id, freq, gateColor, freqColor) {
+export function midiGateAttackTrigger(id, freq, gateColor1, gateColor2, freqColor1, freqColor2) {
 	return {
 		type: 'MIDI_GATE_ATTACK_TRIGGER',
 		id,
 		freq,
-		gateColor,
-		freqColor
+		gateColor1,
+		gateColor2,
+		freqColor1,
+		freqColor2
 	}
 }
-export function midiGateReleaseTrigger(id, freq, gateColor) {
+export function midiGateReleaseTrigger(id, freq, gateColor1, gateColor2) {
 	return {
 		type: 'MIDI_GATE_RELEASE_TRIGGER',
 		id,
 		freq,
-		gateColor
+		gateColor1,
+		gateColor2
 	}
 }

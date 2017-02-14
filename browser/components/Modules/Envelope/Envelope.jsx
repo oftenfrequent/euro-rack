@@ -71,10 +71,6 @@ export class EnvelopeGenerator extends React.Component {
             color={this.props.env.getIn(['input', 'trigger'])}
             onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'input', 'trigger', this.props.env.get('toneComponent'), this.props.env.getIn(['input', 'trigger']))}
           />
-          <Jack name='in'
-            color={this.props.env.getIn(['input', 'sound'])}
-            onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'input', 'sound', this.props.env.get('toneComponent'), this.props.env.getIn(['input', 'sound']))}
-          />
         </div>
         <div className='envelope-out-jack'>
           <Jack name='out'
@@ -89,6 +85,10 @@ export class EnvelopeGenerator extends React.Component {
       </ModuleContainer>
     )
   }
+          // <Jack name='in'
+          //   color={this.props.env.getIn(['input', 'sound'])}
+          //   onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'input', 'sound', this.props.env.get('toneComponent'), this.props.env.getIn(['input', 'sound']))}
+          // />
 }
 
 function mapStateToProps(state, props) {

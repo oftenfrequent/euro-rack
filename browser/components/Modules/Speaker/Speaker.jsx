@@ -33,7 +33,7 @@ export class Speaker extends React.Component {
   toggleVisualization() {
     if (this.state.oscilloscopeOn) {
       this.setState({ oscilloscopeOn: false }, () => {
-        stopVisualization()
+        stopVisualization(this.state.canvas, this.state.canvasCtx)
       })
     } else {
       this.setState({ oscilloscopeOn: true }, () => {

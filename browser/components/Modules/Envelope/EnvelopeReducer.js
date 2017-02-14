@@ -40,6 +40,10 @@ export default (state = {}, action) => {
 										}
 										return env
 									})
+		case 'TRIGGER_ENV_ATTACK' :
+			return state.updateIn([action.id, 'toneComponent'], (env) => env.triggerAttack())
+		case 'TRIGGER_ENV_RELEASE' :
+			return state.updateIn([action.id, 'toneComponent'], (env) => env.triggerRelease())
 	}
 	return state
 }

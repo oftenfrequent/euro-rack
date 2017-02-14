@@ -2,6 +2,7 @@ import {fromJS} from 'immutable'
 import Tone from 'tone'
 import { changeOscFreq } from '../components/Modules/Oscillator/OscillatorActions'
 import { changeLfoMidValue } from '../components/Modules/LFO/LFOActions'
+import { triggerAttack, triggerRelease } from '../components/Modules/Envelope/EnvelopeActions'
 
 
 export const connectJackMiddleWare = store => next => action => {
@@ -67,19 +68,70 @@ export const patchingMiddleWare = store => next => action => {
   const state = store.getState()
   if (action.type === 'MIDI_GATE_ATTACK_TRIGGER') {
     // use color of patch to find what freqcv is routed to
-    if (action.freqColor) {
-      const inputModule = state.eurorack.getIn(['patchCables', 'connections', action.freqColor, 'input'])
+    if (action.freqColor1) {
+      const inputModule = state.eurorack.getIn(['patchCables', 'connections', action.freqColor1, 'input'])
 
       if (inputModule.get('module') === 'oscillators') {
         if (inputModule.get('cvName') === 'frequency') {
-          const freqColor = state.oscillators.getIn([inputModule.get('id'), 'input', 'frequency'])
-      console.log('freqColor', freqColor)
+          const freqColor1 = state.oscillators.getIn([inputModule.get('id'), 'input', 'frequency'])
+      console.log('freqColor1', freqColor1)
           const cvColor = state.oscillators.getIn([inputModule.get('id'), 'input', 'cv'])
           // call appropriate fn
-          store.dispatch(changeOscFreq(Tone.Frequency(action.freq).toFrequency(), inputModule.get('id'), freqColor, cvColor))
+          store.dispatch(changeOscFreq(Tone.Frequency(action.freq).toFrequency(), inputModule.get('id'), freqColor1, cvColor))
         }
       }
     }
+    if (action.freqColor2) {
+      const inputModule = state.eurorack.getIn(['patchCables', 'connections', action.freqColor2, 'input'])
+
+      if (inputModule.get('module') === 'oscillators') {
+        if (inputModule.get('cvName') === 'frequency') {
+          const freqColor2 = state.oscillators.getIn([inputModule.get('id'), 'input', 'frequency'])
+      console.log('freqColor2', freqColor2)
+          const cvColor = state.oscillators.getIn([inputModule.get('id'), 'input', 'cv'])
+          // call appropriate fn
+          store.dispatch(changeOscFreq(Tone.Frequency(action.freq).toFrequency(), inputModule.get('id'), freqColor2, cvColor))
+        }
+      }
+    }
+    if (action.gateColor1) {
+      const gateInputModule = state.eurorack.getIn(['patchCables', 'connections', action.gateColor1, 'input'])
+
+      if (gateInputModule.get('module') === 'envelopes') {
+        store.dispatch(triggerAttack(gateInputModule.get('id')))
+      }
+      // LFO?????? TRIGGER START?
+      // if (gateInputModule.get('module') === 'envelopes') {
+      //   store.dispatch(triggerAttack(gateInputModule.get('id')))
+      // }
+    }
+    if (action.gateColor2) {
+      const gateInputModule = state.eurorack.getIn(['patchCables', 'connections', action.gateColor2, 'input'])
+
+      if (gateInputModule.get('module') === 'envelopes') {
+        store.dispatch(triggerAttack(gateInputModule.get('id')))
+      }
+      // LFO?????? TRIGGER START?
+      // if (gateInputModule.get('module') === 'envelopes') {
+      //   store.dispatch(triggerAttack(gateInputModule.get('id')))
+      // }
+    }
+  } else if (action.type === 'MIDI_GATE_RELEASE_TRIGGER') {
+    if (action.gateColor1) {
+      const gateInputModule1 = state.eurorack.getIn(['patchCables', 'connections', action.gateColor1, 'input'])
+
+      if (gateInputModule1.get('module') === 'envelopes') {
+        store.dispatch(triggerRelease(gateInputModule1.get('id')))
+      }
+    }
+    if (action.gateColor2) {
+      const gateInputModule2 = state.eurorack.getIn(['patchCables', 'connections', action.gateColor2, 'input'])
+
+      if (gateInputModule2.get('module') === 'envelopes') {
+        store.dispatch(triggerRelease(gateInputModule2.get('id')))
+      }
+    }
+
   } else if (action.type === 'CHANGE_OSC_FREQ') {
     if (action.freqInputColor) {
       const outputModule = state.eurorack.getIn(['patchCables', 'connections', action.freqInputColor, 'output'])

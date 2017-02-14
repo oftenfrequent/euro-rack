@@ -36,17 +36,23 @@ body {
 	}
 }
 
+.clearfix {
+  overflow: auto;
+  zoom: 1;
+}
+
 .euro-rack-container{
+	margin-top: 5px;
 	display: flex;
 	flex-wrap: wrap;
+	justify-content: center;
 }
 
 .module-container {
 	background: #ddd;
 	float: left;
-	margin-bottom: 5px;
-	margin-right: 5px;
-	height: 400px;
+  margin:2.5px;
+	height: 380px;
 	width: 200px;
 	text-align: center;
 	position: relative;
@@ -219,6 +225,23 @@ body {
 		width: 80px;
 		font-size: 12px;
 		margin-bottom: 5px;
+	}
+}
+
+.jack-knob-pair {
+	width: 100%;
+
+	.paired-jack, .paired-knob {
+		width: 50%;
+		float:left;
+	}
+
+	.paired-jack {
+		margin-top:30px;
+	}
+
+	.paired-knob .height-but-hide {
+		opacity: 0;
 	}
 }
 
