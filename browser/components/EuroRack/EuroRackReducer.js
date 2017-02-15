@@ -47,12 +47,8 @@ const reducer = (state = {}, action) => {
 }
 
 const disconnectJack = (state, action) => {
-	// const input = state.getIn(['patchCables', 'connections', action.color, 'input'])
-	// const output = state.getIn(['patchCables', 'connections', action.color, 'output'])
-	// const inToneObj = input.get('toneObject')
-	// const outToneObj = output.get('toneObject')
-
-	action.outputToneObject.disconnect(action.inputToneObj)
+	if (action.outputModule === 'midis') { console.log('NO ACTUAL CONNECTION') }
+	else { action.outputToneObject.disconnect(action.inputToneObj) }
 
 	return state.deleteIn(['patchCables', 'connections', action.color])
 							.updateIn(['patchCables', 'colorOptions'], (arr) => arr.push(action.color))

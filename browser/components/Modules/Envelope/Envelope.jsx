@@ -28,7 +28,7 @@ export class EnvelopeGenerator extends React.Component {
       >
         <DisplayTypeDropdown
           optionTypes={this.props.env.get('curveOptions')}
-          changeType={(v) => this.onChangeType(this.props.id, v)}
+          changeType={(v) => this.changeCurve(this.props.id, v)}
         />
         <Knob
           name='attack'

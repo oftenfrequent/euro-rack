@@ -1,6 +1,7 @@
 import {fromJS} from 'immutable'
 import Tone from 'tone'
 import { changeOscFreq } from '../components/Modules/Oscillator/OscillatorActions'
+import { changeFilFreq } from '../components/Modules/Filter/FilterActions'
 import { changeLfoMidValue } from '../components/Modules/LFO/LFOActions'
 import { triggerAttack, triggerRelease } from '../components/Modules/Envelope/EnvelopeActions'
 
@@ -58,6 +59,21 @@ export const connectJackMiddleWare = store => next => action => {
     action['outputToneObject']  = outputModule.get('toneObject')
     action['outputCvName']      = outputModule.get('cvName')
 
+    if (outputModule.get('cvName') === 'lfo') {
+      if (inputModule.get('cvName') === 'frequency' || iinputModule.get('cvName') === 'cvFrequency') {
+        const currentFrequency = state[inputModule.get('module')].getIn([inputModule.get('id'), 'frequency'])
+        // dispatch action to reset frequency to current freq value of module
+        if (inputModule.get('module') === 'oscillators') {
+          const freqJackColor = state.oscillators.getIn([inputModule.get('id'), 'input', 'frequency'])
+          const cvFreqJackColor = state.oscillators.getIn([inputModule.get('id'), 'input', 'cvFrequency'])
+          store.dispatch(changeOscFreq(currentFrequency, inputModule.get('id'), freqJackColor, cvFreqJackColor))
+        }
+        if (inputModule.get('module') === 'filters') {
+          store.dispatch(changeFilFreq(inputModule.get('id'), currentFrequency))
+        }
+      }
+    }
+
   }
 
   return next(action)
@@ -74,8 +90,7 @@ export const patchingMiddleWare = store => next => action => {
       if (inputModule.get('module') === 'oscillators') {
         if (inputModule.get('cvName') === 'frequency') {
           const freqColor1 = state.oscillators.getIn([inputModule.get('id'), 'input', 'frequency'])
-      console.log('freqColor1', freqColor1)
-          const cvColor = state.oscillators.getIn([inputModule.get('id'), 'input', 'cv'])
+          const cvColor = state.oscillators.getIn([inputModule.get('id'), 'input', 'cvFrequency'])
           // call appropriate fn
           store.dispatch(changeOscFreq(Tone.Frequency(action.freq).toFrequency(), inputModule.get('id'), freqColor1, cvColor))
         }
@@ -88,7 +103,7 @@ export const patchingMiddleWare = store => next => action => {
         if (inputModule.get('cvName') === 'frequency') {
           const freqColor2 = state.oscillators.getIn([inputModule.get('id'), 'input', 'frequency'])
       console.log('freqColor2', freqColor2)
-          const cvColor = state.oscillators.getIn([inputModule.get('id'), 'input', 'cv'])
+          const cvColor = state.oscillators.getIn([inputModule.get('id'), 'input', 'cvFrequency'])
           // call appropriate fn
           store.dispatch(changeOscFreq(Tone.Frequency(action.freq).toFrequency(), inputModule.get('id'), freqColor2, cvColor))
         }

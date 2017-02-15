@@ -10,15 +10,29 @@ import reducer from './config/combineReducers'
 import initialState from './config/initialState'
 import {connectJackMiddleWare, patchingMiddleWare} from './config/middleware'
 
-const store = createStore(
-	reducer,
-	initialState,
-	compose(applyMiddleware(
-		connectJackMiddleWare,
-		patchingMiddleWare,
-		logger({stateTransformer:(state) => Map(state).toJS()})
-	))
-)
+let store
+
+if (process.env.NODE_ENV === 'production') {
+	store = createStore(
+		reducer,
+		initialState,
+		compose(applyMiddleware(
+			connectJackMiddleWare,
+			patchingMiddleWare
+		))
+	)
+} else {
+	store = createStore(
+		reducer,
+		initialState,
+		compose(applyMiddleware(
+			connectJackMiddleWare,
+			patchingMiddleWare,
+			logger({stateTransformer:(state) => Map(state).toJS()})
+		))
+	)
+}
+
 
 ReactDOM.render(
 	<Provider store={store}>
