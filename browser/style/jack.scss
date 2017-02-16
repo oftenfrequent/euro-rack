@@ -1,0 +1,35 @@
+.jack-container {
+	position: relative;
+	width: 30px;
+	margin: 0 auto;
+
+	.color-connector {
+		position: absolute;
+		top: 0px;
+		left: 9px;
+		height: 30px;
+		width: 12px;
+		background: #aaa;
+		&:nth-child(2)  { transform: rotate(45deg); }
+		&:nth-child(3)  { transform: rotate(90deg); }
+		&:nth-child(4)  { transform: rotate(135deg); }
+	}
+
+	.jack-center {
+    border-radius: 50%;
+    background: black;
+    height: 22px;
+    width: 22px;
+    z-index: 0;
+    position: relative;
+    top: 4px;
+    left: 4px;
+	}
+
+	.jack-name {
+		margin-top: 12px;
+		font-size: 12px;
+		letter-spacing: 2px;
+		text-transform: lowercase;
+	}
+}

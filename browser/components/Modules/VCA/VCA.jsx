@@ -17,7 +17,9 @@ export class VCA extends React.Component {
     super(props)
    // this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this)
     this.state = {
-      active: false
+      activeOutput: false,
+      activeInput1: false,
+      activeInput2: false
     }
   }
 
@@ -25,8 +27,8 @@ export class VCA extends React.Component {
     this.props.initializeVCA(this.props.id)
   }
 
-  onChangeInputActive() {
-    this.setState({active: !this.state.active})
+  onChangeInputActive(which) {
+    this.setState({[which]: !this.state[which]})
   }
 
   render(){
@@ -51,10 +53,10 @@ export class VCA extends React.Component {
               min={this.props.vca.get('min')}
               changeActive={() => this.onChangeInputActive()}
               max={this.props.vca.get('max')}
-              value={this.props.vca.get('outputValue')}
+              value={this.props.vca.get('outputValue') / 1000}
               changeValue={(v) => this.props.changeVCAGain(v, this.props.id, 'outputValue')}
-              active={this.state.active}
-              changeActive={() => this.onChangeInputActive()}
+              active={this.state.activeOutput}
+              changeActive={() => this.onChangeInputActive('activeOutput')}
             />
             <Knob
               name='Gain'
@@ -81,10 +83,10 @@ export class VCA extends React.Component {
               min={this.props.vca.get('min')}
               changeActive={() => this.onChangeInputActive()}
               max={this.props.vca.get('max')}
-              value={this.props.vca.get('input1Value')}
+              value={this.props.vca.get('input1Value') / 1000}
               changeValue={(v) => this.props.changeVCAGain(v, this.props.id, 'input1Value')}
-              active={this.state.active}
-              changeActive={() => this.onChangeInputActive()}
+              active={this.state.activeInput1}
+              changeActive={() => this.onChangeInputActive('activeInput1')}
             />
             <Knob
               name='Gain'
@@ -111,10 +113,10 @@ export class VCA extends React.Component {
               min={this.props.vca.get('min')}
               changeActive={() => this.onChangeInputActive()}
               max={this.props.vca.get('max')}
-              value={this.props.vca.get('input2Value')}
+              value={this.props.vca.get('input2Value') / 1000}
               changeValue={(v) => this.props.changeVCAGain(v, this.props.id, 'input2Value')}
-              active={this.state.active}
-              changeActive={() => this.onChangeInputActive()}
+              active={this.state.activeInput2}
+              changeActive={() => this.onChangeInputActive('activeInput2')}
             />
             <Knob
               name='Gain'

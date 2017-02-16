@@ -21,7 +21,7 @@ import {
   pushIdToOrder
 } from './EuroRackActions'
 
-import '../../app.scss'
+import '../../style/app.scss'
 
 export class App extends React.Component {
   constructor(props){

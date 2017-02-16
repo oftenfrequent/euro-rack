@@ -18,11 +18,11 @@ export const visualize = (canvas, canvasCtx, analyser) => {
 
     analyser.getByteTimeDomainData(dataArray)
 
-    canvasCtx.fillStyle = 'rgb(200, 200, 200)'
+    canvasCtx.fillStyle = 'rgb(128,128,128)'
     canvasCtx.fillRect(0, 0, WIDTH, HEIGHT)
 
     canvasCtx.lineWidth = 2
-    canvasCtx.strokeStyle = 'rgb(0, 0, 0)'
+    canvasCtx.strokeStyle = 'rgb(255,255,0)'
 
     canvasCtx.beginPath()
 
@@ -54,7 +54,7 @@ export const visualize = (canvas, canvasCtx, analyser) => {
 export const stopVisualization = (canvas, canvasCtx) => {
   cancelAnimationFrame(requestFrameId)
   requestFrameId = null
-  canvasCtx.fillStyle = 'rgb(200, 200, 200)'
+  canvasCtx.fillStyle = 'rgb(128,128,128)'
   canvasCtx.fillRect(0, 0, canvas.width, canvas.height)
   canvasCtx.lineWidth = 2
   canvasCtx.beginPath()

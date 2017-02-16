@@ -1,7 +1,6 @@
-$border-color: yellow;
-$background-color: grey;
-
-@import './style/knob.scss';
+@import './variables.scss';
+@import './knob.scss';
+@import './jack.scss';
 
 body {
 	background: #eee;
@@ -81,42 +80,6 @@ body {
 		text-transform: uppercase;
     margin-top: 12px;
     margin-bottom: 0px;
-	}
-}
-
-.jack-container {
-	position: relative;
-	width: 30px;
-	margin: 0 auto;
-
-	.color-connector {
-		position: absolute;
-		top: 0px;
-		left: 9px;
-		height: 30px;
-		width: 12px;
-		background: #aaa;
-		&:nth-child(2)  { transform: rotate(45deg); }
-		&:nth-child(3)  { transform: rotate(90deg); }
-		&:nth-child(4)  { transform: rotate(135deg); }
-	}
-
-	.jack-center {
-    border-radius: 50%;
-    background: black;
-    height: 22px;
-    width: 22px;
-    z-index: 0;
-    position: relative;
-    top: 4px;
-    left: 4px;
-	}
-
-	.jack-name {
-		margin-top: 12px;
-		font-size: 12px;
-		letter-spacing: 2px;
-		text-transform: lowercase;
 	}
 }
 
@@ -215,17 +178,46 @@ body {
 
 .display-amount-container, .display-type-container {
 	margin: 0 auto;
-	.display-amount-input, .display-amount-view, .display-type-dropdown {
+	.display-type-dropdown {
 		margin: 0 auto;
 		color: $border-color;
 		background: $background-color;
 		border: 1px solid $border-color;
 		padding: 2px;
 		text-align: center;
-		width: 80px;
+		width: 100%;
 		font-size: 12px;
 		margin-bottom: 5px;
 	}
+	.display-amount-input, .display-amount-view {
+		margin: 0 auto;
+		color: $black;
+		background: $clear;
+		border: 1px solid $clear;
+		text-align: center;
+		width: 80px;
+		font-size: 12px;
+		margin-bottom: 5px;
+		&:hover {
+			background: $background-color;
+			cursor: pointer;
+		}
+	}
+	.display-amount-input{
+		background: $background-color;
+	}
+}
+
+button {
+	margin: 0 auto;
+	color: $black;
+	background: $clear;
+	border: 1px solid $black;
+	padding: 2px;
+	text-align: center;
+	width: 100%;
+	font-size: 12px;
+	margin-bottom: 5px;
 }
 
 .jack-knob-pair {
