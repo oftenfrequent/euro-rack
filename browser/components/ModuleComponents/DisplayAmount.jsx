@@ -13,20 +13,23 @@ export class DisplayAmount extends React.Component {
   }
 
   clickValue(e) {
-    setTimeout(() => {
-      console.log('SET ACTIVE TO INPUT', ReactDOM.findDOMNode(this.refs.input))
-      ReactDOM.findDOMNode(this.refs.input).focus()
-    }, 30)
-    this.props.changeActive()
+    if(!this.props.hideDisplay) {
+      setTimeout(() => {
+        console.log('SET ACTIVE TO INPUT', ReactDOM.findDOMNode(this.refs.input))
+        ReactDOM.findDOMNode(this.refs.input).focus()
+      }, 30)
+      this.props.changeActive()
+    }
   }
 
 
   render(){
     let viewClasses = classNames({'display-amount-view': true, 'hidden': this.props.active})
     let inputClasses = classNames({'display-amount-input': true, 'hidden': !this.props.active})
+    let amountToDisplay = (Math.round(this.props.value * 100) / 100).toString() + this.props.suffix
     return (
       <div className='display-amount-container'>
-        <div className={viewClasses} onClick={(e) => this.clickValue(e)}>{Math.round(this.props.value * 100) / 100}</div>
+        <div className={viewClasses} onClick={(e) => this.clickValue(e)}>{amountToDisplay}</div>
         {this.props.active
           ?(<input
               className={inputClasses}

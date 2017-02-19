@@ -1,6 +1,10 @@
 .knob-container {
 	width: 100%;
 
+	.height-but-hide {
+		opacity: 0;
+	}
+
 	.knob-centering {
 		width: 40px;
 		height: 40px;
@@ -75,9 +79,8 @@
 
 	}
 	.knob-name {
-		margin-top: 5px;
+		margin: 5px 0px 10px;
 		font-size: 12px;
-		letter-spacing: 2px;
 		font-weight:200;
 		text-transform: uppercase;
 	}

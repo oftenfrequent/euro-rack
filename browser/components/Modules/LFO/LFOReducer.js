@@ -37,11 +37,11 @@ export default (state = {}, action) => {
 			const nameType = isTimeline ? 'timelineFrequency' : 'frequency'
 			return state.setIn([action.id, nameType], action.frequency )
 									.updateIn([action.id, 'toneComponent'], (lfo) => {
-										if (isTimeline) {
+										// if (isTimeline) {
 											lfo.frequency.value = action.frequency
-										} else {
-											lfo.frequency.value = action.frequency / 100
-										}
+										// } else {
+										// 	lfo.frequency.value = action.frequency / 100
+										// }
 										return lfo
 									})
 		case 'CHANGE_LFO_MIDVALUE' :
@@ -83,6 +83,8 @@ const changeToneLFOParamters = (id, state) => {
 									const midValue = state.getIn([id, 'midValue'])
 									const minValue = midValue - difference
 									const maxValue = midValue + difference
+									console.log('minValue', minValue)
+									console.log('maxValue', maxValue)
 									lfo.min = minValue < state.getIn([id, 'minValue']) ? state.getIn([id, 'minValue']) : minValue
 									lfo.max = maxValue > state.getIn([id, 'maxValue']) ? state.getIn([id, 'maxValue']) : maxValue
 									console.log('lfo', lfo)

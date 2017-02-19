@@ -3,9 +3,8 @@ import { connect } from 'react-redux'
 import Tone from 'tone'
 
 import ModuleContainer from '../../ModuleComponents/ModuleContainer'
-import DisplayAmount from '../../ModuleComponents/DisplayAmount'
 import DisplayTypeDropdown from '../../ModuleComponents/DisplayTypeDropdown'
-import Knob from '../../ModuleComponents/Knob'
+import KnobAndAmount from '../../ModuleComponents/KnobAndAmount'
 import Jack from '../../ModuleComponents/Jack'
 import {
   changeFilType,
@@ -49,20 +48,12 @@ export class Filter extends React.Component {
             />
           </div>
           <div className='paired-knob'>
-            <DisplayAmount
-              type='number'
-              min={this.props.fil.get('min')}
-              max={this.props.fil.get('max')}
-              value={this.props.fil.get('frequency')}
-              changeValue={(v) => this.props.changeFilFreq(this.props.id, v)}
-              active={this.state.active}
-              changeActive={() => this.onChangeInputActive()}
-            />
-            <Knob
+            <KnobAndAmount
               name='Frequency'
               min={this.props.fil.get('min')}
               max={this.props.fil.get('max')}
               value={this.props.fil.get('frequency')}
+              suffix='Hz'
               degreesTotal={270}
               sensitivity={100}
               onNewValue={(v) => this.props.changeFilFreq(this.props.id, v)}
@@ -77,22 +68,12 @@ export class Filter extends React.Component {
             />
           </div>
           <div className='paired-knob'>
-            <div className='height-but-hide'>
-              <DisplayAmount
-                type='number'
-                min={0}
-                max={1}
-                value={1}
-                changeValue={(v) => console.log('nothing')}
-                active={false}
-                makeActive={() => console.log('nothing')}
-              />
-            </div>
-            <Knob
+            <KnobAndAmount
               name='Resonance'
               min={this.props.fil.get('minQ')*1000}
               max={this.props.fil.get('maxQ')*1000}
               value={this.props.fil.get('q')*1000}
+              hideDisplay={true}
               degreesTotal={270}
               sensitivity={100}
               onNewValue={(v) => this.props.changeFilResonace(this.props.id, (v/1000))}

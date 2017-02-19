@@ -30,13 +30,17 @@ export default (state = {}, action) => {
 										env.releaseCurve = action.curveType
 										return env
 									})
+		case 'CHANGE_ENV_TIME_LENGTH' :
+			state = state.setIn([action.id, 'selectedTimeLength'], action.value )
+			return updateTimeSettingsInEnv(state, action)
 		case 'CHANGE_ENV_COMP_VALUE' :
+			const timeNumber =  getTimeLength(state, action)
 			return state.setIn([action.id, action.component], action.value )
 									.updateIn([action.id, 'toneComponent'], (env) => {
 										if (action.component === 'sustain') {
 											env[action.component] = action.value / 1000
 										} else {
-											env[action.component] = action.value / 100
+											env[action.component] = action.value / timeNumber
 										}
 										return env
 									})
@@ -46,4 +50,22 @@ export default (state = {}, action) => {
 			return state.updateIn([action.id, 'toneComponent'], (env) => env.triggerRelease())
 	}
 	return state
+}
+
+const getTimeLength = (state, action) => {
+	const timeName = state.getIn([action.id, 'selectedTimeLength'])
+	if (timeName === 'short') { return 1000 }
+	if (timeName === 'medium') { return 100 }
+	if (timeName === 'long') { return 10 }
+}
+
+const updateTimeSettingsInEnv = (state, action) => {
+	const updateParts = ['attack', 'decay', 'release']
+	const timeNumber = getTimeLength(state, action)
+	return state.updateIn([action.id, 'toneComponent'], (env) => {
+								updateParts.map(n => {
+									env[n] = state.getIn([action.id, n]) / timeNumber
+								})
+								return env
+							})
 }

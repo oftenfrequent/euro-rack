@@ -1,11 +1,12 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import classNames from 'classnames'
 // import PureRenderMixin from 'react-addons-pure-render-mixin'
 
 import ModuleContainer from '../../ModuleComponents/ModuleContainer'
 import DisplayAmount from '../../ModuleComponents/DisplayAmount'
 import DisplayTypeDropdown from '../../ModuleComponents/DisplayTypeDropdown'
-import Knob from '../../ModuleComponents/Knob'
+import KnobAndAmount from '../../ModuleComponents/KnobAndAmount'
 import Jack from '../../ModuleComponents/Jack'
 import {
   changeOscType,
@@ -27,6 +28,7 @@ export class Oscillator extends React.Component {
   }
 
   render(){
+    const pwPairedClasses = classNames({'jack-knob-pair': true, 'clearfix': true, 'inactive': this.props.vco.get('type') !== 'pwm'})
     const order = this.props.vco.get('flexOrder') ? this.props.vco.get('flexOrder') : this.props.order
     return (
       <ModuleContainer
@@ -39,55 +41,71 @@ export class Oscillator extends React.Component {
           optionTypes={this.props.vco.get('typeOptions')}
           changeType={(v) => this.props.changeOscType(v, this.props.id)}
         />
-        <DisplayAmount
-          type='number'
-          min={this.props.vco.get('min')}
-          changeActive={() => this.onChangeInputActive()}
-          max={this.props.vco.get('max')}
-          value={this.props.vco.get('frequency')}
-          changeValue={(v) => this.props.changeOscFreq(v, this.props.id, this.props.vco.getIn(['input', 'frequency']), this.props.vco.getIn(['input', 'cv']))}
-          active={this.state.active}
-          changeActive={() => this.onChangeInputActive()}
-        />
-        <Knob
-          name='Frequency'
-          min={this.props.vco.get('min')}
-          max={this.props.vco.get('max')}
-          value={this.props.vco.get('frequency')}
-          degreesTotal={270}
-          sensitivity={100}
-          onNewValue={(v) => this.props.changeOscFreq(v, this.props.id, this.props.vco.getIn(['input', 'frequency']), this.props.vco.getIn(['input', 'cv']))}
-        />
-        {this.props.vco.get('type') === 'pwm'
-          ?
-            <Knob
+        <div className='jack-knob-pair clearfix'>
+          <div className='paired-jack'>
+            <Jack name='freq'
+              color={this.props.vco.getIn(['input', 'frequency'])}
+              onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'input', 'frequency', this.props.vco.get('toneComponent').frequency, this.props.vco.getIn(['input', 'frequency']))}
+            />
+          </div>
+          <div className='paired-knob'>
+            <KnobAndAmount
+              name='Frequency'
+              type='number'
+              min={this.props.vco.get('min')}
+              max={this.props.vco.get('max')}
+              value={this.props.vco.get('frequency')}
+              degreesTotal={270}
+              sensitivity={100}
+              suffix='Hz'
+              onNewValue={(v) => this.props.changeOscFreq(v, this.props.id, this.props.vco.getIn(['input', 'frequency']), this.props.vco.getIn(['input', 'cv']))}
+            />
+          </div>
+        </div>
+        <div className='jack-knob-pair clearfix'>
+          <div className='paired-jack'>
+            <Jack name='cv'
+              color={this.props.vco.getIn(['input', 'cvFrequency'])}
+              onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'input', 'cvFrequency', this.props.vco.get('toneComponent').frequency, this.props.vco.getIn(['input', 'cvFrequency']))}
+            />
+          </div>
+          <div className='paired-knob'>
+            <div className='height-but-hide'>
+              <KnobAndAmount
+                name='NOTHING'
+                type='number'
+                min={this.props.vco.get('min')}
+                max={this.props.vco.get('max')}
+                value={this.props.vco.get('frequency')}
+                degreesTotal={270}
+                sensitivity={100}
+                onNewValue={(v) => this.props.changeOscFreq(v, this.props.id, this.props.vco.getIn(['input', 'frequency']), this.props.vco.getIn(['input', 'cv']))}
+              />
+            </div>
+          </div>
+        </div>
+        <div className={pwPairedClasses}>
+          <div className='paired-jack'>
+            <Jack name='pulse modulation'
+              color={this.props.vco.getIn(['input', 'pwModulation'])}
+              onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'input', 'pwModulation', this.props.vco.get('toneComponent').modulationFrequency, this.props.vco.getIn(['input', 'pwModulation']))}
+            />
+          </div>
+          <div className='paired-knob'>
+            <div className='height-but-hide'>
+            </div>
+            <KnobAndAmount
               name='Modulation'
-              min={0}
-              max={200}
+              type='number'
+              min={this.props.vco.get('min')}
+              max={this.props.vco.get('max')}
               value={this.props.vco.get('modulationFrequency')}
               degreesTotal={270}
-              sensitivity={1000}
+              sensitivity={100}
+              suffix='Hz'
               onNewValue={(v) => this.props.changeOscModFreq(v, this.props.id)}
             />
-          : null
-        }
-        <div className='oscillator-in-jack'>
-          <Jack name='in to freq'
-            color={this.props.vco.getIn(['input', 'frequency'])}
-            onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'input', 'frequency', this.props.vco.get('toneComponent').frequency, this.props.vco.getIn(['input', 'frequency']))}
-          />
-          <Jack name='cv'
-            color={this.props.vco.getIn(['input', 'cvFrequency'])}
-            onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'input', 'cvFrequency', this.props.vco.get('toneComponent').frequency, this.props.vco.getIn(['input', 'cvFrequency']))}
-          />
-          {this.props.vco.get('type') === 'pwm'
-            ?
-              <Jack name='pulse modulation'
-                color={this.props.vco.getIn(['input', 'pwModulation'])}
-                onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'input', 'pwModulation', this.props.vco.get('toneComponent').modulationFrequency, this.props.vco.getIn(['input', 'pwModulation']))}
-              />
-            : null
-          }
+          </div>
         </div>
         <div className='oscillator-out-jack'>
           <Jack name='out'

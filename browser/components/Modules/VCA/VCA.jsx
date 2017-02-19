@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import ModuleContainer from '../../ModuleComponents/ModuleContainer'
 import DisplayAmount from '../../ModuleComponents/DisplayAmount'
 import DisplayTypeDropdown from '../../ModuleComponents/DisplayTypeDropdown'
-import Knob from '../../ModuleComponents/Knob'
+import KnobAndAmount from '../../ModuleComponents/KnobAndAmount'
 import Jack from '../../ModuleComponents/Jack'
 import {
   changeVCAGain,
@@ -48,21 +48,12 @@ export class VCA extends React.Component {
             />
           </div>
           <div className='paired-knob'>
-            <DisplayAmount
-              type='number'
-              min={this.props.vca.get('min')}
-              changeActive={() => this.onChangeInputActive()}
-              max={this.props.vca.get('max')}
-              value={this.props.vca.get('outputValue') / 1000}
-              changeValue={(v) => this.props.changeVCAGain(v, this.props.id, 'outputValue')}
-              active={this.state.activeOutput}
-              changeActive={() => this.onChangeInputActive('activeOutput')}
-            />
-            <Knob
+            <KnobAndAmount
               name='Gain'
               min={this.props.vca.get('min')}
               max={this.props.vca.get('max')}
               value={this.props.vca.get('outputValue')}
+              hideDisplay={true}
               degreesTotal={270}
               sensitivity={100}
               onNewValue={(v) => this.props.changeVCAGain(v, this.props.id, 'outputValue')}
@@ -78,21 +69,12 @@ export class VCA extends React.Component {
             />
           </div>
           <div className='paired-knob'>
-            <DisplayAmount
-              type='number'
-              min={this.props.vca.get('min')}
-              changeActive={() => this.onChangeInputActive()}
-              max={this.props.vca.get('max')}
-              value={this.props.vca.get('input1Value') / 1000}
-              changeValue={(v) => this.props.changeVCAGain(v, this.props.id, 'input1Value')}
-              active={this.state.activeInput1}
-              changeActive={() => this.onChangeInputActive('activeInput1')}
-            />
-            <Knob
+            <KnobAndAmount
               name='Gain'
               min={this.props.vca.get('min')}
               max={this.props.vca.get('max')}
               value={this.props.vca.get('input1Value')}
+              hideDisplay={true}
               degreesTotal={270}
               sensitivity={100}
               onNewValue={(v) => this.props.changeVCAGain(v, this.props.id, 'input1Value')}
@@ -108,21 +90,12 @@ export class VCA extends React.Component {
             />
           </div>
           <div className='paired-knob'>
-            <DisplayAmount
-              type='number'
-              min={this.props.vca.get('min')}
-              changeActive={() => this.onChangeInputActive()}
-              max={this.props.vca.get('max')}
-              value={this.props.vca.get('input2Value') / 1000}
-              changeValue={(v) => this.props.changeVCAGain(v, this.props.id, 'input2Value')}
-              active={this.state.activeInput2}
-              changeActive={() => this.onChangeInputActive('activeInput2')}
-            />
-            <Knob
+            <KnobAndAmount
               name='Gain'
               min={this.props.vca.get('min')}
               max={this.props.vca.get('max')}
               value={this.props.vca.get('input2Value')}
+              hideDisplay={true}
               degreesTotal={270}
               sensitivity={100}
               onNewValue={(v) => this.props.changeVCAGain(v, this.props.id, 'input2Value')}

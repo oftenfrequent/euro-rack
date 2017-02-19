@@ -10,7 +10,7 @@ const Knob = ({name, min, max, value, degreesTotal, sensitivity, onNewValue}) =>
   }
 
   const calculateDegreesFromPercentChange = (percentChange) => {
-    const newValue = parseInt(value) + (percentChange/100 * max)
+    const newValue = parseInt(value) + (percentChange/sensitivity * max)
     return newValue <= min ? min
       : newValue >= max ? max
       : newValue

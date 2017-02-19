@@ -9,7 +9,8 @@ import Knob from '../../ModuleComponents/Knob'
 import Jack from '../../ModuleComponents/Jack'
 import {
   changeCurve,
-  changeValue
+  changeValue,
+  changeTimeLength
 } from './EnvelopeActions'
 
 export class EnvelopeGenerator extends React.Component {
@@ -28,7 +29,11 @@ export class EnvelopeGenerator extends React.Component {
       >
         <DisplayTypeDropdown
           optionTypes={this.props.env.get('curveOptions')}
-          changeType={(v) => this.changeCurve(this.props.id, v)}
+          changeType={(v) => this.props.changeCurve(this.props.id, v)}
+        />
+        <DisplayTypeDropdown
+          optionTypes={this.props.env.get('timeLengths')}
+          changeType={(v) => this.props.changeTimeLength(this.props.id, v)}
         />
         <Knob
           name='attack'
@@ -74,12 +79,8 @@ export class EnvelopeGenerator extends React.Component {
         </div>
         <div className='envelope-out-jack'>
           <Jack name='out'
-            color={this.props.env.getIn(['output', 'amplitude1'])}
-            onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'output', 'amplitude1', this.props.env.get('toneComponent'), this.props.env.getIn(['output', 'amplitude1']))}
-          />
-          <Jack name='out'
-            color={this.props.env.getIn(['output', 'amplitude2'])}
-            onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'output', 'amplitude2', this.props.env.get('toneComponent'), this.props.env.getIn(['output', 'amplitude2']))}
+            color={this.props.env.getIn(['output', 'envelope'])}
+            onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'output', 'envelope', this.props.env.get('toneComponent'), this.props.env.getIn(['output', 'envelope']))}
           />
         </div>
       </ModuleContainer>
@@ -101,6 +102,7 @@ export default connect(
   mapStateToProps,
   {
     changeCurve,
-    changeValue
+    changeValue,
+    changeTimeLength
   }
 )(EnvelopeGenerator)

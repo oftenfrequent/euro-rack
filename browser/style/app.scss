@@ -1,6 +1,7 @@
 @import './variables.scss';
 @import './knob.scss';
 @import './jack.scss';
+@import './displayamount.scss';
 
 body {
 	background: #eee;
@@ -81,18 +82,35 @@ body {
     margin-top: 12px;
     margin-bottom: 0px;
 	}
-}
 
-.screw-row {
-	margin-top: 5px;
-	width: 100%;
-	position:absolute;
-	z-index: 0;
+	.screw-row {
+		margin-top: 5px;
+		width: 100%;
+		position:absolute;
+		z-index: 0;
 
-	&.screw-row--bottom {
-		bottom: 5px;
+		&:first-of-type {
+			z-index: 11;
+			.screw:last-of-type, .indent{
+				transition: all 0.3s ease-in-out;
+			}
+			.screw:last-of-type{
+				&:hover {
+					background: rgba(0,0,0,0);
+					transform: rotate(133deg) !important;
+					.indent{
+						background: red;
+					}
+				}
+			}
+		}
+
+		&.screw-row--bottom {
+			bottom: 5px;
+		}
 	}
 }
+
 
 
 .speaker-hole-container {
@@ -176,37 +194,6 @@ body {
 	right: 30px;
 }
 
-.display-amount-container, .display-type-container {
-	margin: 0 auto;
-	.display-type-dropdown {
-		margin: 0 auto;
-		color: $border-color;
-		background: $background-color;
-		border: 1px solid $border-color;
-		padding: 2px;
-		text-align: center;
-		width: 100%;
-		font-size: 12px;
-		margin-bottom: 5px;
-	}
-	.display-amount-input, .display-amount-view {
-		margin: 0 auto;
-		color: $black;
-		background: $clear;
-		border: 1px solid $clear;
-		text-align: center;
-		width: 80px;
-		font-size: 12px;
-		margin-bottom: 5px;
-		&:hover {
-			background: $background-color;
-			cursor: pointer;
-		}
-	}
-	.display-amount-input{
-		background: $background-color;
-	}
-}
 
 button {
 	margin: 0 auto;
@@ -222,6 +209,9 @@ button {
 
 .jack-knob-pair {
 	width: 100%;
+	&.inactive {
+		opacity: 0.2;
+	}
 
 	.paired-jack, .paired-knob {
 		width: 50%;
@@ -231,10 +221,10 @@ button {
 	.paired-jack {
 		margin-top:30px;
 	}
+}
 
-	.paired-knob .height-but-hide {
-		opacity: 0;
-	}
+.height-but-hide {
+	opacity: 0;
 }
 
 .canvas-container{

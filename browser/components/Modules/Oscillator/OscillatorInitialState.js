@@ -10,6 +10,7 @@ const initialState = () => {
 		modulationFrequency: 0,
 		type: 'sine',
 		typeOptions: ['sine', 'square', 'triangle', 'sawtooth', 'pwm'],
+		toneRangeStart: [8.176, 16.3515, 32.703, 65.406, 130.813],
 		input: {
 			frequency: null,
 			pwModulation: null,

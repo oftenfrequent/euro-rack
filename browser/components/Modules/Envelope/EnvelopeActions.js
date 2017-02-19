@@ -19,6 +19,14 @@ export function changeValue(id, component, value) {
 	}
 }
 
+export function changeTimeLength(id, value) {
+	return {
+		type: 'CHANGE_ENV_TIME_LENGTH',
+		id,
+		value
+	}
+}
+
 export function triggerAttack(id) {
 	return {
 		type: 'TRIGGER_ENV_ATTACK',

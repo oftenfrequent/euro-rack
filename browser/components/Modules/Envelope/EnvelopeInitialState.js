@@ -11,23 +11,24 @@ const initialState = () => {
 		 	'max' : 1
 		}),
 		flexOrder: 0,
-	  min: 10,
+	  min: 1,
 	  max: 1000,
-	  attack: 0,
+	  attack: 10,
 	  decay: 200,
 	  sustain: 1000,
 	  release: 600,
 		attackCurve: 'linear',
 		releaseCurve: 'exponential',
 	  curveOptions: ['linear', 'exponential', 'sine', 'ease', 'bounce', 'ripple', 'step'],
+	  selectedTimeLength: 'short',
+	  timeLengths: ['short', 'medium', 'long'],
 		input: {
 			sound: null,
 			frequency: null,
 			trigger: null
 		},
 		output: {
-			amplitude1: null,
-			amplitude2: null
+			envelope: null
 		}
 	}
 }

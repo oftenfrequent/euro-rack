@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import ModuleContainer from '../../ModuleComponents/ModuleContainer'
 import DisplayAmount from '../../ModuleComponents/DisplayAmount'
 import DisplayTypeDropdown from '../../ModuleComponents/DisplayTypeDropdown'
-import Knob from '../../ModuleComponents/Knob'
+import KnobAndAmount from '../../ModuleComponents/KnobAndAmount'
 import Jack from '../../ModuleComponents/Jack'
 import {
   changeLfoType,
@@ -50,20 +50,13 @@ export class LFO extends React.Component {
               defaultValue={this.props.lfo.get('timelineFrequency')}
             />
           ):(<div>
-              <DisplayAmount
-                type='string'
-                min={this.props.lfo.get('min')}
-                max={this.props.lfo.get('max')}
-                value={this.props.lfo.get('frequency') / 100}
-                changeValue={(v) => this.props.changeLfoFreq(this.props.id, v)}
-                active={this.state.activeFreq}
-                changeActive={() => this.onChangeInputActive('activeFreq')}
-              />
-              <Knob
+              <KnobAndAmount
+                type='number'
                 name='Frequency'
                 min={this.props.lfo.get('min')}
                 max={this.props.lfo.get('max')}
                 value={this.props.lfo.get('frequency')}
+                suffix='Hz'
                 degreesTotal={270}
                 sensitivity={100}
                 onNewValue={(v) => this.props.changeLfoFreq(this.props.id, v)}
@@ -71,10 +64,11 @@ export class LFO extends React.Component {
             </div>
           )
         }
-        <Knob
+        <KnobAndAmount
           name='Change'
           min={0}
           max={100}
+          suffix='%'
           value={this.props.lfo.get('percentChange')}
           degreesTotal={270}
           sensitivity={100}
