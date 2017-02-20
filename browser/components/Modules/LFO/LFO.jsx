@@ -7,6 +7,7 @@ import DisplayTypeDropdown from '../../ModuleComponents/DisplayTypeDropdown'
 import KnobAndAmount from '../../ModuleComponents/KnobAndAmount'
 import Jack from '../../ModuleComponents/Jack'
 import {
+  removeLFO,
   changeLfoType,
   changeLfoFreq,
   changeLfoPercent,
@@ -33,6 +34,8 @@ export class LFO extends React.Component {
         id={this.props.id}
         order={order}
         changeOrder={(n) => this.props.changeOrder(n)}
+        removeModule={true}
+        removeModuleFunction={() => this.props.removeLFO(this.props.id)}
       >
         <button
           onClick={() => this.props.toggleLfoTimeAndFreq(this.props.id)}
@@ -100,6 +103,7 @@ function mapStateToProps(state, props) {
 export default connect(
   mapStateToProps,
   {
+    removeLFO,
     changeLfoType,
     changeLfoFreq,
     changeLfoPercent,

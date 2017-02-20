@@ -8,6 +8,8 @@ export default (state = {}, action) => {
 		case 'ADD_LFO' :
 			const newID = uuid.v4()
 			return state.set(newID, fromJS(LFOInitialStateCreator()))
+		case 'REMOVE_LFO' :
+			return state.delete(action.id)
 
 		case 'CONNECT_JACK' :
 			if (action.isLFO) {

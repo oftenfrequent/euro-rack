@@ -8,6 +8,7 @@ import DisplayTypeDropdown from '../../ModuleComponents/DisplayTypeDropdown'
 import Knob from '../../ModuleComponents/Knob'
 import Jack from '../../ModuleComponents/Jack'
 import {
+  removeEnvelope,
   changeCurve,
   changeValue,
   changeTimeLength
@@ -26,6 +27,8 @@ export class EnvelopeGenerator extends React.Component {
         id={this.props.id}
         order={order}
         changeOrder={(n) => this.props.changeOrder(n)}
+        removeModule={true}
+        removeModuleFunction={() => this.props.removeEnvelope(this.props.id)}
       >
         <DisplayTypeDropdown
           optionTypes={this.props.env.get('curveOptions')}
@@ -101,6 +104,7 @@ function mapStateToProps(state, props) {
 export default connect(
   mapStateToProps,
   {
+    removeEnvelope,
     changeCurve,
     changeValue,
     changeTimeLength

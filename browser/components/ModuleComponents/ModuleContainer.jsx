@@ -34,10 +34,17 @@ export class ModuleContainer extends React.Component {
     }
   }
 
+  removeModule() {
+    if(this.props.removeModule) { this.props.removeModuleFunction() }
+  }
+
   render(){
     const contClassNames = classNames('module-container', {
       'moving': this.state.moving,
       [this.props.containerClass]: this.props.containerClass ? true : false
+    })
+    const deleteScrewClassNames = classNames('screw', {
+      'screw--delete': this.props.removeModule
     })
     const isNotDraggable = this.props.draggable === false
     return (
@@ -58,7 +65,8 @@ export class ModuleContainer extends React.Component {
             <div className='indent vert'></div>
           </div>
           <div
-            className='screw right'
+            className={deleteScrewClassNames}
+            onClick={() => this.removeModule()}
             style={{transform: `rotate(${this.screwArr[1]}deg)`}}
           >
             <div className='indent'></div>
@@ -78,7 +86,7 @@ export class ModuleContainer extends React.Component {
             <div className='indent vert'></div>
           </div>
           <div
-            className='screw right'
+            className='screw'
             style={{transform: `rotate(${this.screwArr[3]}deg)`}}
           >
             <div className='indent'></div>

@@ -2,6 +2,13 @@ export function addEnvelope() {
 	return { type: 'ADD_ENV' }
 }
 
+export function removeEnvelope(id) {
+	return {
+		type: 'REMOVE_ENV',
+		id,
+	}
+}
+
 export function changeCurve(id, curveType) {
 	return {
 		type: 'CHANGE_ENV_CURVE_TYPE',

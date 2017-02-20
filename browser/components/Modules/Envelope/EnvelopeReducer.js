@@ -8,6 +8,8 @@ export default (state = {}, action) => {
 		case 'ADD_ENV' :
 			const newID = uuid.v4()
 			return state.set(newID, fromJS(EnvelopeInitialStateCreator()))
+		case 'REMOVE_ENV' :
+			return state.delete(action.id)
 		case 'CONNECT_JACK' :
 			if (action.module === 'envelopes') {
 				return state.setIn([action.id, action.direction, action.cvName], action.color )

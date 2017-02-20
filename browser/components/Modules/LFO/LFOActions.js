@@ -2,6 +2,13 @@ export function addLFO() {
 	return { type: 'ADD_LFO' }
 }
 
+export function removeLFO(id) {
+	return {
+		type: 'REMOVE_LFO',
+		id
+	}
+}
+
 export function changeLfoType(id, oscType) {
 	return {
 		type: 'CHANGE_LFO_TYPE',

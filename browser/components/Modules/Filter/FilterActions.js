@@ -2,6 +2,13 @@ export function addFilter() {
 	return { type: 'ADD_FIL' }
 }
 
+export function removeFilter(id) {
+	return {
+		type: 'REMOVE_FIL',
+		id,
+	}
+}
+
 export function changeFilType(id, filterType) {
 	return {
 		type: 'CHANGE_FIL_TYPE',

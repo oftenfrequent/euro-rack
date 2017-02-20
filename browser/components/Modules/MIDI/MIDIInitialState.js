@@ -6,6 +6,8 @@ export default {
 		cvToFreq1: null,
 		gate2: null,
 		cvToFreq2: null,
+		gate3: null,
+		cvToFreq3: null,
 	},
 	error: null,
 	freq: null,

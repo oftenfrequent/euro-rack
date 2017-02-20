@@ -6,7 +6,7 @@ const initialState = () => {
     flexOrder: 0,
     q: 1,
     minQ: 0,
-    maxQ: 12,
+    maxQ: 20,
     min: 0,
     max: 1000,
     frequency: 400,

@@ -8,7 +8,7 @@ import logger from 'redux-logger'
 import EuroRack from './components/EuroRack/EuroRack'
 import reducer from './config/combineReducers'
 import initialState from './config/initialState'
-import {connectJackMiddleWare, patchingMiddleWare} from './config/middleware'
+import {connectJackMiddleWare, patchingMiddleWare, deleteModuleMiddleWare} from './config/middleware'
 
 let store
 
@@ -18,7 +18,8 @@ if (process.env.NODE_ENV === 'production') {
 		initialState,
 		compose(applyMiddleware(
 			connectJackMiddleWare,
-			patchingMiddleWare
+			patchingMiddleWare,
+			deleteModuleMiddleWare
 		))
 	)
 } else {
@@ -28,6 +29,7 @@ if (process.env.NODE_ENV === 'production') {
 		compose(applyMiddleware(
 			connectJackMiddleWare,
 			patchingMiddleWare,
+			deleteModuleMiddleWare,
 			logger({stateTransformer:(state) => Map(state).toJS()})
 		))
 	)

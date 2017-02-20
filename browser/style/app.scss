@@ -91,13 +91,13 @@ body {
 
 		&:first-of-type {
 			z-index: 11;
-			.screw:last-of-type, .indent{
+			.screw.screw--delete, .indent{
 				transition: all 0.3s ease-in-out;
 			}
-			.screw:last-of-type{
+			.screw.screw--delete{
 				&:hover {
 					background: rgba(0,0,0,0);
-					transform: rotate(133deg) !important;
+					transform: rotate(313deg) !important;
 					.indent{
 						background: red;
 					}
@@ -141,7 +141,7 @@ body {
 	float: left;
 	margin-left: 5px;
 
-	&.right {
+	&:last-of-type {
 		float: right;
 		margin-right: 5px;
 	}
@@ -213,6 +213,16 @@ button {
 		opacity: 0.2;
 	}
 
+	&.no-amount-pair {
+		.paired-jack {
+			margin-top: 14px;
+		}
+
+		.paired-knob {
+			margin-top: 5px;
+		}
+	}
+
 	.paired-jack, .paired-knob {
 		width: 50%;
 		float:left;
@@ -223,9 +233,6 @@ button {
 	}
 }
 
-.height-but-hide {
-	opacity: 0;
-}
 
 .canvas-container{
   width: 100%;

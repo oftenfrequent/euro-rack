@@ -1,5 +1,6 @@
 import {fromJS} from 'immutable'
 import Tone from 'tone'
+import { disconnectJack } from '../components/EuroRack/EuroRackActions'
 import { changeOscFreq } from '../components/Modules/Oscillator/OscillatorActions'
 import { changeFilFreq } from '../components/Modules/Filter/FilterActions'
 import { changeLfoMidValue } from '../components/Modules/LFO/LFOActions'
@@ -73,7 +74,6 @@ export const connectJackMiddleWare = store => next => action => {
         }
       }
     }
-
   }
 
   return next(action)
@@ -159,16 +159,28 @@ export const patchingMiddleWare = store => next => action => {
   return next(action)
 }
 
+export const deleteModuleMiddleWare = store => next => action => {
+  const state = store.getState()
+  let moduleToRemove
+
+  if(action.type === 'REMOVE_OSC') {
+    moduleToRemove = state.oscillators.get(action.id)
+    if(moduleToRemove.getIn(['input', 'frequency'])) { store.dispatch(disconnectJack(moduleToRemove.getIn(['input', 'frequency']))) }
+    if(moduleToRemove.getIn(['input', 'pwModulation'])) { store.dispatch(disconnectJack(moduleToRemove.getIn(['input', 'pwModulation']))) }
+    if(moduleToRemove.getIn(['input', 'cvFrequency'])) { store.dispatch(disconnectJack(moduleToRemove.getIn(['input', 'cvFrequency']))) }
+    if(moduleToRemove.getIn(['output', 'sound'])) { store.dispatch(disconnectJack(moduleToRemove.getIn(['output', 'sound']))) }
+  }
+
+  if(action.type === 'REMOVE_LFO') {
+    moduleToRemove = state.lfos.get(action.id)
+    if(moduleToRemove.getIn(['input', 'amplitude'])) { store.dispatch(disconnectJack(moduleToRemove.getIn(['input', 'amplitude']))) }
+    if(moduleToRemove.getIn(['output', 'lfo'])) { store.dispatch(disconnectJack(moduleToRemove.getIn(['output', 'lfo']))) }
+  }
+
+  return next(action)
+}
+
 export default {
 	connectJackMiddleWare,
   patchingMiddleWare
 }
-
-
-
-// possible pairing
-// -------TO BE DONE------------
-// midi -> OSC.freq
-// ----------DONE---------------
-// lfo -> OSC.frequency
-// lfo -> OSC.pwModulation

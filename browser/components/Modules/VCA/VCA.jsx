@@ -8,6 +8,7 @@ import DisplayTypeDropdown from '../../ModuleComponents/DisplayTypeDropdown'
 import KnobAndAmount from '../../ModuleComponents/KnobAndAmount'
 import Jack from '../../ModuleComponents/Jack'
 import {
+  removeVCA,
   changeVCAGain,
   initializeVCA
 } from './VCAActions'
@@ -39,8 +40,10 @@ export class VCA extends React.Component {
         id={this.props.id}
         order={order}
         changeOrder={(n) => this.props.changeOrder(n)}
+        removeModule={true}
+        removeModuleFunction={() => this.props.removeVCA(this.props.id)}
       >
-        <div className='jack-knob-pair clearfix'>
+        <div className='jack-knob-pair clearfix no-amount-pair'>
           <div className='paired-jack'>
             <Jack name='cv1'
               color={this.props.vca.getIn(['input', 'cv1'])}
@@ -61,7 +64,7 @@ export class VCA extends React.Component {
           </div>
         </div>
 
-        <div className='jack-knob-pair clearfix'>
+        <div className='jack-knob-pair clearfix no-amount-pair'>
           <div className='paired-jack'>
             <Jack name='Audio In 1'
               color={this.props.vca.getIn(['input', 'audioIn1'])}
@@ -82,7 +85,7 @@ export class VCA extends React.Component {
           </div>
         </div>
 
-        <div className='jack-knob-pair clearfix'>
+        <div className='jack-knob-pair clearfix no-amount-pair'>
           <div className='paired-jack'>
             <Jack name='Audio In 2'
               color={this.props.vca.getIn(['input', 'audioIn2'])}
@@ -129,6 +132,7 @@ function mapStateToProps(state, props) {
 export default connect(
   mapStateToProps,
   {
+    removeVCA,
     changeVCAGain,
     initializeVCA
   }

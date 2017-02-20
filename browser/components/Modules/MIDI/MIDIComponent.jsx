@@ -142,9 +142,17 @@ export class MIDI extends React.Component {
             color={this.props.midi.getIn(['output', 'cvToFreq2'])}
             onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'output', 'cvToFreq2', 'connectThisToControlFreqOfOscOrLFO', this.props.midi.getIn(['output', 'cvToFreq2']))}
           />
+          <Jack name='cv out'
+            color={this.props.midi.getIn(['output', 'cvToFreq3'])}
+            onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'output', 'cvToFreq3', 'connectThisToControlFreqOfOscOrLFO', this.props.midi.getIn(['output', 'cvToFreq3']))}
+          />
         </div>
       </ModuleContainer>
     )
+          // <Jack name='gate'
+          //   color={this.props.midi.getIn(['output', 'gate3'])}
+          //   onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'output', 'gate3', 'connectThisToTriggerEnvelope', this.props.midi.getIn(['output', 'gate3']))}
+          // />
   }
 }
 

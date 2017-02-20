@@ -31,11 +31,12 @@
 }
 
 
-.height-but-hide {
+.no-amount-pair {
 	.display-amount-input, .display-amount-view {
-		&:hover {
-			background: $background-color;
-			cursor: auto;
-		}
+		display:none;
+		// &:hover {
+		// 	background: $background-color;
+		// 	cursor: auto;
+		// }
 	}
 }

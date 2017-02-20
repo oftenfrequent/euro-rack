@@ -7,6 +7,7 @@ import DisplayTypeDropdown from '../../ModuleComponents/DisplayTypeDropdown'
 import KnobAndAmount from '../../ModuleComponents/KnobAndAmount'
 import Jack from '../../ModuleComponents/Jack'
 import {
+  removeFilter,
   changeFilType,
   changeFilFreq,
   changeFilRolloff,
@@ -31,6 +32,8 @@ export class Filter extends React.Component {
         id={this.props.id}
         order={order}
         changeOrder={(n) => this.props.changeOrder(n)}
+        removeModule={true}
+        removeModuleFunction={() => this.props.removeFilter(this.props.id)}
       >
         <DisplayTypeDropdown
           optionTypes={this.props.fil.get('typeOptions')}
@@ -67,7 +70,7 @@ export class Filter extends React.Component {
               onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'input', 'resonance', this.props.fil.get('toneComponent').Q, this.props.fil.getIn(['input', 'resonance']))}
             />
           </div>
-          <div className='paired-knob'>
+          <div className='paired-knob no-amount-pair'>
             <KnobAndAmount
               name='Resonance'
               min={this.props.fil.get('minQ')*1000}
@@ -106,6 +109,7 @@ function mapStateToProps(state, props) {
 export default connect(
   mapStateToProps,
   {
+    removeFilter,
     changeFilType,
     changeFilFreq,
     changeFilRolloff,

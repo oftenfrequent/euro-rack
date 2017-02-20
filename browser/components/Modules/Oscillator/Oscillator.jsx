@@ -9,6 +9,7 @@ import DisplayTypeDropdown from '../../ModuleComponents/DisplayTypeDropdown'
 import KnobAndAmount from '../../ModuleComponents/KnobAndAmount'
 import Jack from '../../ModuleComponents/Jack'
 import {
+  removeOscillator,
   changeOscType,
   changeOscFreq,
   changeOscModFreq
@@ -36,6 +37,8 @@ export class Oscillator extends React.Component {
         id={this.props.id}
         order={order}
         changeOrder={(n) => this.props.changeOrder(n)}
+        removeModule={true}
+        removeModuleFunction={() => this.props.removeOscillator(this.props.id)}
       >
         <DisplayTypeDropdown
           optionTypes={this.props.vco.get('typeOptions')}
@@ -70,18 +73,16 @@ export class Oscillator extends React.Component {
             />
           </div>
           <div className='paired-knob'>
-            <div className='height-but-hide'>
-              <KnobAndAmount
-                name='NOTHING'
-                type='number'
-                min={this.props.vco.get('min')}
-                max={this.props.vco.get('max')}
-                value={this.props.vco.get('frequency')}
-                degreesTotal={270}
-                sensitivity={100}
-                onNewValue={(v) => this.props.changeOscFreq(v, this.props.id, this.props.vco.getIn(['input', 'frequency']), this.props.vco.getIn(['input', 'cv']))}
-              />
-            </div>
+            <KnobAndAmount
+              name='NOTHING'
+              type='number'
+              min={this.props.vco.get('min')}
+              max={this.props.vco.get('max')}
+              value={this.props.vco.get('frequency')}
+              degreesTotal={270}
+              sensitivity={100}
+              onNewValue={(v) => this.props.changeOscFreq(v, this.props.id, this.props.vco.getIn(['input', 'frequency']), this.props.vco.getIn(['input', 'cv']))}
+            />
           </div>
         </div>
         <div className={pwPairedClasses}>
@@ -92,8 +93,6 @@ export class Oscillator extends React.Component {
             />
           </div>
           <div className='paired-knob'>
-            <div className='height-but-hide'>
-            </div>
             <KnobAndAmount
               name='Modulation'
               type='number'
@@ -128,6 +127,7 @@ function mapStateToProps(state, props) {
 export default connect(
   mapStateToProps,
   {
+    removeOscillator,
     changeOscType,
     changeOscFreq,
     changeOscModFreq

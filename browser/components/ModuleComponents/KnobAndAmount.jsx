@@ -19,20 +19,17 @@ export class KnobAndAmount extends React.Component {
 
   render() {
     return (
-      <div>
-        <div className={ this.props.hideDisplay ? 'height-but-hide' : ''}>
-          <DisplayAmount
-            type={this.props.type || 'number'}
-            suffix={this.props.suffix || ''}
-            min={this.props.min}
-            max={this.props.max}
-            value={this.props.value}
-            hideDisplay={this.props.hideDisplay}
-            changeValue={(v) => this.props.onNewValue(v)}
-            active={this.state.active}
-            changeActive={() => this.onChangeActive()}
-          />
-        </div>
+      <div className={ this.props.hideDisplay ? 'no-amount' : ''}>
+        <DisplayAmount
+          type={this.props.type || 'number'}
+          suffix={this.props.suffix || ''}
+          min={this.props.min}
+          max={this.props.max}
+          value={this.props.value}
+          changeValue={(v) => this.props.onNewValue(v)}
+          active={this.state.active}
+          changeActive={() => this.onChangeActive()}
+        />
         <Knob
           name={this.props.name}
           min={this.props.min}

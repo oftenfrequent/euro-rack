@@ -13,13 +13,11 @@ export class DisplayAmount extends React.Component {
   }
 
   clickValue(e) {
-    if(!this.props.hideDisplay) {
-      setTimeout(() => {
-        console.log('SET ACTIVE TO INPUT', ReactDOM.findDOMNode(this.refs.input))
-        ReactDOM.findDOMNode(this.refs.input).focus()
-      }, 30)
-      this.props.changeActive()
-    }
+    setTimeout(() => {
+      // console.log('SET ACTIVE TO INPUT', ReactDOM.findDOMNode(this.refs.input))
+      ReactDOM.findDOMNode(this.refs.input).focus()
+    }, 30)
+    this.props.changeActive()
   }
 
 

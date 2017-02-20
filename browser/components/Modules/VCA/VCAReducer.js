@@ -8,6 +8,8 @@ export default (state = {}, action) => {
 		case 'ADD_VCA' :
 			const newID = uuid.v4()
 			return state.set(newID, fromJS(VCAInitialStateCreator()))
+		case 'REMOVE_VCA' :
+			return state.delete(action.id)
 		case 'CONNECT_JACK' :
 			if (action.module === 'vcas') {
 				return state.setIn([action.id, action.direction, action.cvName], action.color )

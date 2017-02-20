@@ -8,6 +8,8 @@ export default (state = {}, action) => {
 		case 'ADD_FIL' :
 			const newID = uuid.v4()
 			return state.set(newID, fromJS(FilterInitialStateCreator()))
+		case 'REMOVE_FIL' :
+			return state.delete(action.id)
 
 		case 'CONNECT_JACK' :
 			if (action.module === 'filters') {
