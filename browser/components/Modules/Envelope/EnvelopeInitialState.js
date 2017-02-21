@@ -17,13 +17,14 @@ const initialState = () => {
 	  decay: 200,
 	  sustain: 1000,
 	  release: 600,
+	  scaleMin: 0,
+	  scaleMax: 1,
 		attackCurve: 'linear',
 		releaseCurve: 'exponential',
 	  curveOptions: ['linear', 'exponential', 'sine', 'ease', 'bounce', 'ripple', 'step'],
 	  selectedTimeLength: 'short',
 	  timeLengths: ['short', 'medium', 'long'],
 		input: {
-			sound: null,
 			frequency: null,
 			trigger: null
 		},

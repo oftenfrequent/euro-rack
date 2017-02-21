@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 // import PureRenderMixin from 'react-addons-pure-render-mixin'
 
 import ModuleContainer from '../../ModuleComponents/ModuleContainer'
-import DisplayAmount from '../../ModuleComponents/DisplayAmount'
 import DisplayTypeDropdown from '../../ModuleComponents/DisplayTypeDropdown'
 import KnobAndAmount from '../../ModuleComponents/KnobAndAmount'
 import Jack from '../../ModuleComponents/Jack'

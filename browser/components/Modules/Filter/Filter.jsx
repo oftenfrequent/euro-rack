@@ -63,14 +63,14 @@ export class Filter extends React.Component {
             />
           </div>
         </div>
-        <div className='jack-knob-pair clearfix'>
+        <div className='jack-knob-pair clearfix no-amount-pair'>
           <div className='paired-jack'>
             <Jack name='res cv'
               color={this.props.fil.getIn(['input', 'resonance'])}
               onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'input', 'resonance', this.props.fil.get('toneComponent').Q, this.props.fil.getIn(['input', 'resonance']))}
             />
           </div>
-          <div className='paired-knob no-amount-pair'>
+          <div className='paired-knob'>
             <KnobAndAmount
               name='Resonance'
               min={this.props.fil.get('minQ')*1000}

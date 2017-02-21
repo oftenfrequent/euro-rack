@@ -10,7 +10,7 @@ const initialState = () => {
 			frequency:0.01,
 			amplitude:1,
 			units:Tone.Type.Default
-		}).start(),
+		}).syncFrequency().start(),
 		timelineBased: false,
 		flexOrder: 0,
 		min: 0.01, // TODO: get rid of

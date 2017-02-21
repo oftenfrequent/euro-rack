@@ -3,7 +3,7 @@ import Tone from 'tone'
 import { disconnectJack } from '../components/EuroRack/EuroRackActions'
 import { changeOscFreq } from '../components/Modules/Oscillator/OscillatorActions'
 import { changeFilFreq } from '../components/Modules/Filter/FilterActions'
-import { changeLfoMidValue } from '../components/Modules/LFO/LFOActions'
+import { changeLfoMidValue, syncLfoNewBPM } from '../components/Modules/LFO/LFOActions'
 import { triggerAttack, triggerRelease } from '../components/Modules/Envelope/EnvelopeActions'
 
 
@@ -43,6 +43,38 @@ export const connectJackMiddleWare = store => next => action => {
 
       } else {
         action['isLFO'] = false
+        if (outputConnectionObj.get('module') === 'envelopes') {
+          // output is an LFO
+          action['isENV'] = true
+          action['envID'] = outputConnectionObj.get('id')
+
+          if (inputConnectionObj.get('cvName') === 'frequency' || inputConnectionObj.get('cvName') === 'cvFrequency') {
+            const input = state[inputConnectionObj.get('module')].getIn([inputConnectionObj.get('id')])
+            console.log('input', input.toJS())
+            action['minValue'] = input.get('min')
+            action['maxValue'] = input.get('max')
+          }
+          if (inputConnectionObj.get('cvName') === 'cv1' || inputConnectionObj.get('cvName') === 'cv1') {
+            const input = state[inputConnectionObj.get('module')].getIn([inputConnectionObj.get('id')])
+            console.log('input', input.toJS())
+            action['minValue'] = 0
+            action['maxValue'] = 1
+          }
+          // if (inputConnectionObj.get('cvName') === 'pwModulation') {
+          //   const input = state[inputConnectionObj.get('module')].getIn([inputConnectionObj.get('id')])
+          //   console.log('input', input.toJS())
+          //   action['midValue'] = 0.5
+          //   action['minValue'] = 0
+          //   action['maxValue'] = 1
+          // }
+          // if (inputConnectionObj.get('cvName') === 'resonance') {
+          //   const input = state[inputConnectionObj.get('module')].getIn([inputConnectionObj.get('id')])
+          //   console.log('input', input.toJS())
+          //   action['midValue'] = 6
+          //   action['minValue'] = 0
+          //   action['maxValue'] = 12
+          // }
+        }
       }
     }
   } else if (action.type === 'DISCONNECT_JACK') {
@@ -78,7 +110,6 @@ export const connectJackMiddleWare = store => next => action => {
 
   return next(action)
 }
-
 
 export const patchingMiddleWare = store => next => action => {
   const state = store.getState()
@@ -177,10 +208,48 @@ export const deleteModuleMiddleWare = store => next => action => {
     if(moduleToRemove.getIn(['output', 'lfo'])) { store.dispatch(disconnectJack(moduleToRemove.getIn(['output', 'lfo']))) }
   }
 
+  if(action.type === 'REMOVE_VCA') {
+    moduleToRemove = state.vcas.get(action.id)
+    if(moduleToRemove.getIn(['input', 'cv1'])) { store.dispatch(disconnectJack(moduleToRemove.getIn(['input', 'cv1']))) }
+    if(moduleToRemove.getIn(['input', 'cv2'])) { store.dispatch(disconnectJack(moduleToRemove.getIn(['input', 'cv2']))) }
+    if(moduleToRemove.getIn(['input', 'audioIn1'])) { store.dispatch(disconnectJack(moduleToRemove.getIn(['input', 'audioIn1']))) }
+    if(moduleToRemove.getIn(['input', 'audioIn2'])) { store.dispatch(disconnectJack(moduleToRemove.getIn(['input', 'audioIn2']))) }
+    if(moduleToRemove.getIn(['output', 'audio'])) { store.dispatch(disconnectJack(moduleToRemove.getIn(['output', 'audio']))) }
+  }
+
+  if(action.type === 'REMOVE_ENV') {
+    moduleToRemove = state.envelopes.get(action.id)
+    if(moduleToRemove.getIn(['input', 'frequency'])) { store.dispatch(disconnectJack(moduleToRemove.getIn(['input', 'frequency']))) }
+    if(moduleToRemove.getIn(['input', 'trigger'])) { store.dispatch(disconnectJack(moduleToRemove.getIn(['input', 'trigger']))) }
+    if(moduleToRemove.getIn(['output', 'envelope'])) { store.dispatch(disconnectJack(moduleToRemove.getIn(['output', 'envelope']))) }
+  }
+
+  if(action.type === 'REMOVE_FIL') {
+    moduleToRemove = state.filters.get(action.id)
+    if(moduleToRemove.getIn(['input', 'frequency'])) { store.dispatch(disconnectJack(moduleToRemove.getIn(['input', 'frequency']))) }
+    if(moduleToRemove.getIn(['input', 'sound'])) { store.dispatch(disconnectJack(moduleToRemove.getIn(['input', 'sound']))) }
+    if(moduleToRemove.getIn(['input', 'resonance'])) { store.dispatch(disconnectJack(moduleToRemove.getIn(['input', 'resonance']))) }
+    if(moduleToRemove.getIn(['output', 'sound'])) { store.dispatch(disconnectJack(moduleToRemove.getIn(['output', 'sound']))) }
+  }
+
+  return next(action)
+}
+
+export const changeBPM = store => next => action => {
+  const state = store.getState()
+  if (action.type === 'CHANGE_BPM') {
+    Array.from(state.lfos.keys()).map((id) => {
+      if (state.lfos.getIn([id, 'timelineBased'])) {
+        store.dispatch(syncLfoNewBPM(id))
+      }
+    })
+  }
   return next(action)
 }
 
 export default {
 	connectJackMiddleWare,
-  patchingMiddleWare
+  patchingMiddleWare,
+  deleteModuleMiddleWare,
+  changeBPM
 }

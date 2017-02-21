@@ -2,7 +2,6 @@ import React from 'react'
 import { connect } from 'react-redux'
 
 import ModuleContainer from '../../ModuleComponents/ModuleContainer'
-import DisplayAmount from '../../ModuleComponents/DisplayAmount'
 import DisplayTypeDropdown from '../../ModuleComponents/DisplayTypeDropdown'
 import KnobAndAmount from '../../ModuleComponents/KnobAndAmount'
 import Jack from '../../ModuleComponents/Jack'

@@ -47,3 +47,11 @@ export function changeLfoMidValue(id, midValue) {
 		midValue
 	}
 }
+
+export function syncLfoNewBPM(id, freq) {
+	return {
+		type: 'SYNC_LFO_FREQ',
+		id,
+		freq
+	}
+}

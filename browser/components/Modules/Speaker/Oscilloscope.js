@@ -56,9 +56,9 @@ export const stopVisualization = (canvas, canvasCtx) => {
   requestFrameId = null
   canvasCtx.fillStyle = 'rgb(128,128,128)'
   canvasCtx.fillRect(0, 0, canvas.width, canvas.height)
-  canvasCtx.lineWidth = 2
-  canvasCtx.beginPath()
-  canvasCtx.moveTo(0,canvas.height)
-  canvasCtx.lineTo(canvas.width, canvas.height)
-  canvasCtx.stroke()
+  // canvasCtx.lineWidth = 2
+  // canvasCtx.beginPath()
+  // canvasCtx.moveTo(0,canvas.height)
+  // canvasCtx.lineTo(canvas.width, canvas.height)
+  // canvasCtx.stroke()
 }

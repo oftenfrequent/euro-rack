@@ -1,3 +1,4 @@
+import Tone from 'tone'
 import uuid from 'uuid'
 import {fromJS} from 'immutable'
 
@@ -41,6 +42,7 @@ export default (state = {}, action) => {
 									.updateIn([action.id, 'toneComponent'], (lfo) => {
 										// if (isTimeline) {
 											lfo.frequency.value = action.frequency
+											lfo.syncFrequency()
 										// } else {
 										// 	lfo.frequency.value = action.frequency / 100
 										// }
@@ -51,6 +53,7 @@ export default (state = {}, action) => {
 			return changeToneLFOParamters(action.id, state)
 
 		case 'CHANGE_LFO_PERCENT' :
+console.log('Tone.Transport.bpm.value', Tone.Transport.bpm.value)
 			state = state.setIn([action.id, 'percentChange'], action.percent )
 			return changeToneLFOParamters(action.id, state, action)
 
@@ -65,6 +68,8 @@ export default (state = {}, action) => {
 										return lfo
 									})
 									.updateIn([action.id, 'timelineBased'], v => !v)
+		case 'SYNC_LFO_FREQ' :
+			return state.updateIn([action.id, 'toneComponent'], lfo => lfo.syncFrequency())
 	}
 	return state
 }

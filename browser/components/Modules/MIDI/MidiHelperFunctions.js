@@ -38,12 +38,13 @@ const laptopKeyMap = {
 
 // Keep track of keydown and keyup events so that the keydown event doesn't
 // send messages repeatedly until keyup.
-const flags = {};
+// const flags = {};
+const flags = []
 
-export const formatToMidiMessage = (e, command, cb, id, gateColor1, gateColor2, freqColor1, freqColor2) => {
+export const formatToMidiMessage = (e, command, attackCb, releaseCb, id, gateColor1, gateColor2, freqColor1, freqColor2) => {
   const keyCode = (typeof e.which === 'number')? e.which : e.keyCode
 
-  const note = laptopKeyMap[keyCode]
+  let note = laptopKeyMap[keyCode]
 
   if (keyCode === 189 && command !== 0x08) {
     octave -= 1
@@ -51,8 +52,32 @@ export const formatToMidiMessage = (e, command, cb, id, gateColor1, gateColor2, 
   } else if (keyCode === 187 && command !== 0x08) {
     octave += 1
     return false
-  } else if (note === undefined || (flags[note] && command === 0x9)) {
+  // } else if (note === undefined || (flags[note] && command === 0x9)) {
+  } else if (note === undefined || (flags.indexOf(note) > -1 && command === 0x9)) {
     return false
+  }
+
+  let cb
+
+  // Update the flag table
+  if (command === 0x9) {
+    // flags[note] = true
+    flags.push(note)
+    cb = attackCb
+  }
+  else {
+    // flags[note] = false
+    flags.splice(flags.indexOf(note),1)
+    cb = releaseCb
+  }
+  console.log('flags', flags)
+
+  // keyup and still have a note down
+  if (command === 0x08 && flags.length) {
+    console.log('HERERE?')
+    note = flags[flags.length - 1]
+    command = 0x09
+    cb = attackCb
   }
 
   // Build the data
@@ -68,12 +93,11 @@ export const formatToMidiMessage = (e, command, cb, id, gateColor1, gateColor2, 
     timestamp: 0
   }
 
+
+
   // Send it
   onMidiMessage(msg, cb, id, gateColor1, gateColor2, freqColor1, freqColor2)
 
-  // Update the flag table
-  if (command === 0x9) { flags[note] = true }
-  else { flags[note] = false }
 }
 
 export const onMidiMessage = (e, cb, id, gateColor1, gateColor2, freqColor1, freqColor2) => {

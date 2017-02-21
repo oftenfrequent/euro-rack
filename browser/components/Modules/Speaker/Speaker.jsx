@@ -4,7 +4,8 @@ import Tone from 'tone'
 
 import ModuleContainer from '../../ModuleComponents/ModuleContainer'
 import Jack from '../../ModuleComponents/Jack'
-import { initSpeaker } from './SpeakerActions'
+import DisplayAmount from '../../ModuleComponents/DisplayAmount'
+import { initSpeaker, changeBPM } from './SpeakerActions'
 import {
   visualize,
   stopVisualization
@@ -17,7 +18,8 @@ export class Speaker extends React.Component {
       speakerArray: [6,10,14,14,14,14,14,14,14,14,10,6],
       canvas: null,
       canvasCtx: null,
-      oscilloscopeOn: false
+      oscilloscopeOn: false,
+      bpmActive: false
     }
   }
 
@@ -42,6 +44,10 @@ export class Speaker extends React.Component {
     }
   }
 
+  onChangeActive() {
+    this.setState({bpmActive: !this.state.bpmActive})
+  }
+
   render(){
     const order = this.props.speaker.get('flexOrder') ? this.props.speaker.get('flexOrder') : this.props.order
     return (
@@ -50,6 +56,18 @@ export class Speaker extends React.Component {
         order={order}
         draggable={false}
       >
+        <div className='bpm-container'>
+          <DisplayAmount
+            type='number'
+            suffix='bpm'
+            min={this.props.speaker.get('min')}
+            max={this.props.speaker.get('max')}
+            value={this.props.speaker.get('currentBPM')}
+            changeValue={(v) => this.props.changeBPM(v)}
+            active={this.state.bpmActive}
+            changeActive={() => this.onChangeActive()}
+          />
+        </div>
         <div className='master-out-jack'>
           <Jack
             name='in'
@@ -67,7 +85,6 @@ export class Speaker extends React.Component {
             <div className='speaker-hole-row' key={i} >
               {Array.from(Array(num)).map( (i,j) => <div className='speaker-hole' key={j}></div>)}
             </div>
-
           )}
         </div>
       </ModuleContainer>
@@ -84,6 +101,7 @@ function mapStateToProps(state) {
 export default connect(
   mapStateToProps,
   {
-    initSpeaker
+    initSpeaker,
+    changeBPM
   }
 )(Speaker)

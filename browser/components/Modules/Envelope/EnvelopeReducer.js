@@ -11,6 +11,9 @@ export default (state = {}, action) => {
 		case 'REMOVE_ENV' :
 			return state.delete(action.id)
 		case 'CONNECT_JACK' :
+			if (action.isENV) {
+				state = setEnvelopeParamsOnConnection(state, action)
+			}
 			if (action.module === 'envelopes') {
 				return state.setIn([action.id, action.direction, action.cvName], action.color )
 			} else {
@@ -52,6 +55,16 @@ export default (state = {}, action) => {
 			return state.updateIn([action.id, 'toneComponent'], (env) => env.triggerRelease())
 	}
 	return state
+}
+
+const setEnvelopeParamsOnConnection = (state, action) => {
+	return state.setIn([action.envID, 'scaleMin'], action.minValue)
+							.setIn([action.envID, 'scaleMax'], action.maxValue)
+							.updateIn([action.envID, 'toneComponent'], (env) => {
+								env.min = action.minValue
+								env.max = action.maxValue
+								return env
+							})
 }
 
 const getTimeLength = (state, action) => {

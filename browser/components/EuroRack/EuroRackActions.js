@@ -16,6 +16,13 @@ export function connectJack(color, module, id, direction, cvName, toneObject) {
 		// minValue
 		// maxValue
 		// distance
+
+		// isENV
+
+		// if env
+		// envID
+		// minValue
+		// maxValue
 	}
 }
 

@@ -2,7 +2,6 @@ import React from 'react'
 import { connect } from 'react-redux'
 
 import ModuleContainer from '../../ModuleComponents/ModuleContainer'
-import DisplayAmount from '../../ModuleComponents/DisplayAmount'
 import DisplayTypeDropdown from '../../ModuleComponents/DisplayTypeDropdown'
 import Jack from '../../ModuleComponents/Jack'
 import {
@@ -33,6 +32,7 @@ export class MIDI extends React.Component {
   keydownFunction(e) {
     formatToMidiMessage(e, 0x09,
       this.props.midiGateAttackTrigger,
+      this.props.midiGateReleaseTrigger,
       this.props.id,
       this.props.midi.getIn(['output', 'gate1']),
       this.props.midi.getIn(['output', 'gate2']),
@@ -43,6 +43,7 @@ export class MIDI extends React.Component {
 
   keyupFunction(e) {
     formatToMidiMessage(e, 0x08,
+      this.props.midiGateAttackTrigger,
       this.props.midiGateReleaseTrigger,
       this.props.id,
       this.props.midi.getIn(['output', 'gate1']),
