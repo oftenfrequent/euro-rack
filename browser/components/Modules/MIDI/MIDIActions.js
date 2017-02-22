@@ -16,11 +16,7 @@ export function midiGateAttackTrigger(id, freq, gateColor1, gateColor2, freqColo
 	return {
 		type: 'MIDI_GATE_ATTACK_TRIGGER',
 		id,
-		freq,
-		gateColor1,
-		gateColor2,
-		freqColor1,
-		freqColor2
+		freq
 	}
 }
 export function midiGateReleaseTrigger(id, freq, gateColor1, gateColor2) {
@@ -28,7 +24,5 @@ export function midiGateReleaseTrigger(id, freq, gateColor1, gateColor2) {
 		type: 'MIDI_GATE_RELEASE_TRIGGER',
 		id,
 		freq,
-		gateColor1,
-		gateColor2
 	}
 }

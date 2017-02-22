@@ -4,10 +4,7 @@ import { connect } from 'react-redux'
 import ModuleContainer from '../../ModuleComponents/ModuleContainer'
 import DisplayTypeDropdown from '../../ModuleComponents/DisplayTypeDropdown'
 import Jack from '../../ModuleComponents/Jack'
-import {
-  onMidiMessage,
-  formatToMidiMessage
-} from './MidiHelperFunctions'
+import MidiHelper from './MidiHelperFunctions'
 import {
   errorConnectingMidi,
   setMidiInputDevice,
@@ -20,6 +17,7 @@ export class MIDI extends React.Component {
   constructor(props){
     super(props)
     this.state = {
+      midiHelper: new MidiHelper(props.midiGateAttackTrigger, props.midiGateReleaseTrigger),
       midiOptions: [],
       midiDevice: 'keyboard',
       attackFn: this.keydownFunction.bind(this),
@@ -30,27 +28,17 @@ export class MIDI extends React.Component {
   componentDidMount() { this.getMidiInputDevices() }
 
   keydownFunction(e) {
-    formatToMidiMessage(e, 0x09,
-      this.props.midiGateAttackTrigger,
-      this.props.midiGateReleaseTrigger,
-      this.props.id,
-      this.props.midi.getIn(['output', 'gate1']),
-      this.props.midi.getIn(['output', 'gate2']),
-      this.props.midi.getIn(['output', 'cvToFreq1']),
-      this.props.midi.getIn(['output', 'cvToFreq2'])
-    )
+    const midiMessage = this.state.midiHelper.formatComputerKeyboardToMidiMessage(e, 0x09)
+    if (midiMessage) {
+      this.state.midiHelper.onMidiMessage(midiMessage, this.props.id)
+    }
   }
 
   keyupFunction(e) {
-    formatToMidiMessage(e, 0x08,
-      this.props.midiGateAttackTrigger,
-      this.props.midiGateReleaseTrigger,
-      this.props.id,
-      this.props.midi.getIn(['output', 'gate1']),
-      this.props.midi.getIn(['output', 'gate2']),
-      this.props.midi.getIn(['output', 'cvToFreq1']),
-      this.props.midi.getIn(['output', 'cvToFreq2'])
-    )
+    const midiMessage = this.state.midiHelper.formatComputerKeyboardToMidiMessage(e, 0x08)
+    if (midiMessage) {
+      this.state.midiHelper.onMidiMessage(midiMessage, this.props.id)
+    }
   }
 
   getMidiInputDevices(access) {
@@ -85,7 +73,7 @@ export class MIDI extends React.Component {
     } else {
       document.removeEventListener('keydown', this.state.attackFn )
       document.removeEventListener('keyup', this.state.releaseFn )
-      this.state.midiOptions[e.target.value].onmidimessage = (e) => onMidiMessage(e)
+      this.state.midiOptions[e.target.value].onmidimessage = (e) => this.state.midiHelper.onMidiMessage(e, this.props.id)
       this.props.setMidiInputDevice(this.props.id, this.state.midiOptions[e.target.value])
     }
 

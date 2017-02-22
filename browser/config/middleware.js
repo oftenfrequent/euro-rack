@@ -113,71 +113,61 @@ export const connectJackMiddleWare = store => next => action => {
 
 export const patchingMiddleWare = store => next => action => {
   const state = store.getState()
+  const freqColor1 = state.midis.getIn([action.id, 'output', 'cvToFreq1'])
+  const freqColor2 = state.midis.getIn([action.id, 'output', 'cvToFreq2'])
+  const freqColor3 = state.midis.getIn([action.id, 'output', 'cvToFreq3'])
+  const gateColor1 = state.midis.getIn([action.id, 'output', 'gate1'])
+  const gateColor2 = state.midis.getIn([action.id, 'output', 'gate2'])
+  const gateColor3 = state.midis.getIn([action.id, 'output', 'gate3'])
+  const gateArray = [gateColor1, gateColor2, gateColor3]
   if (action.type === 'MIDI_GATE_ATTACK_TRIGGER') {
     // use color of patch to find what freqcv is routed to
-    if (action.freqColor1) {
-      const inputModule = state.eurorack.getIn(['patchCables', 'connections', action.freqColor1, 'input'])
-
-      if (inputModule.get('module') === 'oscillators') {
-        if (inputModule.get('cvName') === 'frequency') {
-          const freqColor1 = state.oscillators.getIn([inputModule.get('id'), 'input', 'frequency'])
-          const cvColor = state.oscillators.getIn([inputModule.get('id'), 'input', 'cvFrequency'])
-          // call appropriate fn
-          store.dispatch(changeOscFreq(Tone.Frequency(action.freq).toFrequency(), inputModule.get('id'), freqColor1, cvColor))
+    [freqColor1, freqColor2, freqColor3].map( color => {
+      if(color) {
+        const inputModule = state.eurorack.getIn(['patchCables', 'connections', color, 'input'])
+        if (inputModule.get('module') === 'oscillators') {
+          if (inputModule.get('cvName') === 'frequency') {
+            const cvColor = state.oscillators.getIn([inputModule.get('id'), 'input', 'cvFrequency'])
+            // call appropriate fn
+            store.dispatch(changeOscFreq(Tone.Frequency(action.freq).toFrequency(), inputModule.get('id'), color, cvColor))
+          }
+        }
+        if (inputModule.get('module') === 'filters') {
+          if (inputModule.get('cvName') === 'frequency') {
+            store.dispatch(changeFilFreq(inputModule.get('id'), Tone.Frequency(action.freq).toFrequency()))
+          }
         }
       }
-    }
-    if (action.freqColor2) {
-      const inputModule = state.eurorack.getIn(['patchCables', 'connections', action.freqColor2, 'input'])
+    })
 
-      if (inputModule.get('module') === 'oscillators') {
-        if (inputModule.get('cvName') === 'frequency') {
-          const freqColor2 = state.oscillators.getIn([inputModule.get('id'), 'input', 'frequency'])
-      console.log('freqColor2', freqColor2)
-          const cvColor = state.oscillators.getIn([inputModule.get('id'), 'input', 'cvFrequency'])
-          // call appropriate fn
-          store.dispatch(changeOscFreq(Tone.Frequency(action.freq).toFrequency(), inputModule.get('id'), freqColor2, cvColor))
+    gateArray.map( color => {
+      if (color) {
+        const gateInputModule = state.eurorack.getIn(['patchCables', 'connections', color, 'input'])
+
+        if (gateInputModule.get('module') === 'envelopes') {
+          store.dispatch(triggerAttack(gateInputModule.get('id')))
         }
+        // LFO?????? TRIGGER START?
+        // if (gateInputModule.get('module') === 'envelopes') {
+        //   store.dispatch(triggerAttack(gateInputModule.get('id')))
+        // }
       }
-    }
-    if (action.gateColor1) {
-      const gateInputModule = state.eurorack.getIn(['patchCables', 'connections', action.gateColor1, 'input'])
+    })
 
-      if (gateInputModule.get('module') === 'envelopes') {
-        store.dispatch(triggerAttack(gateInputModule.get('id')))
-      }
-      // LFO?????? TRIGGER START?
-      // if (gateInputModule.get('module') === 'envelopes') {
-      //   store.dispatch(triggerAttack(gateInputModule.get('id')))
-      // }
-    }
-    if (action.gateColor2) {
-      const gateInputModule = state.eurorack.getIn(['patchCables', 'connections', action.gateColor2, 'input'])
-
-      if (gateInputModule.get('module') === 'envelopes') {
-        store.dispatch(triggerAttack(gateInputModule.get('id')))
-      }
-      // LFO?????? TRIGGER START?
-      // if (gateInputModule.get('module') === 'envelopes') {
-      //   store.dispatch(triggerAttack(gateInputModule.get('id')))
-      // }
-    }
   } else if (action.type === 'MIDI_GATE_RELEASE_TRIGGER') {
-    if (action.gateColor1) {
-      const gateInputModule1 = state.eurorack.getIn(['patchCables', 'connections', action.gateColor1, 'input'])
+    gateArray.map( color => {
+      if (color) {
+        const gateInputModule = state.eurorack.getIn(['patchCables', 'connections', color, 'input'])
 
-      if (gateInputModule1.get('module') === 'envelopes') {
-        store.dispatch(triggerRelease(gateInputModule1.get('id')))
+        if (gateInputModule.get('module') === 'envelopes') {
+          store.dispatch(triggerRelease(gateInputModule.get('id')))
+        }
+        // LFO?????? TRIGGER START?
+        // if (gateInputModule.get('module') === 'envelopes') {
+        //   store.dispatch(triggerAttack(gateInputModule.get('id')))
+        // }
       }
-    }
-    if (action.gateColor2) {
-      const gateInputModule2 = state.eurorack.getIn(['patchCables', 'connections', action.gateColor2, 'input'])
-
-      if (gateInputModule2.get('module') === 'envelopes') {
-        store.dispatch(triggerRelease(gateInputModule2.get('id')))
-      }
-    }
-
+    })
   } else if (action.type === 'CHANGE_OSC_FREQ') {
     if (action.freqInputColor) {
       const outputModule = state.eurorack.getIn(['patchCables', 'connections', action.freqInputColor, 'output'])
