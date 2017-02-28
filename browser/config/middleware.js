@@ -5,7 +5,9 @@ import { changeOscFreq } from '../components/Modules/Oscillator/OscillatorAction
 import { changeFilFreq } from '../components/Modules/Filter/FilterActions'
 import { changeLfoMidValue, syncLfoNewBPM } from '../components/Modules/LFO/LFOActions'
 import { triggerAttack, triggerRelease } from '../components/Modules/Envelope/EnvelopeActions'
+import { changeVCAGain } from '../components/Modules/VCA/VCAActions'
 
+// TODO: LFO plugged into freq on VCO: change Freq doesn't work right!!
 
 export const connectJackMiddleWare = store => next => action => {
   const state = store.getState()
@@ -14,6 +16,7 @@ export const connectJackMiddleWare = store => next => action => {
     if (state.eurorack.getIn(['patchCables', 'active'])) {
       const outputConnectionObj = state.eurorack.getIn(['patchCables', 'output']) ? state.eurorack.getIn(['patchCables', 'output']) : fromJS(action)
       const inputConnectionObj = state.eurorack.getIn(['patchCables', 'input']) ? state.eurorack.getIn(['patchCables', 'input']) : fromJS(action)
+
       if (outputConnectionObj.get('module') === 'lfos') {
         // output is an LFO
         action['isLFO'] = true
@@ -21,24 +24,26 @@ export const connectJackMiddleWare = store => next => action => {
 
         if (inputConnectionObj.get('cvName') === 'frequency' || inputConnectionObj.get('cvName') === 'cvFrequency') {
           const input = state[inputConnectionObj.get('module')].getIn([inputConnectionObj.get('id')])
-          console.log('input', input.toJS())
           action['midValue'] = input.get('toneComponent').frequency.value
           action['minValue'] = input.get('min')
           action['maxValue'] = input.get('max')
         }
         if (inputConnectionObj.get('cvName') === 'pwModulation') {
           const input = state[inputConnectionObj.get('module')].getIn([inputConnectionObj.get('id')])
-          console.log('input', input.toJS())
           action['midValue'] = 0.5
           action['minValue'] = 0
           action['maxValue'] = 1
         }
         if (inputConnectionObj.get('cvName') === 'resonance') {
           const input = state[inputConnectionObj.get('module')].getIn([inputConnectionObj.get('id')])
-          console.log('input', input.toJS())
           action['midValue'] = 6
           action['minValue'] = 0
           action['maxValue'] = 12
+        }
+        if (inputConnectionObj.get('cvName') === 'cv1') {
+          action['midValue'] = (state.vcas.getIn([inputConnectionObj.get('id'), 'outputValue']) / 1000 )
+          action['minValue'] = 0
+          action['maxValue'] = 1
         }
 
       } else {
@@ -50,26 +55,22 @@ export const connectJackMiddleWare = store => next => action => {
 
           if (inputConnectionObj.get('cvName') === 'frequency' || inputConnectionObj.get('cvName') === 'cvFrequency') {
             const input = state[inputConnectionObj.get('module')].getIn([inputConnectionObj.get('id')])
-            console.log('input', input.toJS())
             action['minValue'] = input.get('min')
             action['maxValue'] = input.get('max')
           }
           if (inputConnectionObj.get('cvName') === 'cv1' || inputConnectionObj.get('cvName') === 'cv1') {
             const input = state[inputConnectionObj.get('module')].getIn([inputConnectionObj.get('id')])
-            console.log('input', input.toJS())
             action['minValue'] = 0
             action['maxValue'] = 1
           }
           // if (inputConnectionObj.get('cvName') === 'pwModulation') {
           //   const input = state[inputConnectionObj.get('module')].getIn([inputConnectionObj.get('id')])
-          //   console.log('input', input.toJS())
           //   action['midValue'] = 0.5
           //   action['minValue'] = 0
           //   action['maxValue'] = 1
           // }
           // if (inputConnectionObj.get('cvName') === 'resonance') {
           //   const input = state[inputConnectionObj.get('module')].getIn([inputConnectionObj.get('id')])
-          //   console.log('input', input.toJS())
           //   action['midValue'] = 6
           //   action['minValue'] = 0
           //   action['maxValue'] = 12
@@ -78,31 +79,46 @@ export const connectJackMiddleWare = store => next => action => {
       }
     }
   } else if (action.type === 'DISCONNECT_JACK') {
-    const inputModule  = state.eurorack.getIn(['patchCables', 'connections', action.color, 'input'])
-    const outputModule = state.eurorack.getIn(['patchCables', 'connections', action.color, 'output'])
-    console.log('inputModule', inputModule.toJS())
-    console.log('outputModule', outputModule.toJS())
-    action['inputModule']     = inputModule.get('module')
-    action['inputId']         = inputModule.get('id')
-    action['inputToneObject'] = inputModule.get('toneObject')
-    action['inputCvName']     = inputModule.get('cvName')
+    let inputModule  = state.eurorack.getIn(['patchCables', 'connections', action.color, 'input'])
+    let outputModule = state.eurorack.getIn(['patchCables', 'connections', action.color, 'output'])
 
-    action['outputModule']      = outputModule.get('module')
-    action['outputId']          = outputModule.get('id')
-    action['outputToneObject']  = outputModule.get('toneObject')
-    action['outputCvName']      = outputModule.get('cvName')
+    if (!inputModule && !outputModule) {
+      action['singleJack'] = true
+      inputModule = state.eurorack.getIn(['patchCables', 'input'])
+      outputModule = state.eurorack.getIn(['patchCables', 'output'])
+    }
 
-    if (outputModule.get('cvName') === 'lfo') {
-      if (inputModule.get('cvName') === 'frequency' || iinputModule.get('cvName') === 'cvFrequency') {
-        const currentFrequency = state[inputModule.get('module')].getIn([inputModule.get('id'), 'frequency'])
-        // dispatch action to reset frequency to current freq value of module
-        if (inputModule.get('module') === 'oscillators') {
-          const freqJackColor = state.oscillators.getIn([inputModule.get('id'), 'input', 'frequency'])
-          const cvFreqJackColor = state.oscillators.getIn([inputModule.get('id'), 'input', 'cvFrequency'])
-          store.dispatch(changeOscFreq(currentFrequency, inputModule.get('id'), freqJackColor, cvFreqJackColor))
+    if (inputModule) {
+      action['inputModule']     = inputModule.get('module')
+      action['inputId']         = inputModule.get('id')
+      action['inputToneObject'] = inputModule.get('toneObject')
+      action['inputCvName']     = inputModule.get('cvName')
+    }
+
+    if (outputModule) {
+      action['outputModule']      = outputModule.get('module')
+      action['outputId']          = outputModule.get('id')
+      action['outputToneObject']  = outputModule.get('toneObject')
+      action['outputCvName']      = outputModule.get('cvName')
+
+
+      if (outputModule.get('cvName') === 'lfo') {
+        if (inputModule.get('cvName') === 'frequency' || inputModule.get('cvName') === 'cvFrequency') {
+          const currentFrequency = state[inputModule.get('module')].getIn([inputModule.get('id'), 'frequency'])
+          // dispatch action to reset frequency to current freq value of module
+          if (inputModule.get('module') === 'oscillators') {
+            const freqJackColor = state.oscillators.getIn([inputModule.get('id'), 'input', 'frequency'])
+            const cvFreqJackColor = state.oscillators.getIn([inputModule.get('id'), 'input', 'cvFrequency'])
+            store.dispatch(changeOscFreq(currentFrequency, inputModule.get('id'), freqJackColor, cvFreqJackColor))
+          }
+          if (inputModule.get('module') === 'filters') {
+            store.dispatch(changeFilFreq(inputModule.get('id'), currentFrequency))
+          }
         }
-        if (inputModule.get('module') === 'filters') {
-          store.dispatch(changeFilFreq(inputModule.get('id'), currentFrequency))
+        else if (inputModule.get('cvName') === 'cv1') {
+          const currentGain = state.vcas.getIn([inputModule.get('id'), 'outputValue'])
+          // dispatch action to reset gain to current value of module
+          store.dispatch(changeVCAGain(currentGain, inputModule.get('id'), 'outputValue'))
         }
       }
     }
@@ -173,6 +189,7 @@ export const patchingMiddleWare = store => next => action => {
       const outputModule = state.eurorack.getIn(['patchCables', 'connections', action.freqInputColor, 'output'])
       if (outputModule.get('module') === 'lfos') {
         store.dispatch(changeLfoMidValue(outputModule.get('id'), action.frequency))
+        // return next({'type': 'none'})
       }
     }
   }

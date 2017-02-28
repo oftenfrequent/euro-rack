@@ -22,9 +22,7 @@ export default (state = {}, action) => {
 			state.getIn(['only', 'analyser']).connect(state.getIn(['only', 'toneComponent']))
 			return state
 		case 'CHANGE_BPM' :
-			console.log('Tone.Transport.bpm.value', Tone.Transport.bpm.value)
 			Tone.Transport.bpm.value = action.value
-			console.log('Tone.Transport.bpm.value', Tone.Transport.bpm.value)
 			return state.setIn(['only', 'currentBPM'], action.value)
 	}
 	return state

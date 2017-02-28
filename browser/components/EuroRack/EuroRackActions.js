@@ -45,6 +45,9 @@ export function disconnectJack(color) {
 
 		// // inputDirection,
 		// // outputDirection,
+
+		// IF REMOVE ONLY ONE
+		// singleJack
 	}
 }
 
@@ -62,12 +65,12 @@ export function pushIdToOrder(id) {
 	}
 }
 
-// export function errorConnectingJack(error) {
-// 	return {
-// 		type: 'DISCONNECT_JACK',
-// 		error
-// 	}
-// }
+export function errorConnectingJack(error) {
+	return {
+		type: 'CONNECT_JACK_ERROR',
+		error
+	}
+}
 
 export function changeOrderOfModule(orderNumber, module, id) {
 	return {

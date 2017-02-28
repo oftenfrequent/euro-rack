@@ -81,7 +81,6 @@ midiHelper.prototype.onMidiMessage = function (e, id) {
   else if(e.data[0] === 128) {
     this.flags.splice(this.flags.indexOf(note),1)
   }
-  console.log('this.flags', this.flags)
   // keyup and still have a note down
   if (e.data[0] === 128 && this.flags.length) {
     e.data[1] = this.flags[this.flags.length - 1]
@@ -97,11 +96,9 @@ midiHelper.prototype.onMidiMessage = function (e, id) {
   // TODO: use midi velocity
   switch(e.data[0]) {
     case 144:
-      console.log('NOTE HIT')
       this.triggerAttack(id, this.midiToKey(e.data[1]))
     break;
     case 128:
-      console.log('NOTE RELEASE')
       this.triggerRelease(id, this.midiToKey(e.data[1]))
     break;
     case 224:

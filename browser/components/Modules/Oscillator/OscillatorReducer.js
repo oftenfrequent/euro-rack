@@ -9,7 +9,6 @@ export default (state = {}, action) => {
 			const newID = uuid.v4()
 			return state.set(newID, fromJS(OscillatorInitialState()))
 		case 'REMOVE_OSC' :
-			console.log('DERETED id:', action.id)
 			return state.delete(action.id)
 
 		case 'CONNECT_JACK' :

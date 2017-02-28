@@ -53,7 +53,6 @@ export default (state = {}, action) => {
 			return changeToneLFOParamters(action.id, state)
 
 		case 'CHANGE_LFO_PERCENT' :
-console.log('Tone.Transport.bpm.value', Tone.Transport.bpm.value)
 			state = state.setIn([action.id, 'percentChange'], action.percent )
 			return changeToneLFOParamters(action.id, state, action)
 

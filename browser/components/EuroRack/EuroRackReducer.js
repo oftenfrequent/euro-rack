@@ -12,6 +12,8 @@ const reducer = (state = {}, action) => {
 			return state.set('order', fromJS(action.order))
 		case 'PUSH_ORDER' :
 			return state.update('order', (o) => o.push(action.id))
+		case 'CONNECT_JACK_ERROR' :
+			return state.setIn(['patchCables', 'error'], action.error)
 		case 'TESTING_STUFF' :
 			console.log('ASLDFHASLD')
 			const osc = new Tone.OmniOscillator(200, 'pwm').start().toMaster()
@@ -48,6 +50,12 @@ const reducer = (state = {}, action) => {
 
 const disconnectJack = (state, action) => {
 	if (action.outputModule === 'midis') { console.log('NO ACTUAL CONNECTION') }
+	else if (action.singleJack) {
+		console.log('NO ACTUAL CONNECTION')
+		state = state.setIn(['patchCables', 'input'], null)
+								 .setIn(['patchCables', 'output'], null)
+								 .setIn(['patchCables', 'active'], false)
+	}
 	else { action.outputToneObject.disconnect(action.inputToneObj) }
 
 	return state.deleteIn(['patchCables', 'connections', action.color])
@@ -77,7 +85,6 @@ const makeConnection = (state, action) => {
 	const cableColor = state.getIn(['patchCables', 'color'])
 	const output = state.getIn(['patchCables', 'output', 'toneObject'])
 	const input = state.getIn(['patchCables', 'input', 'toneObject'])
-	console.log("state.getIn(['patchCables', 'output', 'module'])", state.getIn(['patchCables', 'output', 'module']))
 	if (state.getIn(['patchCables', 'output', 'module']) === 'midis') { console.log('NO ACTUAL CONNECTION') }
 	else { output.connect(input) }
 

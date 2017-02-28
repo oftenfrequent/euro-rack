@@ -233,6 +233,23 @@ button {
 	}
 }
 
+.message-banner {
+	transition: all 0.3s ease-in-out;
+	background: $error-color;
+	text-align: center;
+	padding: 20px;
+  position: absolute;
+  right: 0px;
+  left: 0px;
+  z-index: 100;
+  top: 0px;
+
+	&.empty {
+	  top: -60px;
+
+	}
+}
+
 
 .canvas-container{
   width: 100%;

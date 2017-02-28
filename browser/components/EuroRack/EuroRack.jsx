@@ -12,6 +12,7 @@ import Speaker from '../Modules/Speaker/Speaker'
 import AddNewComponent from '../Modules/AddNew/AddNew'
 import JackClickHelper from '../Helpers/JackClickHelper'
 import dnd from '../Helpers/dragAndDropSetAndGet'
+import MessageBanner from '../MessageBanner/MessageBanner'
 import {
   connectJack,
   disconnectJack,
@@ -34,14 +35,10 @@ export class App extends React.Component {
       Array.from(props.filters.keys()),
       Array.from(props.midis.keys())
     ]
-    // this.state = {
-    //   order: [].concat.apply([], this.initialOrder)
-    // }
 //    this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
   }
 
   handleJackClick(e, module, id, direction, cvName, toneComponent, currentColor) {
-    console.log('JACKCLICK id', id)
     JackClickHelper(e,
       this.props.patchCables.get('active'),
       this.props.patchCables.get('color'),
@@ -95,11 +92,10 @@ export class App extends React.Component {
 
 
   render(){
-    console.log('state.order', this.props.order)
-    let i = 0
     return (
+      <div>
+      <MessageBanner/>
       <div className='euro-rack-container'>
-        <div>{this.props.error}</div>
         {Array.from(this.props.oscillators.keys()).map((name,index) =>
           <Oscillator
             id={name}
@@ -161,6 +157,7 @@ export class App extends React.Component {
         />
         <AddNewComponent/>
       </div>
+      </div>
     )
         // <button onClick={() => this.props.testing()}>TESTING STUFF</button>
   }
@@ -168,7 +165,7 @@ export class App extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    error: state.eurorack.getIn(['connectingCables', 'error']),
+    error: state.eurorack.getIn(['patchCables', 'error']),
     oscillators: state.oscillators,
     lfos: state.lfos,
     envelopes: state.envelopes,
