@@ -19,6 +19,12 @@ export default (state = {}, action) => {
 			}
 		case 'DISCONNECT_JACK' :
 			if (action.inputModule === 'oscillators') {
+				if (action.outputModule === 'lfos') {
+					state = state.updateIn([action.inputId, 'toneComponent'], (osc) => {
+										osc.frequency.value = state.getIn([action.inputId, 'frequency'])
+										return osc
+									})
+				}
 				return state.setIn([action.inputId, 'input', action.inputCvName], null)
 			} else if (action.outputModule === 'oscillators') {
 				return state.setIn([action.outputId, 'output', action.outputCvName], null)
@@ -32,7 +38,15 @@ export default (state = {}, action) => {
 										return osc
 									})
 		case 'CHANGE_OSC_FREQ' :
-			return changeFrequency(state, action.frequency, action.id)
+			return state.setIn([action.id, 'frequency'], action.frequency )
+									.updateIn([action.id, 'toneComponent'], (osc) => {
+										if (!action.hasLFOAttached) {
+											osc.frequency.value = action.frequency
+										}
+										return osc
+									})
+		case 'CHANGE_OSC_FREQ_VISUALLY' :
+			return state.setIn([action.id, 'frequency'], action.frequency )
 		case 'CHANGE_OSC_MOD_FREQ' :
 			return state.setIn([action.id, 'modulationFrequency'], action.frequency )
 									.updateIn([action.id, 'toneComponent'], (osc) => {
@@ -42,12 +56,4 @@ export default (state = {}, action) => {
 
 	}
 	return state
-}
-
-const changeFrequency = (state, frequency, id) => {
-	return state.setIn([id, 'frequency'], frequency )
-							.updateIn([id, 'toneComponent'], (osc) => {
-								osc.frequency.value = frequency
-								return osc
-							})
 }

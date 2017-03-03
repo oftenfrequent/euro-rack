@@ -38,7 +38,9 @@ export default (state = {}, action) => {
 			if (gainType === 'output') {
 				return state.setIn([action.id, 'outputValue'], action.value )
 										.updateIn([action.id, 'outputToneComponent'], (gain) => {
-											gain.output.gain.value = action.value / 1000
+											if (!state.getIn([action.id, 'input', 'cv1'])) {
+												gain.output.gain.value = action.value / 1000
+											}
 											return gain
 										})
 			} else if (gainType === 'input1') {

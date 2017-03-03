@@ -60,7 +60,7 @@ export class Oscillator extends React.Component {
               degreesTotal={270}
               sensitivity={100}
               suffix='Hz'
-              onNewValue={(v) => this.props.changeOscFreq(v, this.props.id, this.props.vco.getIn(['input', 'frequency']), this.props.vco.getIn(['input', 'cv']))}
+              onNewValue={(v) => this.props.changeOscFreq(v, this.props.id)}
             />
           </div>
         </div>
@@ -80,7 +80,7 @@ export class Oscillator extends React.Component {
               value={this.props.vco.get('frequency')}
               degreesTotal={270}
               sensitivity={100}
-              onNewValue={(v) => this.props.changeOscFreq(v, this.props.id, this.props.vco.getIn(['input', 'frequency']), this.props.vco.getIn(['input', 'cv']))}
+              onNewValue={(v) => this.props.changeOscFreq(v, this.props.id)}
             />
           </div>
         </div>

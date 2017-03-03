@@ -17,13 +17,12 @@ export function changeOscType(oscType, id) {
 	}
 }
 
-export function changeOscFreq(frequency, id, freqInputColor, cvInputColor) {
+export function changeOscFreq(frequency, id) { //, freqInputColor, cvInputColor) {
 	return {
 		type: 'CHANGE_OSC_FREQ',
 		frequency,
-		id,
-		freqInputColor,
-		cvInputColor
+		id
+		// hasLFOAttached - added by middleware
 	}
 }
 

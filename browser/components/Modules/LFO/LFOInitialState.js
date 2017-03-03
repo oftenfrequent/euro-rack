@@ -14,7 +14,7 @@ const initialState = () => {
 		timelineBased: false,
 		flexOrder: 0,
 		min: 0.01, // TODO: get rid of
-		max: 10, // TODO: get rid of
+		max: 100, // TODO: get rid of
 		minValue: 0,
 		midValue: 0.5,
 		maxValue: 1,

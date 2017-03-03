@@ -40,12 +40,10 @@ export default (state = {}, action) => {
 			const nameType = isTimeline ? 'timelineFrequency' : 'frequency'
 			return state.setIn([action.id, nameType], action.frequency )
 									.updateIn([action.id, 'toneComponent'], (lfo) => {
-										// if (isTimeline) {
-											lfo.frequency.value = action.frequency
+										lfo.frequency.value = action.frequency
+										if (isTimeline) {
 											lfo.syncFrequency()
-										// } else {
-										// 	lfo.frequency.value = action.frequency / 100
-										// }
+										}
 										return lfo
 									})
 		case 'CHANGE_LFO_MIDVALUE' :
@@ -60,7 +58,7 @@ export default (state = {}, action) => {
 			const wasTimeline = state.getIn([action.id, 'timelineBased'])
 			return state.updateIn([action.id, 'toneComponent'], (lfo) => {
 										if (wasTimeline) {
-											lfo.frequency.value = state.getIn([action.id, 'frequency']) / 100
+											lfo.frequency.value = state.getIn([action.id, 'frequency'])
 										} else {
 											lfo.frequency.value = state.getIn([action.id, 'timelineFrequency'])
 										}

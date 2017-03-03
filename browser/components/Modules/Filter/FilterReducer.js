@@ -19,6 +19,13 @@ export default (state = {}, action) => {
 			}
 		case 'DISCONNECT_JACK' :
 			if (action.inputModule === 'filters') {
+				if (action.outputModule === 'lfos') {
+					state = state.updateIn([action.inputId, 'toneComponent'], (fil) => {
+										fil.frequency.value = state.getIn([action.inputId, 'frequency'])
+										fil.Q.value = state.getIn([action.inputId, 'q'], action.q )
+										return fil
+									})
+				}
 				state = state.setIn([action.inputId, 'input', action.inputCvName], null)
 			}
 			if (action.outputModule === 'filters') {
@@ -34,9 +41,13 @@ export default (state = {}, action) => {
 		case 'CHANGE_FIL_FREQ' :
 			return state.setIn([action.id, 'frequency'], action.frequency )
 									.updateIn([action.id, 'toneComponent'], (fil) => {
-										fil.frequency.value = action.frequency
+										if (!state.getIn([action.id, 'input', 'frequency'])) {
+											fil.frequency.value = action.frequency
+										}
 										return fil
 									})
+		case 'CHANGE_FIL_FREQ_VISUALLY' :
+			return state.setIn([action.id, 'frequency'], action.frequency )
 		case 'CHANGE_FIL_ROLLOFF' :
 			return state.setIn([action.id, 'rolloff'], action.rolloff )
 									.updateIn([action.id, 'toneComponent'], (fil) => {
@@ -46,9 +57,13 @@ export default (state = {}, action) => {
 		case 'CHANGE_FIL_RESONANCE' :
 			return state.setIn([action.id, 'q'], action.q )
 									.updateIn([action.id, 'toneComponent'], (fil) => {
-										fil.Q.value = action.q
+										if (!state.getIn([action.id, 'input', 'resonance'])) {
+											fil.Q.value = action.q
+										}
 										return fil
 									})
+		case 'CHANGE_FIL_RESONANCE_VISUALLY' :
+			return state.setIn([action.id, 'q'], action.q )
 	}
 	return state
 }
