@@ -9,13 +9,13 @@ export function removeLFO(id) {
 	}
 }
 
-export function changeLfoType(id, oscType) {
-	return {
-		type: 'CHANGE_LFO_TYPE',
-		id,
-		oscType
-	}
-}
+// export function changeLfoType(id, oscType) {
+// 	return {
+// 		type: 'CHANGE_LFO_TYPE',
+// 		id,
+// 		oscType
+// 	}
+// }
 
 export function changeLfoFreq(id, frequency) {
 	return {
@@ -40,11 +40,12 @@ export function changeLfoPercent(id, percent) {
 	}
 }
 
-export function changeLfoMidValue(id, midValue) {
+export function changeLfoMidValue(id, midValue, lfoCvName) {
 	return {
 		type: 'CHANGE_LFO_MIDVALUE',
 		id,
-		midValue
+		midValue,
+		lfoCvName
 	}
 }
 

@@ -7,7 +7,6 @@ import KnobAndAmount from '../../ModuleComponents/KnobAndAmount'
 import Jack from '../../ModuleComponents/Jack'
 import {
   removeLFO,
-  changeLfoType,
   changeLfoFreq,
   changeLfoPercent,
   toggleLfoTimeAndFreq
@@ -40,10 +39,6 @@ export class LFO extends React.Component {
           onClick={() => this.props.toggleLfoTimeAndFreq(this.props.id)}
         >{this.props.lfo.get('timelineBased') ? 'Beats' : 'Frequency'}</button>
 
-        <DisplayTypeDropdown
-          optionTypes={this.props.lfo.get('typeOptions')}
-          changeType={(v) => this.props.changeLfoType(this.props.id, v)}
-        />
 
         {this.props.lfo.get('timelineBased')
           ?(<DisplayTypeDropdown
@@ -82,10 +77,22 @@ export class LFO extends React.Component {
             onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'input', 'amplitude', this.props.lfo.get('toneComponent').amplitude, this.props.lfo.getIn(['input', 'amplitude']))}
           />
         </div>
-        <div className='oscillator-out-jack'>
-          <Jack name='out'
-            color={this.props.lfo.getIn(['output', 'lfo'])}
-            onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'output', 'lfo', this.props.lfo.get('toneComponent'), this.props.lfo.getIn(['output', 'lfo']))}
+        <div className='oscillator-out-row'>
+          <Jack name='sine'
+            color={this.props.lfo.getIn(['output', 'sine', 'color'])}
+            onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'output', 'sine', this.props.lfo.getIn(['output', 'sine', 'toneComponent']), this.props.lfo.getIn(['output', 'sine', 'color']))}
+          />
+          <Jack name='tri'
+            color={this.props.lfo.getIn(['output', 'triangle', 'color'])}
+            onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'output', 'triangle', this.props.lfo.getIn(['output', 'triangle', 'toneComponent']), this.props.lfo.getIn(['output', 'triangle', 'color']))}
+          />
+          <Jack name='saw'
+            color={this.props.lfo.getIn(['output', 'sawtooth', 'color'])}
+            onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'output', 'sawtooth', this.props.lfo.getIn(['output', 'sawtooth', 'toneComponent']), this.props.lfo.getIn(['output', 'sawtooth', 'color']))}
+          />
+          <Jack name='square'
+            color={this.props.lfo.getIn(['output', 'square', 'color'])}
+            onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'output', 'square', this.props.lfo.getIn(['output', 'square', 'toneComponent']), this.props.lfo.getIn(['output', 'square', 'color']))}
           />
         </div>
       </ModuleContainer>
@@ -103,7 +110,6 @@ export default connect(
   mapStateToProps,
   {
     removeLFO,
-    changeLfoType,
     changeLfoFreq,
     changeLfoPercent,
     toggleLfoTimeAndFreq

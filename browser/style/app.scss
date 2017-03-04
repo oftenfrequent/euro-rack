@@ -164,15 +164,18 @@ body {
 
 .envelope-in-jack, .envelope-out-jack {
 	position: absolute;
-	bottom: 10px;
+	bottom: 20px;
+	.jack-container {
+		margin-bottom: 10px;
+	}
 }
 
 .envelope-out-jack {
-	right: 30px;
+	right: 15px;
 }
 
 .envelope-in-jack {
-	left: 30px;
+	left: 15px;
 }
 
 .filter-in-jack, .filter-out-jack {
@@ -194,6 +197,13 @@ body {
 	right: 30px;
 }
 
+.oscillator-out-row {
+	width: 100%;
+	.jack-container {
+		width: 25%;
+		float: left;
+	}
+}
 
 button {
 	margin: 0 auto;
@@ -209,9 +219,9 @@ button {
 
 .jack-knob-pair {
 	width: 100%;
-	&.inactive {
-		opacity: 0.2;
-	}
+	// &.inactive {
+	// 	opacity: 0.2;
+	// }
 
 	&.no-amount-pair {
 		.paired-jack {

@@ -9,14 +9,6 @@ export function removeOscillator(id) {
 	}
 }
 
-export function changeOscType(oscType, id) {
-	return {
-		type: 'CHANGE_OSC_TYPE',
-		oscType,
-		id
-	}
-}
-
 export function changeOscFreq(frequency, id) { //, freqInputColor, cvInputColor) {
 	return {
 		type: 'CHANGE_OSC_FREQ',

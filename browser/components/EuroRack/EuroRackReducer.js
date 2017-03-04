@@ -1,4 +1,4 @@
-import { fromJS } from 'immutable'
+import { fromJS, List } from 'immutable'
 import Tone from 'tone'
 
 
@@ -86,7 +86,13 @@ const makeConnection = (state, action) => {
 	const output = state.getIn(['patchCables', 'output', 'toneObject'])
 	const input = state.getIn(['patchCables', 'input', 'toneObject'])
 	if (state.getIn(['patchCables', 'output', 'module']) === 'midis') { console.log('NO ACTUAL CONNECTION') }
-	else { output.connect(input) }
+	else {
+		if (List.isList(input)) {
+			input.map( singleInput => output.connect(singleInput))
+		} else {
+			output.connect(input)
+		}
+	}
 
 	const randomIndex = Math.floor( Math.random() * state.getIn(['patchCables', 'colorOptions']).size )
 	const newColor = state.getIn(['patchCables','colorOptions', randomIndex])

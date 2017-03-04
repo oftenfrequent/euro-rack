@@ -4,12 +4,7 @@ const initialState = () => {
 	return {
 		toneComponent: new Tone.LFO({
 			type:'sine',
-			min:0,
-			max:1,
-			phase:0,
-			frequency:0.01,
-			amplitude:1,
-			units:Tone.Type.Default
+			frequency:0.01
 		}).syncFrequency().start(),
 		timelineBased: false,
 		flexOrder: 0,
@@ -21,14 +16,44 @@ const initialState = () => {
 		percentChange: 0,
 		timelineFrequency: '4n',
 		frequency: 0.01,
-		type: 'sine',
+		// type: 'sine',
 		valueOptions: ['8m','4m','2m','1m','2n','3n','4n','8n','12n','16n'],
-		typeOptions: ['sine', 'square', 'triangle', 'sawtooth'],
+		// typeOptions: ['sine', 'square', 'triangle', 'sawtooth'],
 		output: {
-			lfo: null
+			sine: {
+				color: null,
+				minValue: 0,
+				midValue: 0.5,
+				maxValue: 1,
+				toneComponent: new Tone.LFO({ type:'sine', frequency:0.01 }).syncFrequency().start()
+			},
+			triangle: {
+				color: null,
+				minValue: 0,
+				midValue: 0.5,
+				maxValue: 1,
+				toneComponent: new Tone.LFO({ type:'triangle', frequency:0.01 }).syncFrequency().start()
+			},
+			sawtooth: {
+				color: null,
+				minValue: 0,
+				midValue: 0.5,
+				maxValue: 1,
+				toneComponent: new Tone.LFO({ type:'sawtooth', frequency:0.01 }).syncFrequency().start()
+			},
+			square: {
+				color: null,
+				minValue: 0,
+				midValue: 0.5,
+				maxValue: 1,
+				modulationFrequency: 0,
+				toneComponent: new Tone.LFO({ type:'square', frequency:0.01 }).syncFrequency().start()
+			}
 		},
 		input: {
-			amplitude: null
+			amplitude: {
+				color: null
+			}
 		}
 
 	}

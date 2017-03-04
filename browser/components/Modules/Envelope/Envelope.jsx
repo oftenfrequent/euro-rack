@@ -75,23 +75,27 @@ export class EnvelopeGenerator extends React.Component {
         />
         <div className='envelope-in-jack'>
           <Jack name='trigger'
-            color={this.props.env.getIn(['input', 'trigger'])}
-            onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'input', 'trigger', this.props.env.get('toneComponent'), this.props.env.getIn(['input', 'trigger']))}
+            color={this.props.env.getIn(['input', 'trigger', 'color'])}
+            onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'input', 'trigger', 'ALL_ENV', this.props.env.getIn(['input', 'trigger', 'color']))}
           />
         </div>
         <div className='envelope-out-jack'>
-          <Jack name='out'
-            color={this.props.env.getIn(['output', 'envelope'])}
-            onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'output', 'envelope', this.props.env.get('toneComponent'), this.props.env.getIn(['output', 'envelope']))}
+          <Jack name='output'
+            color={this.props.env.getIn(['output', 'output1', 'color'])}
+            onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'output', 'output1', this.props.env.getIn(['output', 'output1', 'toneComponent']), this.props.env.getIn(['output', 'output1', 'color']))}
+          />
+          <Jack name='output'
+            color={this.props.env.getIn(['output', 'output2', 'color'])}
+            onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'output', 'output2', this.props.env.getIn(['output', 'output2', 'toneComponent']), this.props.env.getIn(['output', 'output2', 'color']))}
+          />
+          <Jack name='inverse'
+            color={this.props.env.getIn(['output', 'inverse', 'color'])}
+            onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'output', 'inverse', this.props.env.getIn(['output', 'inverse', 'toneComponent']), this.props.env.getIn(['output', 'inverse', 'color']))}
           />
         </div>
       </ModuleContainer>
     )
   }
-          // <Jack name='in'
-          //   color={this.props.env.getIn(['input', 'sound'])}
-          //   onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'input', 'sound', this.props.env.get('toneComponent'), this.props.env.getIn(['input', 'sound']))}
-          // />
 }
 
 function mapStateToProps(state, props) {

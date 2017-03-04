@@ -17,80 +17,103 @@ export default (state = {}, action) => {
 				state = setLFOParamsOnConnection(state, action)
 			}
 			if (action.module === 'lfos') {
-				return state.setIn([action.id, action.direction, action.cvName], action.color )
+				return state.setIn([action.id, action.direction, action.cvName, 'color'], action.color )
 			} else {
 				return state
 			}
 		case 'DISCONNECT_JACK' :
 			if (action.inputModule === 'lfos') {
-				return state.setIn([action.inputId, 'input', action.inputCvName], null)
+				return state.setIn([action.inputId, 'input', action.inputCvName, 'color'], null)
 			} else if (action.outputModule === 'lfos') {
-				return state.setIn([action.outputId, 'output', action.outputCvName], null)
+				return state.setIn([action.outputId, 'output', action.outputCvName, 'color'], null)
 			} else {
 				return state
 			}
-		case 'CHANGE_LFO_TYPE' :
-			return state.setIn([action.id, 'type'], action.oscType )
-									.updateIn([action.id, 'toneComponent'], (lfo) => {
-										lfo.type = action.oscType
-										return lfo
-									})
 		case 'CHANGE_LFO_FREQ' :
 			const isTimeline = state.getIn([action.id, 'timelineBased'])
 			const nameType = isTimeline ? 'timelineFrequency' : 'frequency'
-			return state.setIn([action.id, nameType], action.frequency )
-									.updateIn([action.id, 'toneComponent'], (lfo) => {
-										lfo.frequency.value = action.frequency
-										if (isTimeline) {
-											lfo.syncFrequency()
-										}
-										return lfo
-									})
+			state = state.setIn([action.id, nameType], action.frequency )
+			return changeFreqOfOscillators(state, action.id)
 		case 'CHANGE_LFO_MIDVALUE' :
-			state = state.setIn([action.id, 'midValue'], action.midValue)
-			return changeToneLFOParamters(action.id, state)
+			state = state.setIn([action.id, 'output', action.lfoCvName, 'midValue'], action.midValue)
+			return changeToneLFOParamters(action.id, action, state)
 
 		case 'CHANGE_LFO_PERCENT' :
 			state = state.setIn([action.id, 'percentChange'], action.percent )
-			return changeToneLFOParamters(action.id, state, action)
+			return changeToneLFOParamters(action.id, action, state)
 
 		case 'TOGGLE_LFO_TIME_FREQ' :
-			const wasTimeline = state.getIn([action.id, 'timelineBased'])
-			return state.updateIn([action.id, 'toneComponent'], (lfo) => {
-										if (wasTimeline) {
-											lfo.frequency.value = state.getIn([action.id, 'frequency'])
-										} else {
-											lfo.frequency.value = state.getIn([action.id, 'timelineFrequency'])
-										}
-										return lfo
-									})
-									.updateIn([action.id, 'timelineBased'], v => !v)
+			state = state.updateIn([action.id, 'timelineBased'], v => !v)
+			return changeFreqOfOscillators(state, action.id)
 		case 'SYNC_LFO_FREQ' :
 			return state.updateIn([action.id, 'toneComponent'], lfo => lfo.syncFrequency())
 	}
 	return state
 }
 
-const setLFOParamsOnConnection = (state, action) => {
-	state = state.setIn([action.lfoID, 'midValue'], action.midValue)
-							.setIn([action.lfoID, 'minValue'], action.minValue)
-							.setIn([action.lfoID, 'maxValue'], action.maxValue)
-	return changeToneLFOParamters(action.lfoID, state, action)
+const typeOptions = ['sine', 'square', 'triangle', 'sawtooth']
+
+const changeFreqOfOscillators = (state, id) => {
+	const isTimeline = state.getIn([id, 'timelineBased'])
+	const nameType = isTimeline ? 'timelineFrequency' : 'frequency'
+	typeOptions.map( type => {
+		state = state.updateIn([id, 'output', type, 'toneComponent'], (lfo) => {
+								lfo.frequency.value = state.getIn([id, nameType])
+								if (isTimeline) {
+									lfo.syncFrequency()
+								}
+								return lfo
+							})
+	})
+	return state
 }
 
-const changeToneLFOParamters = (id, state) => {
-	return state.updateIn([id, 'toneComponent'], (lfo) => {
-									const totalDifference = state.getIn([id, 'maxValue']) - state.getIn([id, 'minValue'])
+
+const setLFOParamsOnConnection = (state, action) => {
+	state = state.setIn([action.lfoID, 'output', action.lfoCvName, 'midValue'], action.midValue)
+							 .setIn([action.lfoID, 'output', action.lfoCvName, 'minValue'], action.minValue)
+							 .setIn([action.lfoID, 'output', action.lfoCvName, 'maxValue'], action.maxValue)
+	return changeToneLFOParamters(action.lfoID, action, state)
+}
+
+const changeToneLFOParamters = (id, action, state) => {
+
+	if (action.lfoCvName) {
+		state = updateParamsInType(
+			state,
+			state.getIn([id, 'output', action.lfoCvName, 'minValue']),
+			state.getIn([id, 'output', action.lfoCvName, 'maxValue']),
+			state.getIn([id, 'output', action.lfoCvName, 'midValue']),
+			id,
+			action.lfoCvName
+		)
+	} else {
+		typeOptions.map(type => {
+			state = updateParamsInType(
+				state,
+				state.getIn([id, 'output', type, 'minValue']),
+				state.getIn([id, 'output', type, 'maxValue']),
+				state.getIn([id, 'output', type, 'midValue']),
+				id,
+				type
+			)
+		})
+	}
+	return state
+}
+
+
+const updateParamsInType = (state, min, max, mid, id, type) => {
+	return state.updateIn([id, 'output', type, 'toneComponent'], (lfo) => {
+									const totalDifference = max - min
 									const difference = ((state.getIn([id, 'percentChange'])*totalDifference)/100)/2
-									// console.log('totalAmount', totalDifference)
-									// console.log('difference', difference)
-									const midValue = state.getIn([id, 'midValue'])
+									const midValue = mid
 									const minValue = midValue - difference
 									const maxValue = midValue + difference
 									console.log('minValue', minValue)
 									console.log('maxValue', maxValue)
-									lfo.min = minValue < state.getIn([id, 'minValue']) ? state.getIn([id, 'minValue']) : minValue
-									lfo.max = maxValue > state.getIn([id, 'maxValue']) ? state.getIn([id, 'maxValue']) : maxValue
+									lfo.min = minValue < min ? min : minValue
+									lfo.max = maxValue > max ? max : maxValue
 									console.log('lfo', lfo)
 									return lfo
 								})

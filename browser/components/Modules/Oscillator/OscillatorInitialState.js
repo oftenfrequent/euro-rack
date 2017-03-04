@@ -7,17 +7,37 @@ const initialState = () => {
 	  min: 0,
 	  max: 1000,
 		frequency: 200,
-		modulationFrequency: 0,
 		type: 'sine',
-		typeOptions: ['sine', 'square', 'triangle', 'sawtooth', 'pwm'],
-		toneRangeStart: [8.176, 16.3515, 32.703, 65.406, 130.813],
+		// toneRangeStart: [8.176, 16.3515, 32.703, 65.406, 130.813],
 		input: {
-			frequency: null,
-			pwModulation: null,
-			cvFrequency: null
+			frequency: {
+				color: null
+			},
+			pwModulation: {
+				color: null
+			},
+			cvFrequency: {
+				color: null
+			}
 		},
 		output: {
-			sound: null
+			sine: {
+				color: null,
+				toneComponent: new Tone.OmniOscillator(200, 'sine').start()
+			},
+			triangle: {
+				color: null,
+				toneComponent: new Tone.OmniOscillator(200, 'triangle').start()
+			},
+			sawtooth: {
+				color: null,
+				toneComponent: new Tone.OmniOscillator(200, 'sawtooth').start()
+			},
+			pwm: {
+				color: null,
+				modulationFrequency: 0,
+				toneComponent: new Tone.OmniOscillator(200, 'pwm').start()
+			}
 		}
 	}
 }

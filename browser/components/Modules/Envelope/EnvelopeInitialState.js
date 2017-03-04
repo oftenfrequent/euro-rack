@@ -2,14 +2,6 @@ import Tone from 'tone'
 
 const initialState = () => {
 	return {
-		toneComponent: new Tone.ScaledEnvelope({
-		 	'attack' : 0.01,
-		 	'decay' : 0.2,
-		 	'sustain' : 1,
-		 	'release' : 0.6,
-		 	'min' : 0,
-		 	'max' : 1
-		}),
 		flexOrder: 0,
 	  min: 1,
 	  max: 1000,
@@ -17,19 +9,58 @@ const initialState = () => {
 	  decay: 200,
 	  sustain: 1000,
 	  release: 600,
-	  scaleMin: 0,
-	  scaleMax: 1,
+	  // scaleMin: 0,
+	  // scaleMax: 1,
 		attackCurve: 'linear',
 		releaseCurve: 'exponential',
 	  curveOptions: ['linear', 'exponential', 'sine', 'ease', 'bounce', 'ripple', 'step'],
 	  selectedTimeLength: 'short',
 	  timeLengths: ['short', 'medium', 'long'],
 		input: {
-			frequency: null,
-			trigger: null
+			trigger: {
+				color: null
+			}
 		},
 		output: {
-			envelope: null
+			output1: {
+				color: null,
+			  scaleMin: 0,
+			  scaleMax: 1,
+				toneComponent: new Tone.ScaledEnvelope({
+				 	'attack' : 0.01,
+				 	'decay' : 0.2,
+				 	'sustain' : 1,
+				 	'release' : 0.6,
+				 	'min' : 0,
+				 	'max' : 1
+				})
+			},
+			output2: {
+				color: null,
+			  scaleMin: 0,
+			  scaleMax: 1,
+				toneComponent: new Tone.ScaledEnvelope({
+				 	'attack' : 0.01,
+				 	'decay' : 0.2,
+				 	'sustain' : 1,
+				 	'release' : 0.6,
+				 	'min' : 0,
+				 	'max' : 1
+				})
+			},
+			inverse: {
+				color: null,
+			  scaleMin: 0,
+			  scaleMax: 1,
+				toneComponent: new Tone.ScaledEnvelope({
+				 	'attack' : 0.01,
+				 	'decay' : 0.2,
+				 	'sustain' : 1,
+				 	'release' : 0.6,
+				 	'min' : 1,
+				 	'max' : 0
+				})
+			}
 		}
 	}
 }

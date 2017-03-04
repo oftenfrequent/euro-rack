@@ -12,6 +12,7 @@ export function connectJack(color, module, id, direction, cvName, toneObject) {
 
 		// if lfo
 		// lfoID
+		// lfoCvName
 		// midValue
 		// minValue
 		// maxValue
@@ -21,6 +22,7 @@ export function connectJack(color, module, id, direction, cvName, toneObject) {
 
 		// if env
 		// envID
+		// envCvName
 		// minValue
 		// maxValue
 	}

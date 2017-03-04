@@ -13,47 +13,45 @@ export default (state = {}, action) => {
 
 		case 'CONNECT_JACK' :
 			if (action.module === 'oscillators') {
-				return state.setIn([action.id, action.direction, action.cvName], action.color )
+				return state.setIn([action.id, action.direction, action.cvName, 'color'], action.color )
 			} else {
 				return state
 			}
 		case 'DISCONNECT_JACK' :
 			if (action.inputModule === 'oscillators') {
-				if (action.outputModule === 'lfos') {
-					state = state.updateIn([action.inputId, 'toneComponent'], (osc) => {
-										osc.frequency.value = state.getIn([action.inputId, 'frequency'])
-										return osc
-									})
+				if (action.outputModule === 'lfos' || action.outputModule === 'envelopes') {
+					state = changeFrequency(state, action.inputId, state.getIn([action.inputId, 'frequency']))
 				}
-				return state.setIn([action.inputId, 'input', action.inputCvName], null)
+				return state.setIn([action.inputId, 'input', action.inputCvName, 'color'], null)
 			} else if (action.outputModule === 'oscillators') {
-				return state.setIn([action.outputId, 'output', action.outputCvName], null)
+				return state.setIn([action.outputId, 'output', action.outputCvName, 'color'], null)
 			} else {
 				return state
 			}
-		case 'CHANGE_OSC_TYPE' :
-			return state.setIn([action.id, 'type'], action.oscType )
-									.updateIn([action.id, 'toneComponent'], (osc) => {
-										osc.type = action.oscType
-										return osc
-									})
 		case 'CHANGE_OSC_FREQ' :
-			return state.setIn([action.id, 'frequency'], action.frequency )
-									.updateIn([action.id, 'toneComponent'], (osc) => {
-										if (!action.hasLFOAttached) {
-											osc.frequency.value = action.frequency
-										}
-										return osc
-									})
-		case 'CHANGE_OSC_FREQ_VISUALLY' :
-			return state.setIn([action.id, 'frequency'], action.frequency )
+			state = state.setIn([action.id, 'frequency'], action.frequency )
+			if (!action.hasLFOAttached) {
+				return changeFrequency(state, action.id, action.frequency)
+			}
 		case 'CHANGE_OSC_MOD_FREQ' :
-			return state.setIn([action.id, 'modulationFrequency'], action.frequency )
-									.updateIn([action.id, 'toneComponent'], (osc) => {
-										if (osc.type === 'pwm') { osc.modulationFrequency.value = action.frequency }
+			return state.setIn([action.id, 'output', 'pwm', 'modulationFrequency'], action.frequency )
+									.updateIn([action.id, 'output', 'pwm', 'toneComponent'], (osc) => {
+										osc.modulationFrequency.value = action.frequency
 										return osc
 									})
 
 	}
+	return state
+}
+
+const typesArray = ['sine', 'triangle', 'sawtooth', 'pwm']
+
+const changeFrequency = (state, id, freq) => {
+	typesArray.map(type => {
+		state = state.updateIn([id, 'output', type, 'toneComponent'], osc => {
+			osc.frequency.value = freq
+			return osc
+		})
+	})
 	return state
 }
