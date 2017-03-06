@@ -13,7 +13,7 @@ export default (state = {}, action) => {
 
 		case 'CONNECT_JACK' :
 			if (action.module === 'filters') {
-				return state.setIn([action.id, action.direction, action.cvName], action.color )
+				return state.setIn([action.id, action.direction, action.cvName, 'color'], action.color )
 			} else {
 				return state
 			}
@@ -26,10 +26,10 @@ export default (state = {}, action) => {
 										return fil
 									})
 				}
-				state = state.setIn([action.inputId, 'input', action.inputCvName], null)
+				state = state.setIn([action.inputId, 'input', action.inputCvName, 'color'], null)
 			}
 			if (action.outputModule === 'filters') {
-				state = state.setIn([action.outputId, 'output', action.outputCvName], null)
+				state = state.setIn([action.outputId, 'output', action.outputCvName, 'color'], null)
 			}
 			return state
 		case 'CHANGE_FIL_TYPE' :

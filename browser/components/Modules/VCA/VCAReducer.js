@@ -12,16 +12,16 @@ export default (state = {}, action) => {
 			return state.delete(action.id)
 		case 'CONNECT_JACK' :
 			if (action.module === 'vcas') {
-				return state.setIn([action.id, action.direction, action.cvName], action.color )
+				return state.setIn([action.id, action.direction, action.cvName, 'color'], action.color )
 			} else {
 				return state
 			}
 		case 'DISCONNECT_JACK' :
 			if (action.inputModule === 'vcas') {
-				state = state.setIn([action.inputId, 'input', action.inputCvName], null)
+				state = state.setIn([action.inputId, 'input', action.inputCvName, 'color'], null)
 			}
 			if (action.outputModule === 'vcas') {
-				state = state.setIn([action.outputId, 'output', action.outputCvName], null)
+				state = state.setIn([action.outputId, 'output', action.outputCvName, 'color'], null)
 			}
 
 			return state

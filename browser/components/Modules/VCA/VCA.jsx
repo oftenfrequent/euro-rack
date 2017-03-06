@@ -45,8 +45,8 @@ export class VCA extends React.Component {
         <div className='jack-knob-pair clearfix no-amount-pair'>
           <div className='paired-jack'>
             <Jack name='cv1'
-              color={this.props.vca.getIn(['input', 'cv1'])}
-              onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'input', 'cv1', this.props.vca.get('outputToneComponent').gain, this.props.vca.getIn(['input', 'cv1']))}
+              color={this.props.vca.getIn(['input', 'cv1', 'color'])}
+              onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'input', 'cv1', this.props.vca.get('outputToneComponent').gain, this.props.vca.getIn(['input', 'cv1', 'color']))}
             />
           </div>
           <div className='paired-knob'>
@@ -66,8 +66,8 @@ export class VCA extends React.Component {
         <div className='jack-knob-pair clearfix no-amount-pair'>
           <div className='paired-jack'>
             <Jack name='Audio In 1'
-              color={this.props.vca.getIn(['input', 'audioIn1'])}
-              onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'input', 'audioIn1', this.props.vca.get('input1ToneComponent'), this.props.vca.getIn(['input', 'audioIn1']))}
+              color={this.props.vca.getIn(['input', 'audioIn1', 'color'])}
+              onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'input', 'audioIn1', this.props.vca.get('input1ToneComponent'), this.props.vca.getIn(['input', 'audioIn1', 'color']))}
             />
           </div>
           <div className='paired-knob'>
@@ -87,8 +87,8 @@ export class VCA extends React.Component {
         <div className='jack-knob-pair clearfix no-amount-pair'>
           <div className='paired-jack'>
             <Jack name='Audio In 2'
-              color={this.props.vca.getIn(['input', 'audioIn2'])}
-              onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'input', 'audioIn2', this.props.vca.get('input2ToneComponent'), this.props.vca.getIn(['input', 'audioIn2']))}
+              color={this.props.vca.getIn(['input', 'audioIn2', 'color'])}
+              onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'input', 'audioIn2', this.props.vca.get('input2ToneComponent'), this.props.vca.getIn(['input', 'audioIn2', 'color']))}
             />
           </div>
           <div className='paired-knob'>
@@ -107,8 +107,8 @@ export class VCA extends React.Component {
 
         <div className='oscillator-out-jack'>
           <Jack name='out'
-            color={this.props.vca.getIn(['output', 'audio'])}
-            onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'output', 'audio', this.props.vca.get('outputToneComponent'), this.props.vca.getIn(['output', 'audio']))}
+            color={this.props.vca.getIn(['output', 'audio', 'color'])}
+            onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'output', 'audio', this.props.vca.get('outputToneComponent'), this.props.vca.getIn(['output', 'audio', 'color']))}
           />
         </div>
       </ModuleContainer>

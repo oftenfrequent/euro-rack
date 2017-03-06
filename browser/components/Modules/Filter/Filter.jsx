@@ -46,8 +46,8 @@ export class Filter extends React.Component {
         <div className='jack-knob-pair clearfix'>
           <div className='paired-jack'>
             <Jack name='freq cv'
-              color={this.props.fil.getIn(['input', 'frequency'])}
-              onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'input', 'frequency', this.props.fil.get('toneComponent').frequency, this.props.fil.getIn(['input', 'frequency']))}
+              color={this.props.fil.getIn(['input', 'frequency', 'color'])}
+              onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'input', 'frequency', this.props.fil.get('toneComponent').frequency, this.props.fil.getIn(['input', 'frequency', 'color']))}
             />
           </div>
           <div className='paired-knob'>
@@ -66,33 +66,33 @@ export class Filter extends React.Component {
         <div className='jack-knob-pair clearfix no-amount-pair'>
           <div className='paired-jack'>
             <Jack name='res cv'
-              color={this.props.fil.getIn(['input', 'resonance'])}
-              onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'input', 'resonance', this.props.fil.get('toneComponent').Q, this.props.fil.getIn(['input', 'resonance']))}
+              color={this.props.fil.getIn(['input', 'resonance', 'color'])}
+              onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'input', 'resonance', this.props.fil.get('toneComponent').Q, this.props.fil.getIn(['input', 'resonance', 'color']))}
             />
           </div>
           <div className='paired-knob'>
             <KnobAndAmount
               name='Resonance'
-              min={this.props.fil.get('minQ')*1000}
-              max={this.props.fil.get('maxQ')*1000}
-              value={this.props.fil.get('q')*1000}
+              min={this.props.fil.get('minQ')}
+              max={this.props.fil.get('maxQ')}
+              value={this.props.fil.get('q')}
               hideDisplay={true}
               degreesTotal={270}
               sensitivity={100}
-              onNewValue={(v) => this.props.changeFilResonace(this.props.id, (v/1000))}
+              onNewValue={(v) => this.props.changeFilResonace(this.props.id, (v))}
             />
           </div>
         </div>
         <div className='filter-in-jack'>
           <Jack name='audio in'
-            color={this.props.fil.getIn(['input', 'sound'])}
-            onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'input', 'sound', this.props.fil.get('toneComponent'), this.props.fil.getIn(['input', 'sound']))}
+            color={this.props.fil.getIn(['input', 'sound', 'color'])}
+            onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'input', 'sound', this.props.fil.get('toneComponent'), this.props.fil.getIn(['input', 'sound', 'color']))}
           />
         </div>
         <div className='filter-out-jack'>
           <Jack name='out'
-            color={this.props.fil.getIn(['output', 'sound'])}
-            onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'output', 'sound', this.props.fil.get('toneComponent'), this.props.fil.getIn(['output', 'sound']))}
+            color={this.props.fil.getIn(['output', 'sound', 'color'])}
+            onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'output', 'sound', this.props.fil.get('toneComponent'), this.props.fil.getIn(['output', 'sound', 'color']))}
           />
         </div>
       </ModuleContainer>

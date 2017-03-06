@@ -16,9 +16,7 @@ const initialState = () => {
 		percentChange: 0,
 		timelineFrequency: '4n',
 		frequency: 0.01,
-		// type: 'sine',
 		valueOptions: ['8m','4m','2m','1m','2n','3n','4n','8n','12n','16n'],
-		// typeOptions: ['sine', 'square', 'triangle', 'sawtooth'],
 		output: {
 			sine: {
 				color: null,

@@ -12,13 +12,23 @@ const initialState = () => {
 		input1Value: 1000,
 		input2Value: 1000,
 		input: {
-			cv1: null,
-			cv2: null,
-			audioIn1: null,
-			audioIn2: null,
+			cv1:  {
+        color: null
+      },
+			cv2:  {
+        color: null
+      },
+			audioIn1:  {
+        color: null
+      },
+			audioIn2:  {
+        color: null
+      }
 		},
 		output: {
-			audio: null
+			audio:  {
+        color: null
+      }
 		}
 	}
 }

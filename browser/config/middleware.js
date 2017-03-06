@@ -46,9 +46,9 @@ export const connectJackMiddleWare = store => next => action => {
         }
         if (inputConnectionObj.get('cvName') === 'resonance') {
           const input = state[inputConnectionObj.get('module')].getIn([inputConnectionObj.get('id')])
-          action['midValue'] = 6
-          action['minValue'] = 0
-          action['maxValue'] = 12
+          action['midValue'] = input.get('q')
+          action['minValue'] = input.get('minQ')
+          action['maxValue'] = input.get('maxQ')
         }
         if (inputConnectionObj.get('cvName') === 'cv1') {
           action['midValue'] = (state.vcas.getIn([inputConnectionObj.get('id'), 'outputValue']) / 1000 )
@@ -205,7 +205,7 @@ export const patchingMiddleWare = store => next => action => {
       return next(action)
     }
   } else if (action.type === 'CHANGE_FIL_FREQ') {
-    const freqInputColor = state.filters.getIn([action.id, 'input', 'frequency'])
+    const freqInputColor = state.filters.getIn([action.id, 'input', 'frequency', 'color'])
     if (freqInputColor) {
       const outputModule = state.eurorack.getIn(['patchCables', 'connections', freqInputColor, 'output'])
       if (outputModule.get('module') === 'lfos') {
@@ -214,7 +214,7 @@ export const patchingMiddleWare = store => next => action => {
       }
     }
   } else if (action.type === 'CHANGE_FIL_RESONANCE') {
-    const freqInputColor = state.filters.getIn([action.id, 'input', 'resonance'])
+    const freqInputColor = state.filters.getIn([action.id, 'input', 'resonance', 'color'])
     if (freqInputColor) {
       const outputModule = state.eurorack.getIn(['patchCables', 'connections', freqInputColor, 'output'])
       if (outputModule.get('module') === 'lfos') {
@@ -223,7 +223,7 @@ export const patchingMiddleWare = store => next => action => {
       }
     }
   } else if (action.type === 'CHANGE_VCA_GAIN') {
-    const gainCVColor = state.vcas.getIn([action.id, 'input', 'cv1'])
+    const gainCVColor = state.vcas.getIn([action.id, 'input', 'cv1', 'color'])
     if (gainCVColor && action.gainType === 'outputValue') {
       const outputModule = state.eurorack.getIn(['patchCables', 'connections', gainCVColor, 'output'])
       if (outputModule.get('module') === 'lfos') {
@@ -242,40 +242,48 @@ export const deleteModuleMiddleWare = store => next => action => {
 
   if(action.type === 'REMOVE_OSC') {
     moduleToRemove = state.oscillators.get(action.id)
-    if(moduleToRemove.getIn(['input', 'frequency'])) { store.dispatch(disconnectJack(moduleToRemove.getIn(['input', 'frequency']))) }
-    if(moduleToRemove.getIn(['input', 'pwModulation'])) { store.dispatch(disconnectJack(moduleToRemove.getIn(['input', 'pwModulation']))) }
-    if(moduleToRemove.getIn(['input', 'cvFrequency'])) { store.dispatch(disconnectJack(moduleToRemove.getIn(['input', 'cvFrequency']))) }
-    if(moduleToRemove.getIn(['output', 'sound'])) { store.dispatch(disconnectJack(moduleToRemove.getIn(['output', 'sound']))) }
+    if(moduleToRemove.getIn(['input', 'frequency', 'color'])) { store.dispatch(disconnectJack(moduleToRemove.getIn(['input', 'frequency', 'color']))) }
+    if(moduleToRemove.getIn(['input', 'pwModulation', 'color'])) { store.dispatch(disconnectJack(moduleToRemove.getIn(['input', 'pwModulation', 'color']))) }
+    if(moduleToRemove.getIn(['input', 'cvFrequency', 'color'])) { store.dispatch(disconnectJack(moduleToRemove.getIn(['input', 'cvFrequency', 'color']))) }
+    if(moduleToRemove.getIn(['output', 'sine', 'color'])) { store.dispatch(disconnectJack(moduleToRemove.getIn(['output', 'sine', 'color']))) }
+    if(moduleToRemove.getIn(['output', 'triangle', 'color'])) { store.dispatch(disconnectJack(moduleToRemove.getIn(['output', 'triangle', 'color']))) }
+    if(moduleToRemove.getIn(['output', 'sawtooth', 'color'])) { store.dispatch(disconnectJack(moduleToRemove.getIn(['output', 'sawtooth', 'color']))) }
+    if(moduleToRemove.getIn(['output', 'pwm', 'color'])) { store.dispatch(disconnectJack(moduleToRemove.getIn(['output', 'pwm', 'color']))) }
   }
 
   if(action.type === 'REMOVE_LFO') {
     moduleToRemove = state.lfos.get(action.id)
-    if(moduleToRemove.getIn(['input', 'amplitude'])) { store.dispatch(disconnectJack(moduleToRemove.getIn(['input', 'amplitude']))) }
-    if(moduleToRemove.getIn(['output', 'lfo'])) { store.dispatch(disconnectJack(moduleToRemove.getIn(['output', 'lfo']))) }
+    if(moduleToRemove.getIn(['input', 'amplitude', 'color'])) { store.dispatch(disconnectJack(moduleToRemove.getIn(['input', 'amplitude', 'color']))) }
+    if(moduleToRemove.getIn(['output', 'sine', 'color'])) { store.dispatch(disconnectJack(moduleToRemove.getIn(['output', 'sine', 'color']))) }
+    if(moduleToRemove.getIn(['output', 'triangle', 'color'])) { store.dispatch(disconnectJack(moduleToRemove.getIn(['output', 'triangle', 'color']))) }
+    if(moduleToRemove.getIn(['output', 'sawtooth', 'color'])) { store.dispatch(disconnectJack(moduleToRemove.getIn(['output', 'sawtooth', 'color']))) }
+    if(moduleToRemove.getIn(['output', 'pwm', 'color'])) { store.dispatch(disconnectJack(moduleToRemove.getIn(['output', 'pwm', 'color']))) }
   }
 
   if(action.type === 'REMOVE_VCA') {
     moduleToRemove = state.vcas.get(action.id)
-    if(moduleToRemove.getIn(['input', 'cv1'])) { store.dispatch(disconnectJack(moduleToRemove.getIn(['input', 'cv1']))) }
-    if(moduleToRemove.getIn(['input', 'cv2'])) { store.dispatch(disconnectJack(moduleToRemove.getIn(['input', 'cv2']))) }
-    if(moduleToRemove.getIn(['input', 'audioIn1'])) { store.dispatch(disconnectJack(moduleToRemove.getIn(['input', 'audioIn1']))) }
-    if(moduleToRemove.getIn(['input', 'audioIn2'])) { store.dispatch(disconnectJack(moduleToRemove.getIn(['input', 'audioIn2']))) }
-    if(moduleToRemove.getIn(['output', 'audio'])) { store.dispatch(disconnectJack(moduleToRemove.getIn(['output', 'audio']))) }
+    if(moduleToRemove.getIn(['input', 'cv1', 'color'])) { store.dispatch(disconnectJack(moduleToRemove.getIn(['input', 'cv1', 'color']))) }
+    if(moduleToRemove.getIn(['input', 'cv2', 'color'])) { store.dispatch(disconnectJack(moduleToRemove.getIn(['input', 'cv2', 'color']))) }
+    if(moduleToRemove.getIn(['input', 'audioIn1', 'color'])) { store.dispatch(disconnectJack(moduleToRemove.getIn(['input', 'audioIn1', 'color']))) }
+    if(moduleToRemove.getIn(['input', 'audioIn2', 'color'])) { store.dispatch(disconnectJack(moduleToRemove.getIn(['input', 'audioIn2', 'color']))) }
+    if(moduleToRemove.getIn(['output', 'audio', 'color'])) { store.dispatch(disconnectJack(moduleToRemove.getIn(['output', 'audio', 'color']))) }
   }
 
   if(action.type === 'REMOVE_ENV') {
     moduleToRemove = state.envelopes.get(action.id)
     if(moduleToRemove.getIn(['input', 'frequency'])) { store.dispatch(disconnectJack(moduleToRemove.getIn(['input', 'frequency']))) }
     if(moduleToRemove.getIn(['input', 'trigger'])) { store.dispatch(disconnectJack(moduleToRemove.getIn(['input', 'trigger']))) }
-    if(moduleToRemove.getIn(['output', 'envelope'])) { store.dispatch(disconnectJack(moduleToRemove.getIn(['output', 'envelope']))) }
+    if(moduleToRemove.getIn(['output', 'output1', 'color'])) { store.dispatch(disconnectJack(moduleToRemove.getIn(['output', 'output1', 'color']))) }
+    if(moduleToRemove.getIn(['output', 'output2', 'color'])) { store.dispatch(disconnectJack(moduleToRemove.getIn(['output', 'output2', 'color']))) }
+    if(moduleToRemove.getIn(['output', 'inverse', 'color'])) { store.dispatch(disconnectJack(moduleToRemove.getIn(['output', 'inverse', 'color']))) }
   }
 
   if(action.type === 'REMOVE_FIL') {
     moduleToRemove = state.filters.get(action.id)
-    if(moduleToRemove.getIn(['input', 'frequency'])) { store.dispatch(disconnectJack(moduleToRemove.getIn(['input', 'frequency']))) }
-    if(moduleToRemove.getIn(['input', 'sound'])) { store.dispatch(disconnectJack(moduleToRemove.getIn(['input', 'sound']))) }
-    if(moduleToRemove.getIn(['input', 'resonance'])) { store.dispatch(disconnectJack(moduleToRemove.getIn(['input', 'resonance']))) }
-    if(moduleToRemove.getIn(['output', 'sound'])) { store.dispatch(disconnectJack(moduleToRemove.getIn(['output', 'sound']))) }
+    if(moduleToRemove.getIn(['input', 'frequency', 'color'])) { store.dispatch(disconnectJack(moduleToRemove.getIn(['input', 'frequency', 'color']))) }
+    if(moduleToRemove.getIn(['input', 'sound', 'color'])) { store.dispatch(disconnectJack(moduleToRemove.getIn(['input', 'sound', 'color']))) }
+    if(moduleToRemove.getIn(['input', 'resonance', 'color'])) { store.dispatch(disconnectJack(moduleToRemove.getIn(['input', 'resonance', 'color']))) }
+    if(moduleToRemove.getIn(['output', 'sound', 'color'])) { store.dispatch(disconnectJack(moduleToRemove.getIn(['output', 'sound', 'color']))) }
   }
 
   return next(action)

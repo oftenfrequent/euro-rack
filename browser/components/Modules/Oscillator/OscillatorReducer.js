@@ -37,6 +37,7 @@ export default (state = {}, action) => {
 			return state.setIn([action.id, 'output', 'pwm', 'modulationFrequency'], action.frequency )
 									.updateIn([action.id, 'output', 'pwm', 'toneComponent'], (osc) => {
 										osc.modulationFrequency.value = action.frequency
+										console.log('osc', osc.modulationFrequency.value)
 										return osc
 									})
 

@@ -6,7 +6,7 @@ const initialState = () => {
     flexOrder: 0,
     q: 1,
     minQ: 0,
-    maxQ: 20,
+    maxQ: 10,
     min: 0,
     max: 1000,
     frequency: 400,
@@ -15,12 +15,20 @@ const initialState = () => {
     rolloffOptions: [-12, -24, -48, -96],
     rolloff: -12,
   	input: {
-  		sound: null,
-      frequency: null,
-      resonance: null
+  		sound: {
+        color: null
+      },
+      frequency: {
+        color: null
+      },
+      resonance: {
+        color: null
+      }
   	},
   	output: {
-  		sound: null
+  		sound: {
+        color: null
+      }
   	}
   }
 }
