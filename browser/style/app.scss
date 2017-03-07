@@ -164,7 +164,7 @@ body {
 
 .envelope-in-jack, .envelope-out-jack {
 	position: absolute;
-	bottom: 20px;
+	bottom: 10px;
 	.jack-container {
 		margin-bottom: 10px;
 	}
@@ -180,7 +180,7 @@ body {
 
 .filter-in-jack, .filter-out-jack {
 	position: absolute;
-	bottom: 10px;
+	bottom: 20px;
 }
 
 .filter-out-jack {
@@ -193,15 +193,25 @@ body {
 
 .oscillator-out-jack {
 	position: absolute;
-	bottom: 10px;
+	bottom: 20px;
 	right: 30px;
 }
 
-.oscillator-out-row {
+.waveforms-out-row {
 	width: 100%;
-	.jack-container {
-		width: 25%;
-		float: left;
+	position: absolute;
+	bottom: 20px;
+	left: 0px;
+	right: 0px;
+
+	.waveforms-centered-row {
+		width: 90%;
+    margin: 0 auto;
+
+		.jack-container {
+			width: 25%;
+			float: left;
+		}
 	}
 }
 

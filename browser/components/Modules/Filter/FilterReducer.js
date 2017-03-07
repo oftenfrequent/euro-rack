@@ -41,7 +41,7 @@ export default (state = {}, action) => {
 		case 'CHANGE_FIL_FREQ' :
 			return state.setIn([action.id, 'frequency'], action.frequency )
 									.updateIn([action.id, 'toneComponent'], (fil) => {
-										if (!state.getIn([action.id, 'input', 'frequency'])) {
+										if (!state.getIn([action.id, 'input', 'frequency', 'color'])) {
 											fil.frequency.value = action.frequency
 										}
 										return fil
@@ -57,7 +57,7 @@ export default (state = {}, action) => {
 		case 'CHANGE_FIL_RESONANCE' :
 			return state.setIn([action.id, 'q'], action.q )
 									.updateIn([action.id, 'toneComponent'], (fil) => {
-										if (!state.getIn([action.id, 'input', 'resonance'])) {
+										if (!state.getIn([action.id, 'input', 'resonance', 'color'])) {
 											fil.Q.value = action.q
 										}
 										return fil
