@@ -9,6 +9,7 @@ const initialState = () => {
 		frequency: 200,
 		type: 'sine',
 		// toneRangeStart: [8.176, 16.3515, 32.703, 65.406, 130.813],
+		typesArray: ['sine', 'triangle', 'sawtooth', 'pwm'],
 		input: {
 			frequency: {
 				color: null

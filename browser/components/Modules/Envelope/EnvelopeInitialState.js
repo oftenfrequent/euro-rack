@@ -14,6 +14,7 @@ const initialState = () => {
 	  curveOptions: ['linear', 'exponential', 'sine', 'ease', 'bounce', 'ripple', 'step'],
 	  selectedTimeLength: 'short',
 	  timeLengths: ['short', 'medium', 'long'],
+	  outputArray: ['output1', 'output2', 'inverse'],
 		input: {
 			trigger: {
 				color: null

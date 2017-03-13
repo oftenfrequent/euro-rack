@@ -2,17 +2,14 @@ import Tone from 'tone'
 
 const initialState = () => {
 	return {
-		toneComponent: new Tone.LFO({
-			type:'sine',
-			frequency:0.01
-		}).syncFrequency().start(),
 		timelineBased: false,
+		typeOptions: ['sine', 'square', 'triangle', 'sawtooth'],
 		flexOrder: 0,
 		min: 0.01, // TODO: get rid of
 		max: 100, // TODO: get rid of
-		minValue: 0,
-		midValue: 0.5,
-		maxValue: 1,
+		// minValue: 0,
+		// midValue: 0.5,
+		// maxValue: 1,
 		percentChange: 0,
 		timelineFrequency: '4n',
 		frequency: 0.01,

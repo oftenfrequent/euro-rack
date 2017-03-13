@@ -51,12 +51,10 @@ export default (state = {}, action) => {
 	return state
 }
 
-const typeOptions = ['sine', 'square', 'triangle', 'sawtooth']
-
 const changeFreqOfOscillators = (state, id) => {
 	const isTimeline = state.getIn([id, 'timelineBased'])
 	const nameType = isTimeline ? 'timelineFrequency' : 'frequency'
-	typeOptions.map( type => {
+	state.getIn([id, 'typeOptions']).map( type => {
 		state = state.updateIn([id, 'output', type, 'toneComponent'], (lfo) => {
 								lfo.frequency.value = state.getIn([id, nameType])
 								if (isTimeline) {
@@ -68,7 +66,6 @@ const changeFreqOfOscillators = (state, id) => {
 	return state
 }
 
-
 const setLFOParamsOnConnection = (state, action) => {
 	state = state.setIn([action.lfoID, 'output', action.lfoCvName, 'midValue'], action.midValue)
 							 .setIn([action.lfoID, 'output', action.lfoCvName, 'minValue'], action.minValue)
@@ -77,44 +74,35 @@ const setLFOParamsOnConnection = (state, action) => {
 }
 
 const changeToneLFOParamters = (id, action, state) => {
+	const lfosToChange = action.lfoCvName ? [action.lfoCvName] : state.getIn([id, 'typeOptions'])
 
-	if (action.lfoCvName) {
+	lfosToChange.map( lfoType => {
 		state = updateParamsInType(
-			state,
-			state.getIn([id, 'output', action.lfoCvName, 'minValue']),
-			state.getIn([id, 'output', action.lfoCvName, 'maxValue']),
-			state.getIn([id, 'output', action.lfoCvName, 'midValue']),
-			id,
-			action.lfoCvName
-		)
-	} else {
-		typeOptions.map(type => {
-			state = updateParamsInType(
 				state,
-				state.getIn([id, 'output', type, 'minValue']),
-				state.getIn([id, 'output', type, 'maxValue']),
-				state.getIn([id, 'output', type, 'midValue']),
+				state.getIn([id, 'output', lfoType, 'minValue']),
+				state.getIn([id, 'output', lfoType, 'maxValue']),
+				state.getIn([id, 'output', lfoType, 'midValue']),
 				id,
-				type
+				lfoType
 			)
-		})
-	}
+	})
 	return state
 }
 
 
 const updateParamsInType = (state, min, max, mid, id, type) => {
 	return state.updateIn([id, 'output', type, 'toneComponent'], (lfo) => {
-									const totalDifference = max - min
-									const difference = ((state.getIn([id, 'percentChange'])*totalDifference)/100)/2
-									const midValue = mid
-									const minValue = midValue - difference
-									const maxValue = midValue + difference
-									console.log('minValue', minValue)
-									console.log('maxValue', maxValue)
-									lfo.min = minValue < min ? min : minValue
-									lfo.max = maxValue > max ? max : maxValue
-									console.log('lfo', lfo)
-									return lfo
-								})
+		const totalDifference = max - min
+		const difference = ((state.getIn([id, 'percentChange'])*totalDifference)/100)/2
+		const midValue = mid
+		const minValue = midValue - difference
+		const maxValue = midValue + difference
+		lfo.min = minValue < min ? min : minValue
+		lfo.max = maxValue > max ? max : maxValue
+		// console.log('minValue', lfo.min)
+		// console.log('maxValue', lfo.max)
+		// console.log('lfo', lfo)
+		return lfo
+	})
 }
+

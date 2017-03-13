@@ -13,10 +13,18 @@ export const connectJackMiddleWare = store => next => action => {
   if (action.type === 'CONNECT_JACK') {
     if (action.direction === 'input' && action.toneObject === 'ALL_OSC_TYPES') {
       if (action.cvName === 'frequency' || action.cvName === 'cvFrequency') {
-        const typeArray = ['sine', 'triangle', 'sawtooth', 'pwm']
         let toneObjArray = []
-        typeArray.map( type => {
+        state.oscillators.getIn([action.id, 'typesArray']).map( type => {
           toneObjArray.push(state.oscillators.getIn([action.id, 'output', type, 'toneComponent']).frequency)
+        })
+        action.toneObject = toneObjArray
+      }
+    }
+    if (action.direction === 'input' && action.toneObject === 'ALL_LFO_AMPLITUDES') {
+      if (action.cvName === 'amplitude') {
+        let toneObjArray = []
+        state.lfos.getIn([action.id, 'typeOptions']).map( type => {
+          toneObjArray.push(state.lfos.getIn([action.id, 'output', type, 'toneComponent']).amplitude)
         })
         action.toneObject = toneObjArray
       }

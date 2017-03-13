@@ -61,6 +61,8 @@ export class LFO extends React.Component {
             </div>
           )
         }
+
+
         <KnobAndAmount
           name='Change'
           min={0}
@@ -73,8 +75,8 @@ export class LFO extends React.Component {
         />
         <div className='oscillator-in-jack'>
           <Jack name='amplitude'
-            color={this.props.lfo.getIn(['input', 'amplitude'])}
-            onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'input', 'amplitude', this.props.lfo.get('toneComponent').amplitude, this.props.lfo.getIn(['input', 'amplitude']))}
+            color={this.props.lfo.getIn(['input', 'amplitude', 'color'])}
+            onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'input', 'amplitude', 'ALL_LFO_AMPLITUDES', this.props.lfo.getIn(['input', 'amplitude', 'color']))}
           />
         </div>
         <div className='waveforms-out-row'>

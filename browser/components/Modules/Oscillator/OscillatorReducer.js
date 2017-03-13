@@ -37,7 +37,6 @@ export default (state = {}, action) => {
 			return state.setIn([action.id, 'output', 'pwm', 'modulationFrequency'], action.frequency )
 									.updateIn([action.id, 'output', 'pwm', 'toneComponent'], (osc) => {
 										osc.modulationFrequency.value = action.frequency
-										console.log('osc', osc.modulationFrequency.value)
 										return osc
 									})
 
@@ -45,10 +44,8 @@ export default (state = {}, action) => {
 	return state
 }
 
-const typesArray = ['sine', 'triangle', 'sawtooth', 'pwm']
-
 const changeFrequency = (state, id, freq) => {
-	typesArray.map(type => {
+	state.getIn([id, 'typesArray']).map(type => {
 		state = state.updateIn([id, 'output', type, 'toneComponent'], osc => {
 			osc.frequency.value = freq
 			return osc
