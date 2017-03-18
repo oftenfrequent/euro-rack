@@ -159,7 +159,7 @@ export class App extends React.Component {
       </div>
       </div>
     )
-        // <button onClick={() => this.props.testing()}>TESTING STUFF</button>
+      // <button onClick={() => this.props.testing()}>TESTING STUFF</button>
   }
 };
 

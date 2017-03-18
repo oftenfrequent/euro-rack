@@ -16,10 +16,14 @@ const reducer = (state = {}, action) => {
 			return state.setIn(['patchCables', 'error'], action.error)
 		case 'TESTING_STUFF' :
 			console.log('ASLDFHASLD')
-			const osc = new Tone.OmniOscillator(200, 'pwm').start().toMaster()
-			// const osc1 = new Tone.OmniOscillator(700, 'pwm').start()
-			// const gain = new Tone.Gain().toMaster()
-			const lfo = new Tone.LFO('1m', 100, 300).start()
+			const osc = new Tone.Oscillator(200, 'sine').start()
+			const add = new Tone.Add(1)
+			const wave = new Tone.WaveShaper(val => {
+				console.log('val', val)
+			})
+
+			osc.chain(add, wave)
+			// const lfo = new Tone.LFO('1m', 100, 300).start()
 			// const env = new Tone.Envelope(0.01, 0.1, 0.5, 0.1)
 
 
@@ -28,15 +32,15 @@ const reducer = (state = {}, action) => {
 			// lfo.connect(gain.gain)
 			// env.connect(lfo.amplitude)
 
-			setTimeout(() => {
-				console.log('connect lfo')
-				lfo.connect(osc.frequency)
-			// 	env.triggerAttackRelease(2)
-			}, 7000)
+			// setTimeout(() => {
+			// 	console.log('connect lfo')
+			// 	lfo.connect(osc.frequency)
+			// // 	env.triggerAttackRelease(2)
+			// }, 7000)
 
-			setInterval(() => {
-				console.log('osc freq', osc.frequency.value)
-			}, 70)
+			// setInterval(() => {
+			// 	console.log('osc freq', osc.frequency.value)
+			// }, 70)
 
 			// const lfo = new Tone.LFO(200).start()
 
