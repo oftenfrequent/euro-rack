@@ -71,8 +71,9 @@ export class Speaker extends React.Component {
         <div className='master-out-jack'>
           <Jack
             name='in'
-            color={this.props.speaker.getIn(['input', 'sound'])}
-            onJackClick={(e) => this.props.onJackClick(e, 'only', 'input', 'sound', this.props.speaker.get('analyser'), this.props.speaker.getIn(['input', 'sound']))}
+            attention={this.props.speaker.getIn(['input', 'sound', 'attention'])}
+            color={this.props.speaker.getIn(['input', 'sound', 'color'])}
+            onJackClick={(e) => this.props.onJackClick(e, 'only', 'input', 'sound', this.props.speaker.get('analyser'), this.props.speaker.getIn(['input', 'sound', 'color']))}
           />
         </div>
         <div className='canvas-container'>

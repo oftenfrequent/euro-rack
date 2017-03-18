@@ -22,9 +22,7 @@ import {
   pushIdToOrder
 } from './EuroRackActions'
 
-import '../../style/app.scss'
-
-export class App extends React.Component {
+export class EuroRack extends React.Component {
   constructor(props){
     super(props)
     this.initialOrder = [
@@ -155,7 +153,10 @@ export class App extends React.Component {
           changeOrder={(n) => this.changeOrder(n)}
           onJackClick={(e, id, direction, cvName, toneComponent, currentColor) => this.handleJackClick(e, 'speaker', id, direction, cvName, toneComponent, currentColor)}
         />
-        <AddNewComponent/>
+        {this.props.AddModules
+         ? <AddNewComponent/>
+         : null
+        }
       </div>
       </div>
     )
@@ -188,7 +189,7 @@ export default connect(
     pushIdToOrder,
     testing
   }
-)(App);
+)(EuroRack);
 
 
 function testing () {

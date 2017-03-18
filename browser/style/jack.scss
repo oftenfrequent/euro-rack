@@ -4,6 +4,10 @@
 		width: 30px;
 		margin: 0 auto;
 
+		&.active {
+			animation: fadeoutin 1s infinite ease-in-out;
+		}
+
 		.color-connector {
 			position: absolute;
 			top: 0px;

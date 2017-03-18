@@ -32,6 +32,8 @@ export class Oscillator extends React.Component {
         // />
 
   render(){
+    const oscTypes = Array.from(this.props.vco.getIn(['output']).keys())
+    console.log('oscTypes', oscTypes)
     const order = this.props.vco.get('flexOrder') ? this.props.vco.get('flexOrder') : this.props.order
     return (
       <ModuleContainer
@@ -106,28 +108,36 @@ export class Oscillator extends React.Component {
         </div>
         <div className='waveforms-out-row'>
           <div className='waveforms-centered-row'>
-            <Jack name='sine'
-              color={this.props.vco.getIn(['output', 'sine', 'color'])}
-              onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'output', 'sine', this.props.vco.getIn(['output', 'sine', 'toneComponent']), this.props.vco.getIn(['output', 'sine', 'color']))}
-            />
-            <Jack name='tri'
-              color={this.props.vco.getIn(['output', 'triangle', 'color'])}
-              onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'output', 'triangle', this.props.vco.getIn(['output', 'triangle', 'toneComponent']), this.props.vco.getIn(['output', 'triangle', 'color']))}
-            />
-            <Jack name='saw'
-              color={this.props.vco.getIn(['output', 'sawtooth', 'color'])}
-              onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'output', 'sawtooth', this.props.vco.getIn(['output', 'sawtooth', 'toneComponent']), this.props.vco.getIn(['output', 'sawtooth', 'color']))}
-            />
-            <Jack name='pulse'
-              color={this.props.vco.getIn(['output', 'pwm', 'color'])}
-              onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'output', 'pwm', this.props.vco.getIn(['output', 'pwm', 'toneComponent']), this.props.vco.getIn(['output', 'pwm', 'color']))}
-            />
+            {oscTypes.map( (type, i) =>
+              <Jack
+                key={i}
+                name={type.length > 4 ? type.substr(0,3) : type}
+                attention={this.props.vco.getIn(['output', type, 'attention'])}
+                color={this.props.vco.getIn(['output', type, 'color'])}
+                onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'output', type, this.props.vco.getIn(['output', type, 'toneComponent']), this.props.vco.getIn(['output', type, 'color']))}
+              />
+            )}
           </div>
         </div>
       </ModuleContainer>
     )
   }
 }
+            // <Jack name='tri'
+            //   attention={this.vco.getIn(['output', type, 'attention'])}
+            //   color={this.props.vco.getIn(['output', 'triangle', 'color'])}
+            //   onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'output', 'triangle', this.props.vco.getIn(['output', 'triangle', 'toneComponent']), this.props.vco.getIn(['output', 'triangle', 'color']))}
+            // />
+            // <Jack name='saw'
+            //   attention={this.vco.getIn(['output', type, 'attention'])}
+            //   color={this.props.vco.getIn(['output', 'sawtooth', 'color'])}
+            //   onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'output', 'sawtooth', this.props.vco.getIn(['output', 'sawtooth', 'toneComponent']), this.props.vco.getIn(['output', 'sawtooth', 'color']))}
+            // />
+            // <Jack name='pulse'
+            //   attention={this.vco.getIn(['output', type, 'attention'])}
+            //   color={this.props.vco.getIn(['output', 'pwm', 'color'])}
+            //   onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'output', 'pwm', this.props.vco.getIn(['output', 'pwm', 'toneComponent']), this.props.vco.getIn(['output', 'pwm', 'color']))}
+            // />
 
 function mapStateToProps(state, props) {
   return {

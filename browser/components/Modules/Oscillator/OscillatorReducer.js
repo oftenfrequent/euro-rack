@@ -14,6 +14,7 @@ export default (state = {}, action) => {
 		case 'CONNECT_JACK' :
 			if (action.module === 'oscillators') {
 				return state.setIn([action.id, action.direction, action.cvName, 'color'], action.color )
+										.setIn([action.id, action.direction, action.cvName, 'attention'], false )
 			} else {
 				return state
 			}
@@ -23,8 +24,10 @@ export default (state = {}, action) => {
 					state = changeFrequency(state, action.inputId, state.getIn([action.inputId, 'frequency']))
 				}
 				return state.setIn([action.inputId, 'input', action.inputCvName, 'color'], null)
+										.setIn([action.inputId, 'input', action.inputCvName, 'attention'], false )
 			} else if (action.outputModule === 'oscillators') {
 				return state.setIn([action.outputId, 'output', action.outputCvName, 'color'], null)
+										.setIn([action.outputId, 'output', action.outputCvName, 'attention'], false )
 			} else {
 				return state
 			}
@@ -39,6 +42,14 @@ export default (state = {}, action) => {
 										osc.modulationFrequency.value = action.frequency
 										return osc
 									})
+		case 'WALKTHROUGH' :
+			if (action.outputModule === 'oscillators') {
+				return state.setIn([action.outputId, 'output', 'sine', 'attention'], true)
+			} else if (action.inputModule === 'oscillators') {
+				return state.setIn([action.outputId, 'output', action.outputCvName, 'color'], null)
+			} else {
+				return state
+			}
 
 	}
 	return state
