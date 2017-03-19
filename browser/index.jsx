@@ -14,7 +14,8 @@ import {
 	connectJackMiddleWare,
 	patchingMiddleWare,
 	deleteModuleMiddleWare,
-	changeBPM
+	changeBPM,
+	walkthroughMiddleware
 } from './config/middleware'
 
 let store
@@ -27,7 +28,8 @@ if (process.env.NODE_ENV === 'production') {
 			connectJackMiddleWare,
 			patchingMiddleWare,
 			deleteModuleMiddleWare,
-			changeBPM
+			changeBPM,
+			walkthroughMiddleware
 		))
 	)
 } else {
@@ -39,6 +41,7 @@ if (process.env.NODE_ENV === 'production') {
 			patchingMiddleWare,
 			deleteModuleMiddleWare,
 			changeBPM,
+			walkthroughMiddleware,
 			logger({stateTransformer:(state) => Map(state).toJS()})
 		))
 	)

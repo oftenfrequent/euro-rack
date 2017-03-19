@@ -39,7 +39,8 @@ const initialState = {
 	speaker: fromJS({
 		only: SpeakerInitialState
 	}),
-	eurorack: fromJS(EuroRackInitialState)
+	eurorack: fromJS(EuroRackInitialState),
+	walkthrough: fromJS({ text: null, active: false })
 }
 
 export default initialState

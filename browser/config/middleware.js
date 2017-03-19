@@ -309,6 +309,19 @@ export const changeBPM = store => next => action => {
   return next(action)
 }
 
+export const walkthroughMiddleware = store => next => action => {
+  const state = store.getState()
+  if (action.type === 'WALKTHROUGH_STEP') {
+    if (!action.outputId) {
+      action.outputId = Array.from(state[action.outputModule].keys())[0]
+    }
+    if (!action.inputId) {
+      action.inputId = Array.from(state[action.inputModule].keys())[0]
+    }
+  }
+  return next(action)
+}
+
 export default {
 	connectJackMiddleWare,
   patchingMiddleWare,

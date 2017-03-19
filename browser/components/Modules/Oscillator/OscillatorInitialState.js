@@ -12,12 +12,15 @@ const initialState = () => {
 		typesArray: ['sine', 'triangle', 'sawtooth', 'pwm'],
 		input: {
 			frequency: {
+				attention: false,
 				color: null
 			},
 			pwModulation: {
+				attention: false,
 				color: null
 			},
 			cvFrequency: {
+				attention: false,
 				color: null
 			}
 		},

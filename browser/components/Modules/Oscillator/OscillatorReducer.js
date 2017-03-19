@@ -42,7 +42,7 @@ export default (state = {}, action) => {
 										osc.modulationFrequency.value = action.frequency
 										return osc
 									})
-		case 'WALKTHROUGH' :
+		case 'WALKTHROUGH_STEP' :
 			if (action.outputModule === 'oscillators') {
 				return state.setIn([action.outputId, 'output', 'sine', 'attention'], true)
 			} else if (action.inputModule === 'oscillators') {

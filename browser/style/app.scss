@@ -253,6 +253,43 @@ button {
 	}
 }
 
+.walkthrough-text-container {
+  padding: 20px 80px;
+  position: absolute;
+  width: 300px;
+  background: $border-color;
+  top: 25%;
+  z-index: 100;
+  right: -300px;
+  color: $black;
+  transition: all 0.3s ease-in-out;
+  opacity: 1;
+  border-radius: 0px 0px 0px 3px;
+
+	&:hover {
+		cursor: pointer;
+	}
+
+  &.empty {
+  	opacity: 0;
+  }
+
+  &.open {
+	  right: 0px;
+  }
+
+  .walkthrough-tab {
+  	width: 20px;
+    background: $border-color;
+	  color: $black;
+    position: absolute;
+    left: -19px;
+    top: 0px;
+    border-radius: 3px 0px 0px 3px;
+    padding: 3px;
+  }
+}
+
 .message-banner {
 	transition: all 0.3s ease-in-out;
 	background: $error-color;

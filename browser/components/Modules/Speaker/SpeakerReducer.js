@@ -24,13 +24,9 @@ export default (state = {}, action) => {
 		case 'CHANGE_BPM' :
 			Tone.Transport.bpm.value = action.value
 			return state.setIn(['only', 'currentBPM'], action.value)
-		case 'WALKTHROUGH' :
-			// if (action.outputModule === 'speaker') {
-			// 	return state.setIn([action.outputId, 'output', 'sound', 'attention'], true)
-			// } else
+		case 'WALKTHROUGH_STEP' :
 			if (action.inputModule === 'speaker') {
 				return state.setIn([action.inputId, 'input', 'sound', 'attention'], true)
-				// return state.setIn([action.inputId, 'output', action.outputCvName, 'color'], null)
 			} else {
 				return state
 			}
