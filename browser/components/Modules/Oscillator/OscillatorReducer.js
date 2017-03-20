@@ -44,9 +44,9 @@ export default (state = {}, action) => {
 									})
 		case 'WALKTHROUGH_STEP' :
 			if (action.outputModule === 'oscillators') {
-				return state.setIn([action.outputId, 'output', 'sine', 'attention'], true)
+				return state.setIn([action.outputId, 'output', action.outputCvName, 'attention'], true)
 			} else if (action.inputModule === 'oscillators') {
-				return state.setIn([action.outputId, 'output', action.outputCvName, 'color'], null)
+				return state.setIn([action.inputId, 'input', action.inputCvName, 'attention'], true)
 			} else {
 				return state
 			}

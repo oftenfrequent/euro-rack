@@ -322,11 +322,10 @@ export const walkthroughMiddleware = store => next => action => {
   return next(action)
 }
 
-export default {
-	connectJackMiddleWare,
-  patchingMiddleWare,
-  deleteModuleMiddleWare,
-  changeBPM
-}
-
-// TODO: env to filter resonance && freq
+// export default {
+// 	connectJackMiddleWare,
+//   patchingMiddleWare,
+//   deleteModuleMiddleWare,
+//   changeBPM,
+//   walkthroughMiddleware
+// }

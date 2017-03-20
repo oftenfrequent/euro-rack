@@ -46,6 +46,7 @@ export class Filter extends React.Component {
         <div className='jack-knob-pair clearfix'>
           <div className='paired-jack'>
             <Jack name='freq cv'
+              attention={this.props.fil.getIn(['input', 'frequency', 'attention'])}
               color={this.props.fil.getIn(['input', 'frequency', 'color'])}
               onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'input', 'frequency', this.props.fil.get('toneComponent').frequency, this.props.fil.getIn(['input', 'frequency', 'color']))}
             />
@@ -66,6 +67,7 @@ export class Filter extends React.Component {
         <div className='jack-knob-pair clearfix no-amount-pair'>
           <div className='paired-jack'>
             <Jack name='res cv'
+              attention={this.props.fil.getIn(['input', 'resonance', 'attention'])}
               color={this.props.fil.getIn(['input', 'resonance', 'color'])}
               onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'input', 'resonance', this.props.fil.get('toneComponent').Q, this.props.fil.getIn(['input', 'resonance', 'color']))}
             />
@@ -85,12 +87,14 @@ export class Filter extends React.Component {
         </div>
         <div className='filter-in-jack'>
           <Jack name='audio in'
+            attention={this.props.fil.getIn(['input', 'sound', 'attention'])}
             color={this.props.fil.getIn(['input', 'sound', 'color'])}
             onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'input', 'sound', this.props.fil.get('toneComponent'), this.props.fil.getIn(['input', 'sound', 'color']))}
           />
         </div>
         <div className='filter-out-jack'>
           <Jack name='out'
+            attention={this.props.fil.getIn(['output', 'sound', 'attention'])}
             color={this.props.fil.getIn(['output', 'sound', 'color'])}
             onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'output', 'sound', this.props.fil.get('toneComponent'), this.props.fil.getIn(['output', 'sound', 'color']))}
           />

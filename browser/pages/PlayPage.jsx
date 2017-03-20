@@ -8,6 +8,7 @@ import { addLFO } from '../components/Modules/LFO/LFOActions'
 import { addEnvelope } from '../components/Modules/Envelope/EnvelopeActions'
 import { addFilter } from '../components/Modules/Filter/FilterActions'
 import { addVCA } from '../components/Modules/VCA/VCAActions'
+import { addMIDI } from '../components/Modules/MIDI/MIDIActions'
 
 export class PlayPage extends React.Component {
   constructor (props) {
@@ -21,6 +22,7 @@ export class PlayPage extends React.Component {
     this.props.addEnvelope()
     this.props.addFilter()
     this.props.addVCA()
+    this.props.addMIDI()
   }
 
   render () {
@@ -43,7 +45,8 @@ export default connect(
     addLFO,
     addEnvelope,
     addFilter,
-    addVCA
+    addVCA,
+    addMIDI
  }
 )(PlayPage)
 

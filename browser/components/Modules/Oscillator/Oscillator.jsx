@@ -72,7 +72,6 @@ export class Oscillator extends React.Component {
           </div>
           <div className='paired-knob'>
             <KnobAndAmount
-              name='NOTHING'
               type='number'
               min={this.props.vco.get('min')}
               max={this.props.vco.get('max')}

@@ -16,22 +16,16 @@ export class WalkthroughPage extends React.Component {
     super(props)
     this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this)
     this.state = {
-      walkthrough: new walkthrough('Initial Introduction', props.walkthroughStep)
+      walkthrough: new walkthrough('Initial Introduction', props)
     }
   }
 
-  componentWillMount() {
-    this.props.addOscillator()
+  componentDidMount() {
+    this.state.walkthrough.nextStep()
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if(this.props.oscillators && !prevProps.oscillators.size) {
-      this.state.walkthrough.nextStep()
-    }
-    if (this.state.walkthrough.currentStep > -1 &&
-        this.state.walkthrough.steps[this.state.walkthrough.currentStep].stepCompleted(this.props.state)
-      ) {
-      console.log('completed?', this.state.walkthrough.steps[this.state.walkthrough.currentStep].stepCompleted(this.props.state))
+    if (this.state.walkthrough.currentStep > -1 && this.state.walkthrough.steps[this.state.walkthrough.currentStep].hasStepCompleted(this.props.state)) {
       this.state.walkthrough.nextStep()
     }
   }

@@ -1,5 +1,14 @@
+import uuid from 'uuid'
+import { fromJS } from 'immutable'
+
+import MIDIInitialStateCreator from './MIDIInitialState'
+
+
 export default (state = {}, action) => {
 	switch(action.type) {
+		case 'ADD_MIDI' :
+			const newID = uuid.v4()
+			return state.set(newID, fromJS(MIDIInitialStateCreator()))
 
 		case 'CONNECT_JACK' :
 			if (action.module === 'midis') {

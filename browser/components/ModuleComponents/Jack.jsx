@@ -26,7 +26,7 @@ const Jack = ({name, color, onJackClick, attention}) => {
           className='jack-center'
           style={{background: `${backgroundColor}`}}></div>
       </div>
-      <div className='jack-name'>{name}</div>
+      { name ? <div className='jack-name'>{name}</div> : null }
     </div>
   )
 }
