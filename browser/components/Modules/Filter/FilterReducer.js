@@ -5,6 +5,8 @@ import FilterInitialStateCreator from './FilterInitialState'
 
 export default (state = {}, action) => {
 	switch(action.type) {
+		case 'RESET_EURORACK' :
+			return state = fromJS({})
 		case 'ADD_FIL' :
 			const newID = uuid.v4()
 			return state.set(newID, fromJS(FilterInitialStateCreator()))

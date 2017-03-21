@@ -56,11 +56,11 @@ export class MIDI extends React.Component {
             }
             this.setState({ midiOptions: inputs })
           } else {
-            this.setState({ midiOptions: [] }, () => { throw 'No devices detected!' })
+            this.setState({ midiOptions: [] }, () => { throw 'No MIDI devices detected!' })
           }
         }
       }).catch((err) => {
-        console.log('err', err)
+        // console.log('err', err)
         this.props.errorConnectingMidi(this.props.id, err)
       })
   }
@@ -84,6 +84,11 @@ export class MIDI extends React.Component {
     else { throw 'No Web MIDI support' }
   }
 
+  componentWillUnmount() {
+    document.removeEventListener('keydown', this.state.attackFn )
+    document.removeEventListener('keyup', this.state.releaseFn )
+  }
+
   render(){
     const order = this.props.midi.get('flexOrder') ? this.props.midi.get('flexOrder') : this.props.order
     return (
@@ -93,10 +98,6 @@ export class MIDI extends React.Component {
         order={order}
         changeOrder={(n) => this.props.changeOrder(n)}
       >
-        {this.props.midi.get('error')
-          ? <div>{this.props.midi.get('error')}</div>
-          : null
-        }
         <div className='display-type-container'>
           <select
             className='display-type-dropdown'
@@ -110,7 +111,13 @@ export class MIDI extends React.Component {
           </select>
         </div>
 
-        <button onClick={() => this.getMidiInputDevices()}>Check For MIDI Devices</button>
+        <button onClick={() => this.getMidiInputDevices()}>
+          <div>Check For MIDI Devices</div>
+          {this.props.midi.get('error')
+            ? <div>({this.props.midi.get('error')})</div>
+            : null
+          }
+        </button>
 
         <div className='gate-out-jack'>
           <Jack name='gate'

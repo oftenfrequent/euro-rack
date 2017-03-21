@@ -58,13 +58,13 @@ export class walkthrough {
 			},
 			{
 				userStep: true,
-				text: 'Next we will add an Low Frequency Oscillator (LFO) to modulate the frequency of the Oscillator. /n /n Feel free to play with the settings on the LFO!',
+				text: 'Great! Now you have a super annoying tone! We can spice this up a bit by utilizing a Low Frequency Oscillator (LFO) to modulate the frequency of the Oscillator. Use a Sawtooth wave to modulate the frequency of the Oscillator. Also be sure to turn up the knobs on the LFO to move on!',
 				inputModule: 'oscillators',
 				inputId: null, // added by middleware
 				inputCvName: 'frequency',
 				outputModule: 'lfos',
 				outputId: null, // added by middleware
-				outputCvName: 'sine',
+				outputCvName: 'sawtooth',
 				hasStepCompleted: (state) => {
 					// return false
 					const connections = state.eurorack.getIn(['patchCables', 'connections'])
@@ -72,11 +72,18 @@ export class walkthrough {
 					let success = false
 					connections.map(con => {
 						if (con.getIn(['output', 'module']) === 'lfos' &&
-								con.getIn(['output', 'cvName']) === 'sine' &&
+								con.getIn(['output', 'cvName']) === 'sawtooth' &&
 								con.getIn(['input', 'module']) === 'oscillators' &&
 								con.getIn(['input', 'cvName']) === 'frequency'
 							) {
 							success = true
+						}
+					})
+					state.lfos.map( id => {
+						console.log('id', id)
+						if (id.get('frequency') === 0.01 ||
+								id.get('percentChange') === 0) {
+							success = false
 						}
 					})
 					return success
@@ -150,19 +157,90 @@ export class walkthrough {
 				hasStepCompleted: (state) => {
 					const connections = state.eurorack.getIn(['patchCables', 'connections'])
 					console.log('connections', connections)
-					let success = true
+					let success = false
 					connections.map(con => {
 						if (con.getIn(['output', 'module']) === 'filters' &&
 								con.getIn(['output', 'cvName']) === 'sound' &&
 								con.getIn(['input', 'module']) === 'speaker' &&
 								con.getIn(['input', 'cvName']) === 'sound'
 							) {
-							success = false
+							success = true
 						}
 					})
 					return success
 				}
-			}
+			},
+			{
+				userStep: false,
+				onStep: () => { props.addMIDI() },
+				hasStepCompleted: (state) => Array.from(state.midis.keys()).length > 0
+			},
+			{
+				userStep: true,
+				text: 'Now you have access to a MIDI Device! Please plug in a MIDI Keyboard and hit the button \'Check for Midi Devices\' and select it from the dropdown or select \'Latptop Keyboard\' to enable your computer keyboard.',
+				// inputModule: 'speaker',
+				// inputId: null, // added by middleware
+				// inputCvName: 'sound',
+				// outputModule: 'midis',
+				// outputId: null, // added by middleware
+				// outputCvName: 'sound',
+				hasStepCompleted: (state) => {
+					let success = false
+					state.midis.map( id => {
+						if(id.get('inputDevice')) success = true
+					})
+					return success
+				}
+			},
+			{
+				userStep: true,
+				text: 'Let\'s start by removing the modulation on the Oscillator.',
+				inputId: null, // added by middleware
+				inputCvName: 'sound',
+				outputModule: 'midis',
+				outputId: null, // added by middleware
+				outputCvName: 'sound',
+				hasStepCompleted: (state) => {
+					let success = false
+					state.midis.map( id => {
+						if (con.getIn(['output', 'module']) === 'filters' &&
+								con.getIn(['output', 'cvName']) === 'sound' &&
+								con.getIn(['input', 'module']) === 'speaker' &&
+								con.getIn(['input', 'cvName']) === 'sound'
+							) {
+							success = true
+						}
+						if(id.get('inputDevice')) success = true
+					})
+					return success
+				}
+			},
+			// {
+			// 	userStep: true,
+			// 	text: 'The MIDI Module will now recieve notes you play on your midi keyboard or laptop keyboard and route them out through the \'cv out\' jacks. First remove the LFO patch to the Oscillator.',
+			// 	inputModule: 'oscillators',
+			// 	inputId: null, // added by middleware
+			// 	inputCvName: 'frequency',
+			// 	outputModule: 'lfos',
+			// 	outputId: null, // added by middleware
+			// 	outputCvName: 'sine',
+			// 	hasStepCompleted: (state) => {
+			// 		// return false
+			// 		const connections = state.eurorack.getIn(['patchCables', 'connections'])
+			// 		console.log('connections', connections)
+			// 		let success = true
+			// 		connections.map(con => {
+			// 			if (con.getIn(['output', 'module']) === 'lfos' &&
+			// 					con.getIn(['output', 'cvName']) === 'sine' &&
+			// 					con.getIn(['input', 'module']) === 'oscillators' &&
+			// 					con.getIn(['input', 'cvName']) === 'frequency'
+			// 				) {
+			// 				success = false
+			// 			}
+			// 		})
+			// 		return success
+			// 	}
+			// },
 		]
 	}
 

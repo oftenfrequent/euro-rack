@@ -311,7 +311,7 @@ export const changeBPM = store => next => action => {
 
 export const walkthroughMiddleware = store => next => action => {
   const state = store.getState()
-  if (action.type === 'WALKTHROUGH_STEP') {
+  if (action.type === 'WALKTHROUGH_STEP' && action.outputModule && action.inputModule) {
     if (!action.outputId) {
       action.outputId = Array.from(state[action.outputModule].keys())[0]
     }

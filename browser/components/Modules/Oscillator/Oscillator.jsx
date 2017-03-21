@@ -29,7 +29,6 @@ export class Oscillator extends React.Component {
 
   render(){
     const oscTypes = Array.from(this.props.vco.getIn(['output']).keys())
-    console.log('oscTypes', oscTypes)
     const order = this.props.vco.get('flexOrder') ? this.props.vco.get('flexOrder') : this.props.order
     return (
       <ModuleContainer

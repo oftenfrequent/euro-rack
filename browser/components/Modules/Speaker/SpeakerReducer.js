@@ -1,8 +1,12 @@
 import Tone from 'tone'
+import { fromJS } from 'immutable'
+
+import SpeakerInitialState from './SpeakerInitialState'
 
 export default (state = {}, action) => {
 	switch(action.type) {
-
+		case 'RESET_EURORACK' :
+			return state = fromJS({only: SpeakerInitialState})
 		case 'CONNECT_JACK' :
 			if (action.module === 'speaker') {
 				return state.setIn([action.id, action.direction, action.cvName, 'color'], action.color )

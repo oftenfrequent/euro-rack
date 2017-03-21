@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import PureRenderMixin from 'react-addons-pure-render-mixin'
 import EuroRack from '../components/EuroRack/EuroRack'
 
+import { resetEuroRack } from '../components/EuroRack/EuroRackActions'
 import { addOscillator } from '../components/Modules/Oscillator/OscillatorActions'
 import { addLFO } from '../components/Modules/LFO/LFOActions'
 import { addEnvelope } from '../components/Modules/Envelope/EnvelopeActions'
@@ -17,6 +18,7 @@ export class PlayPage extends React.Component {
   }
 
   componentWillMount() {
+    this.props.resetEuroRack()
     this.props.addOscillator()
     this.props.addLFO()
     this.props.addEnvelope()
@@ -24,6 +26,9 @@ export class PlayPage extends React.Component {
     this.props.addVCA()
     this.props.addMIDI()
   }
+
+  // componentWillMount() {
+  // }
 
   render () {
     return (
@@ -41,6 +46,7 @@ function mapStateToProps (state, props) {
 export default connect(
   mapStateToProps,
   {
+    resetEuroRack,
     addOscillator,
     addLFO,
     addEnvelope,

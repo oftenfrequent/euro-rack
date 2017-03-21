@@ -6,6 +6,8 @@ import LFOInitialStateCreator from './LFOInitialState'
 
 export default (state = {}, action) => {
 	switch(action.type) {
+		case 'RESET_EURORACK' :
+			return state = fromJS({})
 		case 'ADD_LFO' :
 			const newID = uuid.v4()
 			return state.set(newID, fromJS(LFOInitialStateCreator()))
@@ -28,7 +30,7 @@ export default (state = {}, action) => {
 										.setIn([action.inputId, 'input', action.inputCvName, 'attention'], false )
 			} else if (action.outputModule === 'lfos') {
 				return state.setIn([action.outputId, 'output', action.outputCvName, 'color'], null)
-										.setIn([action.inputId, 'input', action.inputCvName, 'attention'], false )
+										.setIn([action.outputId, 'input', action.inputCvName, 'attention'], false )
 			} else {
 				return state
 			}

@@ -299,14 +299,15 @@ button {
 
   .walkthrough-tab {
 	  transition: all 0.3s ease-in-out;
-  	width: 20px;
+		font-weight: 200;
+  	width: 25px;
     background: $border-color;
 	  color: $black;
     position: absolute;
-    left: -19px;
+    left: -25px;
     top: 0px;
     border-radius: 3px 0px 0px 3px;
-    padding: 3px;
+    padding: 7px;
     box-shadow: 5px 3px 5px #888;
 		z-index: 0;
   }
@@ -327,6 +328,14 @@ button {
 	  top: -60px;
 
 	}
+}
+
+.midi-error {
+	margin-top: 12px;
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: lowercase;
+  width: 100%;
 }
 
 .master-out-jack .jack-container {
