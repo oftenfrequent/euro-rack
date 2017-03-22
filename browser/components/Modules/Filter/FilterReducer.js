@@ -30,7 +30,7 @@ export default (state = {}, action) => {
 									})
 				}
 				state = state.setIn([action.inputId, 'input', action.inputCvName, 'color'], null)
-										 .setIn([action.outputId, 'output', action.outputCvName, 'attention'], false )
+										 .setIn([action.inputId, 'input', action.inputCvName, 'attention'], false )
 			}
 			if (action.outputModule === 'filters') {
 				state = state.setIn([action.outputId, 'output', action.outputCvName, 'color'], null)

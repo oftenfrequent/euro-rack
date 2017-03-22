@@ -17,12 +17,14 @@ const initialState = () => {
 	  outputArray: ['output1', 'output2', 'inverse'],
 		input: {
 			trigger: {
-				color: null
+				color: null,
+				attention: false
 			}
 		},
 		output: {
 			output1: {
 				color: null,
+				attention: false,
 			  scaleMin: 0,
 			  scaleMax: 1,
 				toneComponent: new Tone.ScaledEnvelope({
@@ -36,6 +38,7 @@ const initialState = () => {
 			},
 			output2: {
 				color: null,
+				attention: false,
 			  scaleMin: 0,
 			  scaleMax: 1,
 				toneComponent: new Tone.ScaledEnvelope({
@@ -49,6 +52,7 @@ const initialState = () => {
 			},
 			inverse: {
 				color: null,
+				attention: false,
 			  scaleMin: 0,
 			  scaleMax: 1,
 				toneComponent: new Tone.ScaledEnvelope({

@@ -30,7 +30,7 @@ export default (state = {}, action) => {
 										.setIn([action.inputId, 'input', action.inputCvName, 'attention'], false )
 			} else if (action.outputModule === 'lfos') {
 				return state.setIn([action.outputId, 'output', action.outputCvName, 'color'], null)
-										.setIn([action.outputId, 'input', action.inputCvName, 'attention'], false )
+										.setIn([action.outputId, 'output', action.outputCvName, 'attention'], false )
 			} else {
 				return state
 			}

@@ -18,14 +18,17 @@ export default (state = {}, action) => {
 			}
 			if (action.module === 'envelopes') {
 				return state.setIn([action.id, action.direction, action.cvName, 'color'], action.color )
+										.setIn([action.id, action.direction, action.cvName, 'attention'], false )
 			} else {
 				return state
 			}
 		case 'DISCONNECT_JACK' :
 			if (action.inputModule === 'envelopes') {
 				return state.setIn([action.inputId, 'input', action.inputCvName, 'color'], null)
+										.setIn([action.inputId, 'input', action.inputCvName, 'attention'], false )
 			} else if (action.outputModule === 'envelopes') {
 				return state.setIn([action.outputId, 'output', action.outputCvName, 'color'], null)
+										.setIn([action.outputId, 'output', action.outputCvName, 'attention'], false )
 			} else {
 				return state
 			}
@@ -67,6 +70,14 @@ export default (state = {}, action) => {
 				state = state.updateIn([action.id, 'output', type, 'toneComponent'], (env) => env.triggerRelease())
 			})
 			return state
+		case 'WALKTHROUGH_STEP' :
+			if (action.outputModule === 'envelopes') {
+				return state.setIn([action.outputId, 'output', action.outputCvName, 'attention'], true)
+			} else if (action.inputModule === 'envelopes') {
+				return state.setIn([action.inputId, 'input', action.inputCvName, 'attention'], true)
+			} else {
+				return state
+			}
 	}
 	return state
 }

@@ -15,15 +15,19 @@ export default (state = {}, action) => {
 		case 'CONNECT_JACK' :
 			if (action.module === 'vcas') {
 				return state.setIn([action.id, action.direction, action.cvName, 'color'], action.color )
+										.setIn([action.id, action.direction, action.cvName, 'attention'], false )
 			} else {
 				return state
 			}
 		case 'DISCONNECT_JACK' :
 			if (action.inputModule === 'vcas') {
-				state = state.setIn([action.inputId, 'input', action.inputCvName, 'color'], null)
-			}
-			if (action.outputModule === 'vcas') {
-				state = state.setIn([action.outputId, 'output', action.outputCvName, 'color'], null)
+				return state.setIn([action.inputId, 'input', action.inputCvName, 'color'], null)
+										.setIn([action.inputId, 'input', action.inputCvName, 'attention'], false )
+			} else if (action.outputModule === 'vcas') {
+				return state.setIn([action.outputId, 'output', action.outputCvName, 'color'], null)
+										.setIn([action.outputId, 'output', action.outputCvName, 'attention'], false )
+			} else {
+				return state
 			}
 
 			return state
@@ -57,6 +61,14 @@ export default (state = {}, action) => {
 											gain.output.gain.value = action.value / 1000
 											return gain
 										})
+			}
+		case 'WALKTHROUGH_STEP' :
+			if (action.outputModule === 'vcas') {
+				return state.setIn([action.outputId, 'output', action.outputCvName, 'attention'], true)
+			} else if (action.inputModule === 'vcas') {
+				return state.setIn([action.inputId, 'input', action.inputCvName, 'attention'], true)
+			} else {
+				return state
 			}
 	}
 	return state
