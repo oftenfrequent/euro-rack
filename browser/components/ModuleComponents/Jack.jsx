@@ -1,15 +1,16 @@
 import React from 'react'
 import KnobComponent from './KnobComponent'
+import classNames from 'classnames'
 
 
-
-const Jack = ({name, color, onJackClick}) => {
-  const backgroundColor = color? color : 'black'
+const Jack = ({name, color, onJackClick, attention}) => {
+  const backgroundColor = color ? color : 'black'
   color = color ? color : '#aaaaaa'
 
+  const metalClasses = classNames({'metal-container': true, 'active': attention })
   return (
     <div className='jack-container'>
-      <div className='metal-container' onClick={onJackClick} onContextMenu={onJackClick}>
+      <div className={metalClasses} onClick={onJackClick} onContextMenu={onJackClick}>
         <div className='color-connector'
           style={{background: `${color}`}}></div>
         <div
@@ -25,7 +26,7 @@ const Jack = ({name, color, onJackClick}) => {
           className='jack-center'
           style={{background: `${backgroundColor}`}}></div>
       </div>
-      <div className='jack-name'>{name}</div>
+      { name ? <div className='jack-name'>{name}</div> : null }
     </div>
   )
 }

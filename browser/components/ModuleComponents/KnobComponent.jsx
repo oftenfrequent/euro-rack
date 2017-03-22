@@ -49,7 +49,7 @@ const KnobComponent = ({name, degreesValue, degreesTotal, sensitivity, onChange}
         </div>
       </div>
 
-      <h5 className='knob-name'>{name}</h5>
+      {name ? <h5 className='knob-name'>{name}</h5> : null }
     </div>
   )
 }

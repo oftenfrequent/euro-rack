@@ -141,12 +141,12 @@ export const connectJackMiddleWare = store => next => action => {
 
 export const patchingMiddleWare = store => next => action => {
   const state = store.getState()
-  const freqColor1 = state.midis.getIn([action.id, 'output', 'cvToFreq1'])
-  const freqColor2 = state.midis.getIn([action.id, 'output', 'cvToFreq2'])
-  const freqColor3 = state.midis.getIn([action.id, 'output', 'cvToFreq3'])
-  const gateColor1 = state.midis.getIn([action.id, 'output', 'gate1'])
-  const gateColor2 = state.midis.getIn([action.id, 'output', 'gate2'])
-  const gateColor3 = state.midis.getIn([action.id, 'output', 'gate3'])
+  const freqColor1 = state.midis.getIn([action.id, 'output', 'cvToFreq1', 'color'])
+  const freqColor2 = state.midis.getIn([action.id, 'output', 'cvToFreq2', 'color'])
+  const freqColor3 = state.midis.getIn([action.id, 'output', 'cvToFreq3', 'color'])
+  const gateColor1 = state.midis.getIn([action.id, 'output', 'gate1', 'color'])
+  const gateColor2 = state.midis.getIn([action.id, 'output', 'gate2', 'color'])
+  const gateColor3 = state.midis.getIn([action.id, 'output', 'gate3', 'color'])
   const gateArray = [gateColor1, gateColor2, gateColor3]
   if (action.type === 'MIDI_GATE_ATTACK_TRIGGER') {
     // use color of patch to find what freqcv is routed to
@@ -309,11 +309,23 @@ export const changeBPM = store => next => action => {
   return next(action)
 }
 
-export default {
-	connectJackMiddleWare,
-  patchingMiddleWare,
-  deleteModuleMiddleWare,
-  changeBPM
+export const walkthroughMiddleware = store => next => action => {
+  const state = store.getState()
+  if (action.type === 'WALKTHROUGH_STEP' && action.outputModule && action.inputModule) {
+    if (!action.outputId) {
+      action.outputId = Array.from(state[action.outputModule].keys())[0]
+    }
+    if (!action.inputId) {
+      action.inputId = Array.from(state[action.inputModule].keys())[0]
+    }
+  }
+  return next(action)
 }
 
-// TODO: env to filter resonance && freq
+// export default {
+// 	connectJackMiddleWare,
+//   patchingMiddleWare,
+//   deleteModuleMiddleWare,
+//   changeBPM,
+//   walkthroughMiddleware
+// }

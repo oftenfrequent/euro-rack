@@ -56,11 +56,11 @@ export class MIDI extends React.Component {
             }
             this.setState({ midiOptions: inputs })
           } else {
-            this.setState({ midiOptions: [] }, () => { throw 'No devices detected!' })
+            this.setState({ midiOptions: [] }, () => { throw 'No MIDI devices detected!' })
           }
         }
       }).catch((err) => {
-        console.log('err', err)
+        // console.log('err', err)
         this.props.errorConnectingMidi(this.props.id, err)
       })
   }
@@ -84,6 +84,11 @@ export class MIDI extends React.Component {
     else { throw 'No Web MIDI support' }
   }
 
+  componentWillUnmount() {
+    document.removeEventListener('keydown', this.state.attackFn )
+    document.removeEventListener('keyup', this.state.releaseFn )
+  }
+
   render(){
     const order = this.props.midi.get('flexOrder') ? this.props.midi.get('flexOrder') : this.props.order
     return (
@@ -93,10 +98,6 @@ export class MIDI extends React.Component {
         order={order}
         changeOrder={(n) => this.props.changeOrder(n)}
       >
-        {this.props.midi.get('error')
-          ? <div>{this.props.midi.get('error')}</div>
-          : null
-        }
         <div className='display-type-container'>
           <select
             className='display-type-dropdown'
@@ -110,30 +111,41 @@ export class MIDI extends React.Component {
           </select>
         </div>
 
-        <button onClick={() => this.getMidiInputDevices()}>Check For MIDI Devices</button>
+        <button onClick={() => this.getMidiInputDevices()}>
+          <div>Check For MIDI Devices</div>
+          {this.props.midi.get('error')
+            ? <div>({this.props.midi.get('error')})</div>
+            : null
+          }
+        </button>
 
         <div className='gate-out-jack'>
           <Jack name='gate'
-            color={this.props.midi.getIn(['output', 'gate1'])}
-            onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'output', 'gate1', 'connectThisToTriggerEnvelope', this.props.midi.getIn(['output', 'gate1']))}
+            attention={this.props.midi.getIn(['output', 'gate1', 'attention'])}
+            color={this.props.midi.getIn(['output', 'gate1', 'color'])}
+            onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'output', 'gate1', 'connectThisToTriggerEnvelope', this.props.midi.getIn(['output', 'gate1', 'color']))}
           />
           <Jack name='gate'
-            color={this.props.midi.getIn(['output', 'gate2'])}
-            onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'output', 'gate2', 'connectThisToTriggerEnvelope', this.props.midi.getIn(['output', 'gate2']))}
+            attention={this.props.midi.getIn(['output', 'gate2', 'attention'])}
+            color={this.props.midi.getIn(['output', 'gate2', 'color'])}
+            onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'output', 'gate2', 'connectThisToTriggerEnvelope', this.props.midi.getIn(['output', 'gate2', 'color']))}
           />
         </div>
         <div className='cv-out-jack'>
           <Jack name='cv out'
-            color={this.props.midi.getIn(['output', 'cvToFreq1'])}
-            onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'output', 'cvToFreq1', 'connectThisToControlFreqOfOscOrLFO', this.props.midi.getIn(['output', 'cvToFreq1']))}
+            attention={this.props.midi.getIn(['output', 'cvToFreq1', 'attention'])}
+            color={this.props.midi.getIn(['output', 'cvToFreq1', 'color'])}
+            onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'output', 'cvToFreq1', 'connectThisToControlFreqOfOscOrLFO', this.props.midi.getIn(['output', 'cvToFreq1', 'color']))}
           />
           <Jack name='cv out'
-            color={this.props.midi.getIn(['output', 'cvToFreq2'])}
-            onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'output', 'cvToFreq2', 'connectThisToControlFreqOfOscOrLFO', this.props.midi.getIn(['output', 'cvToFreq2']))}
+            attention={this.props.midi.getIn(['output', 'cvToFreq2', 'attention'])}
+            color={this.props.midi.getIn(['output', 'cvToFreq2', 'color'])}
+            onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'output', 'cvToFreq2', 'connectThisToControlFreqOfOscOrLFO', this.props.midi.getIn(['output', 'cvToFreq2', 'color']))}
           />
           <Jack name='cv out'
-            color={this.props.midi.getIn(['output', 'cvToFreq3'])}
-            onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'output', 'cvToFreq3', 'connectThisToControlFreqOfOscOrLFO', this.props.midi.getIn(['output', 'cvToFreq3']))}
+            attention={this.props.midi.getIn(['output', 'cvToFreq3', 'attention'])}
+            color={this.props.midi.getIn(['output', 'cvToFreq3', 'color'])}
+            onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'output', 'cvToFreq3', 'connectThisToControlFreqOfOscOrLFO', this.props.midi.getIn(['output', 'cvToFreq3', 'color']))}
           />
         </div>
       </ModuleContainer>

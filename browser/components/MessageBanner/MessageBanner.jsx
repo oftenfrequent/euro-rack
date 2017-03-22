@@ -9,7 +9,8 @@ export class MessageBanner extends React.Component {
   constructor(props){
     super(props)
     this.state = {
-      messageOver: false
+      messageOver: false,
+      error: null
     }
   }
 
@@ -38,7 +39,7 @@ export class MessageBanner extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    error: state.eurorack.getIn(['patchCables', 'error'])
+    error: state.eurorack.get('error')
   }
 };
 

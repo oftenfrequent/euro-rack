@@ -75,20 +75,24 @@ export class EnvelopeGenerator extends React.Component {
         />
         <div className='envelope-in-jack'>
           <Jack name='trigger'
+            attention={this.props.env.getIn(['input', 'trigger', 'attention'])}
             color={this.props.env.getIn(['input', 'trigger', 'color'])}
             onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'input', 'trigger', 'ALL_ENV', this.props.env.getIn(['input', 'trigger', 'color']))}
           />
         </div>
         <div className='envelope-out-jack'>
           <Jack name='output'
+            attention={this.props.env.getIn(['output', 'output1', 'attention'])}
             color={this.props.env.getIn(['output', 'output1', 'color'])}
             onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'output', 'output1', this.props.env.getIn(['output', 'output1', 'toneComponent']), this.props.env.getIn(['output', 'output1', 'color']))}
           />
           <Jack name='output'
+            attention={this.props.env.getIn(['output', 'output2', 'attention'])}
             color={this.props.env.getIn(['output', 'output2', 'color'])}
             onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'output', 'output2', this.props.env.getIn(['output', 'output2', 'toneComponent']), this.props.env.getIn(['output', 'output2', 'color']))}
           />
           <Jack name='inverse'
+            attention={this.props.env.getIn(['output', 'inverse', 'attention'])}
             color={this.props.env.getIn(['output', 'inverse', 'color'])}
             onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'output', 'inverse', this.props.env.getIn(['output', 'inverse', 'toneComponent']), this.props.env.getIn(['output', 'inverse', 'color']))}
           />

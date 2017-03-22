@@ -8,6 +8,7 @@ import FilterReducer from '../components/Modules/Filter/FilterReducer'
 import VCAReducer from '../components/Modules/VCA/VCAReducer'
 import SpeakerReducer from '../components/Modules/Speaker/SpeakerReducer'
 import MIDIReducer from '../components/Modules/MIDI/MIDIReducer'
+import WalkthroughReducer from '../components/Walkthrough/WalkthroughReducer'
 
 export default combineReducers({
 	eurorack: EuroRackReducer,
@@ -17,6 +18,7 @@ export default combineReducers({
 	filters: FilterReducer,
 	vcas: VCAReducer,
 	speaker: SpeakerReducer,
-	midis: MIDIReducer
+	midis: MIDIReducer,
+	walkthrough: WalkthroughReducer
 })
 

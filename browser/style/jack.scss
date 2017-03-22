@@ -4,6 +4,15 @@
 		width: 30px;
 		margin: 0 auto;
 
+		&:hover {
+			cursor: cell;
+		}
+
+		&.active {
+			animation: fadeoutin 1s infinite ease-in-out;
+			animation-delay: 8s;
+		}
+
 		.color-connector {
 			position: absolute;
 			top: 0px;

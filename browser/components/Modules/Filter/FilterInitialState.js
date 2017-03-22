@@ -16,17 +16,21 @@ const initialState = () => {
     rolloff: -12,
   	input: {
   		sound: {
+        attention: false,
         color: null
       },
       frequency: {
+        attention: false,
         color: null
       },
       resonance: {
+        attention: false,
         color: null
       }
   	},
   	output: {
   		sound: {
+        attention: false,
         color: null
       }
   	}

@@ -2,17 +2,20 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import { createStore, combineReducers, compose, applyMiddleware } from 'redux'
+import { Router, hashHistory } from 'react-router'
 import { Map } from 'immutable'
 import logger from 'redux-logger'
 
-import EuroRack from './components/EuroRack/EuroRack'
+import appRoutes from './pages'
+// import EuroRack from './components/EuroRack/EuroRack'
 import reducer from './config/combineReducers'
 import initialState from './config/initialState'
 import {
 	connectJackMiddleWare,
 	patchingMiddleWare,
 	deleteModuleMiddleWare,
-	changeBPM
+	changeBPM,
+	walkthroughMiddleware
 } from './config/middleware'
 
 let store
@@ -25,7 +28,8 @@ if (process.env.NODE_ENV === 'production') {
 			connectJackMiddleWare,
 			patchingMiddleWare,
 			deleteModuleMiddleWare,
-			changeBPM
+			changeBPM,
+			walkthroughMiddleware
 		))
 	)
 } else {
@@ -37,6 +41,7 @@ if (process.env.NODE_ENV === 'production') {
 			patchingMiddleWare,
 			deleteModuleMiddleWare,
 			changeBPM,
+			walkthroughMiddleware,
 			logger({stateTransformer:(state) => Map(state).toJS()})
 		))
 	)
@@ -45,7 +50,9 @@ if (process.env.NODE_ENV === 'production') {
 
 ReactDOM.render(
 	<Provider store={store}>
-		<EuroRack />
+		<Router history={hashHistory}>
+      {appRoutes()}
+    </Router>
 	</Provider>
 	, document.getElementById('app')
 )

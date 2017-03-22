@@ -15,7 +15,7 @@ export class Speaker extends React.Component {
   constructor(props){
     super(props)
     this.state = {
-      speakerArray: [6,10,14,14,14,14,14,14,14,14,10,6],
+      speakerArray: [5,9,13,13,13,13,13,13,13,13,9,5],
       canvas: null,
       canvasCtx: null,
       oscilloscopeOn: false,
@@ -70,9 +70,9 @@ export class Speaker extends React.Component {
         </div>
         <div className='master-out-jack'>
           <Jack
-            name='in'
-            color={this.props.speaker.getIn(['input', 'sound'])}
-            onJackClick={(e) => this.props.onJackClick(e, 'only', 'input', 'sound', this.props.speaker.get('analyser'), this.props.speaker.getIn(['input', 'sound']))}
+            attention={this.props.speaker.getIn(['input', 'sound', 'attention'])}
+            color={this.props.speaker.getIn(['input', 'sound', 'color'])}
+            onJackClick={(e) => this.props.onJackClick(e, 'only', 'input', 'sound', this.props.speaker.get('analyser'), this.props.speaker.getIn(['input', 'sound', 'color']))}
           />
         </div>
         <div className='canvas-container'>

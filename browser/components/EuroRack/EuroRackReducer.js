@@ -1,9 +1,12 @@
 import { fromJS, List } from 'immutable'
 import Tone from 'tone'
 
+import EuroRackInitialState from './EuroRackInitialState'
 
 const reducer = (state = {}, action) => {
 	switch(action.type) {
+		case 'RESET_EURORACK' :
+			return state = fromJS(EuroRackInitialState)
 		case 'CONNECT_JACK' :
 			return connectJack(state, action)
 		case 'DISCONNECT_JACK' :
@@ -13,7 +16,7 @@ const reducer = (state = {}, action) => {
 		case 'PUSH_ORDER' :
 			return state.update('order', (o) => o.push(action.id))
 		case 'CONNECT_JACK_ERROR' :
-			return state.setIn(['patchCables', 'error'], action.error)
+			return state.set('error', action.error)
 		case 'TESTING_STUFF' :
 			console.log('ASLDFHASLD')
 			const osc = new Tone.OmniOscillator(200, 'pwm').start().toMaster()
@@ -102,7 +105,7 @@ const makeConnection = (state, action) => {
 							.setIn(['patchCables', 'input'], null)
 							.setIn(['patchCables', 'output'], null)
 							.setIn(['patchCables', 'color'], newColor)
-							.setIn(['patchCables', 'error'], null)
+							.set('error', null)
 							.updateIn(['patchCables', 'colorOptions'], (arr) => {
 								return arr.filter((c,i) => randomIndex !== i)
 							})

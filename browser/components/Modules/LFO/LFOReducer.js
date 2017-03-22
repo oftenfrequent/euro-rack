@@ -6,6 +6,8 @@ import LFOInitialStateCreator from './LFOInitialState'
 
 export default (state = {}, action) => {
 	switch(action.type) {
+		case 'RESET_EURORACK' :
+			return state = fromJS({})
 		case 'ADD_LFO' :
 			const newID = uuid.v4()
 			return state.set(newID, fromJS(LFOInitialStateCreator()))
@@ -18,14 +20,17 @@ export default (state = {}, action) => {
 			}
 			if (action.module === 'lfos') {
 				return state.setIn([action.id, action.direction, action.cvName, 'color'], action.color )
+										.setIn([action.id, action.direction, action.cvName, 'attention'], false )
 			} else {
 				return state
 			}
 		case 'DISCONNECT_JACK' :
 			if (action.inputModule === 'lfos') {
 				return state.setIn([action.inputId, 'input', action.inputCvName, 'color'], null)
+										.setIn([action.inputId, 'input', action.inputCvName, 'attention'], false )
 			} else if (action.outputModule === 'lfos') {
 				return state.setIn([action.outputId, 'output', action.outputCvName, 'color'], null)
+										.setIn([action.outputId, 'output', action.outputCvName, 'attention'], false )
 			} else {
 				return state
 			}
@@ -47,6 +52,14 @@ export default (state = {}, action) => {
 			return changeFreqOfOscillators(state, action.id)
 		case 'SYNC_LFO_FREQ' :
 			return state.updateIn([action.id, 'toneComponent'], lfo => lfo.syncFrequency())
+		case 'WALKTHROUGH_STEP' :
+			if (action.outputModule === 'lfos') {
+				return state.setIn([action.outputId, 'output', action.outputCvName, 'attention'], true)
+			} else if (action.inputModule === 'lfos') {
+				return state.setIn([action.inputId, 'input', action.inputCvName, 'attention'], true)
+			} else {
+				return state
+			}
 	}
 	return state
 }

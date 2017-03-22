@@ -1,5 +1,5 @@
 $border-color: #ffff00;
-$background-color: grey; //#c8c8c8;
+$background-color: #aaa; //#c8c8c8;
 // $background-color-dark: #c4c4c4;
 $black: black;
 $clear: rgba(0,0,0,0);
@@ -7,3 +7,18 @@ $clear: rgba(0,0,0,0);
 $error-color: red;
 $warning-color: yellow;
 $success-color: green;
+
+
+@keyframes fadeoutin {
+  0%,100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+// @keyframes highlight {
+//   0% {
+//     background-color: #001F3F;
+//   }
+//   100% {
+//     background-color: #FF4136;
+//   }
+// }

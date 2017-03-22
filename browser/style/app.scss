@@ -76,7 +76,7 @@ body {
 	}
 
 	.module-name {
-		font-style: italic;
+		// font-style: italic;
 		position: relative;
 		text-transform: uppercase;
     margin-top: 12px;
@@ -115,6 +115,7 @@ body {
 
 .speaker-hole-container {
 	width: 100%;
+	padding: 10px 0px;
 
 	.speaker-hole-row {
 		display: flex;
@@ -137,7 +138,7 @@ body {
 	border-radius: 50%;
 	height: 15px;
 	width: 15px;
-	background: #aaa;
+	background: #bbb;
 	float: left;
 	margin-left: 5px;
 
@@ -149,7 +150,7 @@ body {
 	.indent {
 		height: 3px;
     width: 11px;
-    background: #808080;
+    background: #999;
     position: relative;
     top: 6px;
     border-radius: 3px;
@@ -216,6 +217,7 @@ body {
 }
 
 button {
+	transition: all .3s ease-in-out;
 	margin: 0 auto;
 	color: $black;
 	background: $clear;
@@ -225,6 +227,10 @@ button {
 	width: 100%;
 	font-size: 12px;
 	margin-bottom: 5px;
+	&:hover {
+		border-color: $border-color;
+		cursor: pointer;
+	}
 }
 
 .jack-knob-pair {
@@ -253,6 +259,60 @@ button {
 	}
 }
 
+.walkthrough-text-container {
+  opacity: 1;
+  position: absolute;
+  right: -300px;
+  top: 25%;
+  transition: all 0.3s ease-in-out;
+  width: 300px;
+  z-index: 100;
+
+	&:hover {
+		cursor: pointer;
+	}
+
+  &.empty {
+  	opacity: 0;
+  }
+
+  &.open {
+	  right: 0px;
+
+	  .walkthrough-tab {
+			left: 0px;
+
+	  }
+  }
+
+  .walkthrough-text {
+  	position:relative;
+	  background: $border-color;
+	  color: $black;
+	  border-radius: 0px 0px 0px 3px;
+	  box-shadow: 5px 3px 5px #888;
+		padding: 30px;
+		line-height: 1.4;
+		font-weight: 200;
+		z-index: 1;
+  }
+
+  .walkthrough-tab {
+	  transition: all 0.3s ease-in-out;
+		font-weight: 200;
+  	width: 25px;
+    background: $border-color;
+	  color: $black;
+    position: absolute;
+    left: -25px;
+    top: 0px;
+    border-radius: 3px 0px 0px 3px;
+    padding: 7px;
+    box-shadow: 5px 3px 5px #888;
+		z-index: 0;
+  }
+}
+
 .message-banner {
 	transition: all 0.3s ease-in-out;
 	background: $error-color;
@@ -267,6 +327,24 @@ button {
 	&.empty {
 	  top: -60px;
 
+	}
+}
+
+.midi-error {
+	margin-top: 12px;
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: lowercase;
+  width: 100%;
+}
+
+.master-out-jack .jack-container {
+	padding: 5px 0px 20px;
+}
+
+.gate-out-jack, .cv-out-jack {
+	.jack-container {
+		margin-bottom: 3px;
 	}
 }
 

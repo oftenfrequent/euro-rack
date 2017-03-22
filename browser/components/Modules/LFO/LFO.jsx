@@ -25,6 +25,7 @@ export class LFO extends React.Component {
   }
 
   render(){
+    const oscTypes = Array.from(this.props.lfo.getIn(['output']).keys())
     const order = this.props.lfo.get('flexOrder') ? this.props.lfo.get('flexOrder') : this.props.order
     return (
       <ModuleContainer
@@ -75,28 +76,22 @@ export class LFO extends React.Component {
         />
         <div className='oscillator-in-jack'>
           <Jack name='amplitude'
+            attention={this.props.lfo.getIn(['input', 'amplitude', 'attention'])}
             color={this.props.lfo.getIn(['input', 'amplitude', 'color'])}
             onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'input', 'amplitude', 'ALL_LFO_AMPLITUDES', this.props.lfo.getIn(['input', 'amplitude', 'color']))}
           />
         </div>
         <div className='waveforms-out-row'>
           <div className='waveforms-centered-row'>
-            <Jack name='sine'
-              color={this.props.lfo.getIn(['output', 'sine', 'color'])}
-              onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'output', 'sine', this.props.lfo.getIn(['output', 'sine', 'toneComponent']), this.props.lfo.getIn(['output', 'sine', 'color']))}
-            />
-            <Jack name='tri'
-              color={this.props.lfo.getIn(['output', 'triangle', 'color'])}
-              onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'output', 'triangle', this.props.lfo.getIn(['output', 'triangle', 'toneComponent']), this.props.lfo.getIn(['output', 'triangle', 'color']))}
-            />
-            <Jack name='saw'
-              color={this.props.lfo.getIn(['output', 'sawtooth', 'color'])}
-              onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'output', 'sawtooth', this.props.lfo.getIn(['output', 'sawtooth', 'toneComponent']), this.props.lfo.getIn(['output', 'sawtooth', 'color']))}
-            />
-            <Jack name='square'
-              color={this.props.lfo.getIn(['output', 'square', 'color'])}
-              onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'output', 'square', this.props.lfo.getIn(['output', 'square', 'toneComponent']), this.props.lfo.getIn(['output', 'square', 'color']))}
-            />
+            {oscTypes.map( (type, i) =>
+              <Jack
+                key={i}
+                name={type.length > 4 ? type.substr(0,3) : type}
+                attention={this.props.lfo.getIn(['output', type, 'attention'])}
+                color={this.props.lfo.getIn(['output', type, 'color'])}
+                onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'output', type, this.props.lfo.getIn(['output', type, 'toneComponent']), this.props.lfo.getIn(['output', type, 'color']))}
+              />
+            )}
           </div>
         </div>
       </ModuleContainer>

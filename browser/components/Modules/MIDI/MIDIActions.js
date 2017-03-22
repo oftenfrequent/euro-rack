@@ -1,3 +1,7 @@
+export function addMIDI() {
+	return { type: 'ADD_MIDI' }
+}
+
 export function errorConnectingMidi(id, error) {
 	return {
 		type: 'MIDI_CONNECTION_ERROR',

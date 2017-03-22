@@ -82,3 +82,9 @@ export function changeOrderOfModule(orderNumber, module, id) {
 		id
 	}
 }
+
+export function resetEuroRack() {
+	return {
+		type: 'RESET_EURORACK'
+	}
+}

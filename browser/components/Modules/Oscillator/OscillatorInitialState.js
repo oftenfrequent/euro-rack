@@ -12,29 +12,36 @@ const initialState = () => {
 		typesArray: ['sine', 'triangle', 'sawtooth', 'pwm'],
 		input: {
 			frequency: {
+				attention: false,
 				color: null
 			},
 			pwModulation: {
+				attention: false,
 				color: null
 			},
 			cvFrequency: {
+				attention: false,
 				color: null
 			}
 		},
 		output: {
 			sine: {
+				attention: false,
 				color: null,
 				toneComponent: new Tone.OmniOscillator(200, 'sine').start()
 			},
 			triangle: {
+				attention: false,
 				color: null,
 				toneComponent: new Tone.OmniOscillator(200, 'triangle').start()
 			},
 			sawtooth: {
+				attention: false,
 				color: null,
 				toneComponent: new Tone.OmniOscillator(200, 'sawtooth').start()
 			},
 			pwm: {
+				attention: false,
 				color: null,
 				modulationFrequency: 0,
 				toneComponent: new Tone.OmniOscillator(200, 'pwm').start()

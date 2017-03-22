@@ -9,6 +9,9 @@ export default  {
 	currentBPM: 120,
 	flexOrder: 0,
 	input: {
-		sound: null
+		sound: {
+			color: null,
+			attention: false
+		}
 	}
 }

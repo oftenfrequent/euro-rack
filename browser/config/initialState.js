@@ -12,28 +12,35 @@ import MIDIInitialState from '../components/Modules/MIDI/MIDIInitialState'
 import EuroRackInitialState from '../components/EuroRack/EuroRackInitialState'
 
 const initialState = {
-	oscillators: fromJS({
-		[uuid.v4()]: OscillatorInitialStateCreator()
-	}),
-	lfos: fromJS({
-		[uuid.v4()]: LFOInitialStateCreator()
-	}),
-	envelopes: fromJS({
-		[uuid.v4()]: EnvelopeInitialStateCreator()
-	}),
-	filters: fromJS({
-		[uuid.v4()]: FilterInitialStateCreator()
-	}),
-	vcas: fromJS({
-		[uuid.v4()]: VCAInitialStateCreator()
-	}),
+	oscillators: fromJS({}),
+	lfos: fromJS({}),
+	envelopes: fromJS({}),
+	filters: fromJS({}),
+	vcas: fromJS({}),
+	midis: fromJS({}),
+	// oscillators: fromJS({
+	// 	[uuid.v4()]: OscillatorInitialStateCreator()
+	// }),
+	// lfos: fromJS({
+	// 	[uuid.v4()]: LFOInitialStateCreator()
+	// }),
+	// envelopes: fromJS({
+	// 	[uuid.v4()]: EnvelopeInitialStateCreator()
+	// }),
+	// filters: fromJS({
+	// 	[uuid.v4()]: FilterInitialStateCreator()
+	// }),
+	// vcas: fromJS({
+	// 	[uuid.v4()]: VCAInitialStateCreator()
+	// }),
+	// midis: fromJS({
+	// 	[uuid.v4()]: MIDIInitialState
+	// }),
 	speaker: fromJS({
 		only: SpeakerInitialState
 	}),
-	midis: fromJS({
-		[uuid.v4()]: MIDIInitialState
-	}),
-	eurorack: fromJS(EuroRackInitialState)
+	eurorack: fromJS(EuroRackInitialState),
+	walkthrough: fromJS({ text: null, active: false })
 }
 
 export default initialState
