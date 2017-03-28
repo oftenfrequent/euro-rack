@@ -1,4 +1,5 @@
 export default {
+	addModules: true,
 	order: [],
 	patchCables: {
 		active: false,

@@ -36,7 +36,7 @@ export class Oscillator extends React.Component {
         id={this.props.id}
         order={order}
         changeOrder={(n) => this.props.changeOrder(n)}
-        removeModule={true}
+        removeModule={this.props.removeModule}
         removeModuleFunction={() => this.props.removeOscillator(this.props.id)}
       >
         <div className='jack-knob-pair clearfix'>
@@ -124,7 +124,7 @@ export class Oscillator extends React.Component {
 function mapStateToProps(state, props) {
   return {
     vco: state.oscillators.get(props.id),
-    currentJackColor: state.eurorack.get()
+    removeModule: state.eurorack.get('addModules')
   }
 }
 

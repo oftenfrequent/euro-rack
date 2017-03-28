@@ -1,13 +1,14 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import classNames from 'classnames'
-// import PureRenderMixin from 'react-addons-pure-render-mixin'
-
-import '../../style/app.scss'
+import PureRenderMixin from 'react-addons-pure-render-mixin'
+import { Link } from 'react-router'
+// import '../../style/app.scss'
 
 export class WalkthroughText extends React.Component {
   constructor(props){
     super(props)
+    this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this)
     this.state = {
       newText: false
     }
@@ -18,7 +19,7 @@ export class WalkthroughText extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevProps.text !== this.props.text) {
+    if (prevProps.text.__html !== this.props.text.__html) {
       this.setState({newText: true})
     }
   }
@@ -28,11 +29,28 @@ export class WalkthroughText extends React.Component {
   }
 
   render(){
-    const classes = classNames({'walkthrough-text-container': true, 'open': this.state.newText, 'empty': !this.props.text })
+    const classes = classNames({'walkthrough-text-overlay': true, 'open': this.state.newText, 'empty': !this.props.text })
     return (
       <div className={classes} onClick={(e) => this.onMessageClick()}>
         <div className='walkthrough-tab'>{'<'}</div>
-        <div className='walkthrough-text'>{this.props.text}</div>
+        <div className='walkthrough-text-container'>
+          <div
+            className='walkthrough-text'
+            dangerouslySetInnerHTML={this.props.text}
+          />
+          {this.props.showOptOutMessage
+            ? (<p>
+                {'If you know what you are doing, feel free to head straight to the '}
+                <Link to='/play'>full eurorack experience</Link>
+              </p>
+              )
+            : null
+          }
+          {this.props.stepCompleted
+            ? <button onClick={(e) => this.props.callNextStep(e)} className=''>NEXT</button>
+            : null
+          }
+        </div>
       </div>
     )
   }
@@ -40,7 +58,6 @@ export class WalkthroughText extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    text: state.walkthrough.get('text')
   }
 };
 

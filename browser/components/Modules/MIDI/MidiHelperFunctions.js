@@ -1,7 +1,7 @@
 function midiHelper (attackFn, releaseFn) {
   this.triggerAttack = attackFn
   this.triggerRelease = releaseFn
-  this.octave = 0
+  this.octave = -2
   this.flags = []
 
   this.laptopKeyMap = {

@@ -153,7 +153,7 @@ export class EuroRack extends React.Component {
           changeOrder={(n) => this.changeOrder(n)}
           onJackClick={(e, id, direction, cvName, toneComponent, currentColor) => this.handleJackClick(e, 'speaker', id, direction, cvName, toneComponent, currentColor)}
         />
-        {this.props.AddModules
+        {this.props.addModules
          ? <AddNewComponent/>
          : null
         }
@@ -174,7 +174,8 @@ function mapStateToProps(state) {
     vcas: state.vcas,
     midis: state.midis,
     patchCables: state.eurorack.get('patchCables'),
-    order: state.eurorack.get('order').toJS()
+    order: state.eurorack.get('order').toJS(),
+    addModules: state.eurorack.get('addModules')
   }
 };
 

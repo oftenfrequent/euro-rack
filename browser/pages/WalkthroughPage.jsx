@@ -11,14 +11,15 @@ import { addEnvelope } from '../components/Modules/Envelope/EnvelopeActions'
 import { addFilter } from '../components/Modules/Filter/FilterActions'
 import { addVCA } from '../components/Modules/VCA/VCAActions'
 import { addMIDI } from '../components/Modules/MIDI/MIDIActions'
-import { walkthrough, walkthroughStep } from '../components/Walkthrough/WalkthroughActions'
+import { walkthrough, walkthroughStep, walkthroughStepCompleted, walkthroughCompleted } from '../components/Walkthrough/WalkthroughActions'
 
 export class WalkthroughPage extends React.Component {
   constructor (props) {
     super(props)
     this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this)
     this.state = {
-      walkthrough: new walkthrough('Initial Introduction', props)
+      walkthrough: new walkthrough('Initial Introduction', props),
+      showOptOutMessage: true
     }
   }
 
@@ -31,16 +32,38 @@ export class WalkthroughPage extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (this.state.walkthrough.currentStep > -1 && this.state.walkthrough.steps[this.state.walkthrough.currentStep].hasStepCompleted(this.props.state)) {
-      this.state.walkthrough.nextStep()
+    if (!prevProps.stepCompleted && this.state.walkthrough.steps[this.state.walkthrough.currentStep].hasStepCompleted(this.props.state)) {
+      if (!this.state.walkthrough.steps[this.state.walkthrough.currentStep].completedText) {
+        this.state.walkthrough.nextStep()
+      } else {
+        this.props.walkthroughStepCompleted()
+      }
+    }
+    if (this.state.walkthrough.currentStep > 0 && this.state.showOptOutMessage) {
+      this.setState({ showOptOutMessage: false })
     }
   }
 
+  callNextStep(e) {
+    e.preventDefault()
+    this.state.walkthrough.nextStep()
+  }
+
   render () {
+    const walkthroughText = this.props.stepCompleted ? `${this.props.text + this.props.completedText}` : `<p>${this.props.text}</p>`
+    const htmlObject = { __html: walkthroughText}
     return (
       <div>
-        <EuroRack AddModules={false} />
-        <WalkthroughText/>
+        <EuroRack/>
+        {!this.props.completedWalkthrough
+          ?(<WalkthroughText
+              text={htmlObject}
+              stepCompleted={this.props.stepCompleted}
+              callNextStep={(e) => this.callNextStep(e)}
+              showOptOutMessage={this.state.showOptOutMessage}
+            />)
+          : null
+        }
       </div>
     )
   }
@@ -49,7 +72,11 @@ export class WalkthroughPage extends React.Component {
 function mapStateToProps (state, props) {
   return {
     state: state,
-    oscillators: state.oscillators
+    oscillators: state.oscillators,
+    text: state.walkthrough.get('text'),
+    completedWalkthrough: state.walkthrough.get('completedWalkthrough'),
+    completedText: state.walkthrough.get('completedText'),
+    stepCompleted: state.walkthrough.get('stepCompleted')
   }
 }
 
@@ -58,6 +85,8 @@ export default connect(
   {
     resetEuroRack,
     walkthroughStep,
+    walkthroughStepCompleted,
+    walkthroughCompleted,
     addOscillator,
     addLFO,
     addEnvelope,

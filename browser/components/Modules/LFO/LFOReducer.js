@@ -51,7 +51,10 @@ export default (state = {}, action) => {
 			state = state.updateIn([action.id, 'timelineBased'], v => !v)
 			return changeFreqOfOscillators(state, action.id)
 		case 'SYNC_LFO_FREQ' :
-			return state.updateIn([action.id, 'toneComponent'], lfo => lfo.syncFrequency())
+			state.getIn([action.id, 'typeOptions']).map( type => {
+				state = state.updateIn([action.id, 'output', type, 'toneComponent'], (lfo) => lfo.syncFrequency() )
+			})
+			return state
 		case 'WALKTHROUGH_STEP' :
 			if (action.outputModule === 'lfos') {
 				return state.setIn([action.outputId, 'output', action.outputCvName, 'attention'], true)

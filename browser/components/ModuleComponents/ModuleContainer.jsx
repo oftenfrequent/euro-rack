@@ -20,16 +20,18 @@ export class ModuleContainer extends React.Component {
   dragEnd(e) { this.setState({moving: false}) }
 
   dragEnter(e) {
-    const moduleComponentBounds = findDOMNode(this).getBoundingClientRect()
-    const mousePositionY = e.clientY
-    const mousePositionX = e.clientX
+    if(!(this.props.draggable === false)) {
+      const moduleComponentBounds = findDOMNode(this).getBoundingClientRect()
+      const mousePositionY = e.clientY
+      const mousePositionX = e.clientX
 
-    const verticallyInBounds = moduleComponentBounds.top < mousePositionY && moduleComponentBounds.bottom > mousePositionY
-    const notSameModule = dnd.getActiveModuleId !== this.props.id
-    if (verticallyInBounds && notSameModule) {
-      if (mousePositionX < moduleComponentBounds.right &&
-          mousePositionX > moduleComponentBounds.left) {
-        this.props.changeOrder(this.props.order)
+      const verticallyInBounds = moduleComponentBounds.top < mousePositionY && moduleComponentBounds.bottom > mousePositionY
+      const notSameModule = dnd.getActiveModuleId !== this.props.id
+      if (verticallyInBounds && notSameModule) {
+        if (mousePositionX < moduleComponentBounds.right &&
+            mousePositionX > moduleComponentBounds.left) {
+          this.props.changeOrder(this.props.order)
+        }
       }
     }
   }

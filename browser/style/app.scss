@@ -259,11 +259,11 @@ button {
 	}
 }
 
-.walkthrough-text-container {
+.walkthrough-text-overlay {
   opacity: 1;
   position: absolute;
   right: -300px;
-  top: 25%;
+  top: 5%;
   transition: all 0.3s ease-in-out;
   width: 300px;
   z-index: 100;
@@ -285,7 +285,7 @@ button {
 	  }
   }
 
-  .walkthrough-text {
+  .walkthrough-text-container {
   	position:relative;
 	  background: $border-color;
 	  color: $black;
@@ -295,6 +295,15 @@ button {
 		line-height: 1.4;
 		font-weight: 200;
 		z-index: 1;
+
+		button {
+			margin-top: 20px;
+
+			&:hover {
+				border-color: $black;
+				background: rgba($black, 0.2);
+			}
+		}
   }
 
   .walkthrough-tab {

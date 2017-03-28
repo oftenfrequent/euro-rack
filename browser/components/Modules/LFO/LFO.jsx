@@ -33,7 +33,7 @@ export class LFO extends React.Component {
         id={this.props.id}
         order={order}
         changeOrder={(n) => this.props.changeOrder(n)}
-        removeModule={true}
+        removeModule={this.props.removeModule}
         removeModuleFunction={() => this.props.removeLFO(this.props.id)}
       >
         <button
@@ -101,7 +101,9 @@ export class LFO extends React.Component {
 
 function mapStateToProps(state, props) {
   return {
-    lfo: state.lfos.get(props.id)
+    lfo: state.lfos.get(props.id),
+    removeModule: state.eurorack.get('addModules')
+
   }
 }
 

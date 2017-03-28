@@ -1,5 +1,4 @@
 export function walkthroughStep(walkthroughStepObject) {
-	console.log('walkthroughStepObject', walkthroughStepObject)
 	return {
 		type: 'WALKTHROUGH_STEP',
 		inputModule: walkthroughStepObject.inputModule,
@@ -8,27 +7,38 @@ export function walkthroughStep(walkthroughStepObject) {
 		outputModule: walkthroughStepObject.outputModule,
 		outputCvName: walkthroughStepObject.outputCvName,
 		outputId: walkthroughStepObject.outputId,
-		text: walkthroughStepObject.text
+		text: walkthroughStepObject.text,
+		completedText: walkthroughStepObject.completedText
 	}
 }
 
+export function walkthroughStepCompleted() {
+	return {
+		type: 'WALKTHROUGH_STEP_COMPLETED'
+	}
+}
+
+export function walkthroughCompleted() {
+	return {
+		type: 'WALKTHROUGH_COMPLETED'
+	}
+}
 
 export class walkthrough {
 	constructor(name, props) {
 		const _this = this
 		this.name = name
 		this.currentStep = -1
-		this.reduxCb = props.walkthroughStep
-		// this.stepInitialized = false
+		this.nextReduxStep = props.walkthroughStep
 		this.steps = [
 			{
-				userStep: false,
 				onStep: () => { props.addOscillator() },
-				hasStepCompleted: (state) => Array.from(state.oscillators.keys()).length > 0
+				hasStepCompleted: (state) => Array.from(state.oscillators.keys()).length > 0,
+				text: '',
+				completedText: '<p>Welcome to the first web-based modular synth application. This walkthrough will help you learn the basics of synthesis and how to patching modules together. At any point you can click on this tab to hide it.</p>',
 			},
 			{
-				userStep: true,
-				text: 'Let\'s start by getting you used to patching modules together! We have an Voice Controlled Oscillator (VCO) and a Speaker here. Start by connecting the output of the Sine wave to the Speaker!',
+				text: '<p>Let\'s start by getting you used to patching modules together! We have an Voice Controlled Oscillator (VCO) and a Speaker here. Start by connecting the output of the Sine wave to the Speaker!</p>',
 				inputModule: 'speaker',
 				inputId: 'only',
 				inputCvName: 'sound',
@@ -37,7 +47,6 @@ export class walkthrough {
 				outputCvName: 'sine',
 				hasStepCompleted: (state) => {
 					const connections = state.eurorack.getIn(['patchCables', 'connections'])
-					console.log('connections', connections)
 					let success = false
 					connections.map(con => {
 						if (con.getIn(['output', 'module']) === 'oscillators' &&
@@ -51,23 +60,23 @@ export class walkthrough {
 					return success
 				},
 			},
+			// {
+			// 	text: '',
+			// 	completedText: 'We can spice this up a bit by utilizing a Low Frequency Oscillator (LFO) to modulate the frequency of the Oscillator.',
+			// 	hasStepCompleted: (state) => Array.from(state.lfos.keys()).length > 0
+			// },
 			{
-				userStep: false,
-				onStep: () => { props.addLFO() },
-				hasStepCompleted: (state) => Array.from(state.lfos.keys()).length > 0
-			},
-			{
-				userStep: true,
-				text: 'Great! Now you have a super annoying tone! We can spice this up a bit by utilizing a Low Frequency Oscillator (LFO) to modulate the frequency of the Oscillator. Use a Sawtooth wave to modulate the frequency of the Oscillator. Also be sure to turn up the knobs on the LFO to hear some funkiness!',
+				text: '<p>Great! Now you have a super annoying tone! We can spice this up a bit by utilizing a Low Frequency Oscillator (LFO) to modulate the frequency of the Oscillator. Use a Sawtooth wave to modulate the frequency of the Oscillator.</p>',
+				completedText: '<p>Be sure to turn up the knobs on the LFO to hear some funkiness!</p>',
 				inputModule: 'oscillators',
 				inputId: null, // added by middleware
 				inputCvName: 'frequency',
 				outputModule: 'lfos',
 				outputId: null, // added by middleware
 				outputCvName: 'sawtooth',
+				onStep: () => { props.addLFO() },
 				hasStepCompleted: (state) => {
 					const connections = state.eurorack.getIn(['patchCables', 'connections'])
-					console.log('connections', connections)
 					let success = false
 					connections.map(con => {
 						if (con.getIn(['output', 'module']) === 'lfos' &&
@@ -78,33 +87,26 @@ export class walkthrough {
 							success = true
 						}
 					})
-					state.lfos.map( id => {
-						console.log('id', id)
-						if (id.get('frequency') === 0.01 ||
-								id.get('percentChange') === 0) {
-							success = false
-						}
-					})
+					// state.lfos.map( id => {
+					// 	if (id.get('frequency') === 0.01 ||
+					// 			id.get('percentChange') === 0) {
+					// 		success = false
+					// 	}
+					// })
 					return success
 				}
 			},
 			{
-				userStep: false,
-				onStep: () => { props.addFilter() },
-				hasStepCompleted: (state) => Array.from(state.filters.keys()).length > 0
-			},
-			{
-				userStep: true,
-				text: 'Next we will add a Filter to remove or enhance the final sound. However, we have to route the sound through the Filter in order to hear its effects. Which means that we, must first, move remove a connection point! Start by right-clicking the VCO to Speaker connection to remove the patch cable.',
+				text: '<p>Next we will add a Filter to remove or enhance the final sound. However, we have to route the sound through the Filter in order to hear its effects. Which means that we, must first, move remove a connection point! Start by right-clicking the VCO to Speaker connection to remove the patch cable.</p>',
 				inputModule: 'speaker',
 				inputId: 'only',
 				inputCvName: 'sound',
 				outputModule: 'oscillators',
 				outputId: null, // added by middleware
 				outputCvName: 'sine',
+				onStep: () => { props.addFilter() },
 				hasStepCompleted: (state) => {
 					const connections = state.eurorack.getIn(['patchCables', 'connections'])
-					console.log('connections', connections)
 					let success = true
 					connections.map(con => {
 						if (con.getIn(['output', 'module']) === 'oscillators' &&
@@ -119,8 +121,7 @@ export class walkthrough {
 				}
 			},
 			{
-				userStep: true,
-				text: 'Whew! Now that sound is gone, route the Triangle waveform out of the VCO to the input of the Filter...',
+				text: '<p>Whew! Now that sound is gone, route the Triangle waveform out of the VCO to the input of the Filter.</p>',
 				inputModule: 'filters',
 				inputId: null, // added by middleware
 				inputCvName: 'sound',
@@ -129,7 +130,6 @@ export class walkthrough {
 				outputCvName: 'triangle',
 				hasStepCompleted: (state) => {
 					const connections = state.eurorack.getIn(['patchCables', 'connections'])
-					console.log('connections', connections)
 					let success = false
 					connections.map(con => {
 						if (con.getIn(['output', 'module']) === 'oscillators' &&
@@ -144,9 +144,9 @@ export class walkthrough {
 				}
 			},
 			{
-				userStep: true,
-				text: 'Then the output of the Filter to Speaker to hear the final output.',
+				text: '<p>Then the output of the Filter to Speaker to hear the final output.</p>',
 				inputModule: 'speaker',
+				completedText: '<p>You can adjust the type of filter and the rolloff in the dropdown menus and you can adjust the frequency via the knob. Play around with the different options to hear all the possibilities.</p>',
 				inputId: null, // added by middleware
 				inputCvName: 'sound',
 				outputModule: 'filters',
@@ -154,7 +154,6 @@ export class walkthrough {
 				outputCvName: 'sound',
 				hasStepCompleted: (state) => {
 					const connections = state.eurorack.getIn(['patchCables', 'connections'])
-					console.log('connections', connections)
 					let success = false
 					connections.map(con => {
 						if (con.getIn(['output', 'module']) === 'filters' &&
@@ -169,20 +168,9 @@ export class walkthrough {
 				}
 			},
 			{
-				text: 'Good stuff! You can now play with the frequency of the Filter to alter the final sound!',
-				userStep: false,
-				onStep: () => { setTimeout(() => props.addMIDI(), 8000) },
-				hasStepCompleted: (state) => Array.from(state.midis.keys()).length > 0
-			},
-			{
-				userStep: true,
-				text: 'But this setup can get a little boring. So let\'s get introduced to the MIDI Device! If you have a USB MIDI keybaord available please plug it in now and hit the button \'Check for Midi Devices\' and subsequently select it from the dropdown or to enable your computer\'s keyboard select \'Latptop Keyboard\'.',
-				// inputModule: 'speaker',
-				// inputId: null, // added by middleware
-				// inputCvName: 'sound',
-				// outputModule: 'midis',
-				// outputId: null, // added by middleware
-				// outputCvName: 'sound',
+				text: '<p>But this setup can get a little boring. So let\'s get introduced to the MIDI Device! If you have a USB MIDI keybaord available please plug it in now and hit the button \'Check for Midi Devices\' and subsequently select it from the dropdown or to enable your computer\'s keyboard select \'Latptop Keyboard\'.</p>',
+				completedText: '<p>Now that we have an MIDI device to control the notes we play, lets see how they integrate with different modules.</p>',
+				onStep: () => props.addMIDI(),
 				hasStepCompleted: (state) => {
 					let success = false
 					state.midis.map( id => {
@@ -192,8 +180,8 @@ export class walkthrough {
 				}
 			},
 			{
-				userStep: true,
-				text: 'In order to get the VCO to play the notes from your keyboard of choice we need to start by removing the modulation on the Oscillator.',
+				text: '<p>Let\'s start by getting the Oscillator to play certain notes from the keyboard. However in order to do that, we need to start by removing the modulation on the Oscillator.</p>',
+				completedText: '<p>The top cv jack (frequency) is reserved for setting the overall frequency of the VCO.</p>',
 				inputModule: 'oscillators',
 				inputId: null, // added by middleware
 				inputCvName: 'frequency',
@@ -216,8 +204,8 @@ export class walkthrough {
 				}
 			},
 			{
-				userStep: true,
-				text: 'Great! Now let\'s send the incoming MIDI signals to the Oscillator so it can play the correct frequency. Connect cv out on the MIDI component to the frequency on the Oscillator.',
+				text: '<p>Now let\'s send the incoming MIDI signals to the Oscillator so it can play the correct frequency. Connect the first \'cv out\' out on the MIDI component to the frequency on the Oscillator.</p>',
+				completedText: '<p>Now if you hit some keys you should see the frequency on the Oscillator change to reflect the note you hit! If you chose to use your computer keyboard z-m and q-p are white keys while select keys in the middle row represent the black keys.</p>',
 				inputModule: 'oscillators',
 				inputId: null, // added by middleware
 				inputCvName: 'frequency',
@@ -240,8 +228,8 @@ export class walkthrough {
 				}
 			},
 			{
-				userStep: true,
-				text: 'Now if you hit some keys you should see the frequency on the Oscillator change to reflect the note you hit! Pretty cool huh? But you want that LFO back don\'t you? Well thats what the second CV jack on the Oscillator is for. Plug the sine wave of the LFO back into the Oscillator to modulate the frequency.',
+				text: '<p> If you\'re wondering about how to add the LFO modulation back on the oscillator - you might be a mind reader. In any case that\'s what the second CV jack on the Oscillator is for. Plug the sine wave of the LFO back into the Oscillator to modulate the frequency.</p>',
+				completedText: '<p>Now that we\'ve seen we can control the frequency of the VCO with our handy dandy MIDI device, let\'s look at another function of the MIDI Module with the help of another module, the Envelope Module.</p>',
 				inputModule: 'oscillators',
 				inputId: null, // added by middleware
 				inputCvName: 'cvFrequency',
@@ -264,20 +252,15 @@ export class walkthrough {
 				}
 			},
 			{
-				text: 'Now that we\'ve seen we can control the frequency of the VCO with our handy dandy MIDI device, let\'s see what the gate jack is all about with the help of the Envelope Module.',
-				userStep: false,
-				onStep: () => { setTimeout(() => props.addEnvelope(), 8000) },
-				hasStepCompleted: (state) => Array.from(state.envelopes.keys()).length > 0
-			},
-			{
-				userStep: true,
-				text: 'An Envelope Module is used to change the value of a perameter over time, going from min to max and then staying at the sustain level until it is released, in which it returns back to the minimum value. That may sound confusing but let\'s see the envelope in action by connecting it to the LFO amplitude.',
+				text: '<p>An Envelope Module is used to change the value of a parameter over time, going from min to max and then staying at the sustain level until it is released, in which it returns back to the minimum value. That may sound confusing but let\'s see the envelope in action by connecting it to the LFO amplitude.</p>',
+				completedText: '<p>Notice the modulation of the frequency went away? That\'s because the Envelope is sitting at the minimum (0) since it has not been triggered! </p>',
 				inputModule: 'lfos',
 				inputId: null, // added by middleware
 				inputCvName: 'amplitude',
 				outputModule: 'envelopes',
 				outputId: null, // added by middleware
 				outputCvName: 'output1',
+				onStep: () => props.addEnvelope(),
 				hasStepCompleted: (state) => {
 					const connections = state.eurorack.getIn(['patchCables', 'connections'])
 					let success = false
@@ -294,8 +277,8 @@ export class walkthrough {
 				}
 			},
 			{
-				userStep: true,
-				text: 'Notice the modulation of the frequency went away? That\'s because the Envelope is sitting at the minimum since it has not been triggered! In order to trigger it, we need to plug in the gate of the MIDI Module to the Envelope so that when we hit a key on the keyboard, it will trigger the envelope and release it when we release the key! Play with the settings of the Envelope to see how the sound changes over time.',
+				text: '<p>In order to trigger it, we need to plug in the gate of the MIDI Module to the Envelope so that when we hit a key on the keyboard, it will trigger the envelope and release it when we release the key.</p>',
+				completedText: '<p>Play with the settings of the Envelope to see how the sound changes over time. The dropdown lets you choose the overall time setting so if you want the sound to evolve over a longer time, choose \'long\'.</p>',
 				inputModule: 'envelopes',
 				inputId: null, // added by middleware
 				inputCvName: 'trigger',
@@ -314,33 +297,26 @@ export class walkthrough {
 							success = true
 						}
 					})
-					state.lfos.map( id => {
-						console.log('id', id)
-						if (id.get('attack') === 10 ||
-								id.get('decay') === 200 ||
-								id.get('attack') === 1000 ||
-								id.get('decay') === 600) {
-							success = false
-						}
-					})
+					// state.lfos.map( id => {
+					// 	if (id.get('attack') === 10 ||
+					// 			id.get('decay') === 200 ||
+					// 			id.get('attack') === 1000 ||
+					// 			id.get('decay') === 600) {
+					// 		success = false
+					// 	}
+					// })
 					return success
 				}
 			},
 			{
-				text: 'There\'s only one module left to learn and that is the Voice Controlled Amplifier (VCA).',
-				userStep: false,
-				onStep: () => { setTimeout(() => props.addVCA(), 8000) },
-				hasStepCompleted: (state) => Array.from(state.vcas.keys()).length > 0
-			},
-			{
-				userStep: true,
-				text: 'The VCA allows you to combine sound inputs and control the volume of the combined output. To see it in action let\'s first remove the output of the VCO from the filter.',
+				text: '<p>Now we will learn how the Voice Controlled Amplifier (VCA) works. The VCA allows you to combine sound inputs and control the volume of the combined output. To see it in action let\'s first remove the output of the VCO from the filter.</p>',
 				inputModule: 'filters',
 				inputId: null, // added by middleware
 				inputCvName: 'sound',
 				outputModule: 'oscillators',
 				outputId: null, // added by middleware
 				outputCvName: 'triangle',
+				onStep: () => props.addVCA(),
 				hasStepCompleted: (state) => {
 					const connections = state.eurorack.getIn(['patchCables', 'connections'])
 					let success = true
@@ -357,8 +333,8 @@ export class walkthrough {
 				}
 			},
 			{
-				userStep: true,
-				text: 'Then we should hook up the sine wave to the VCA.',
+				text: '<p>Then we should hook up the sine wave to audio in 1 of the VCA.</p>',
+				completedText: '<p>You can add another output from the VCO to the VCA as well. Are you feeling the triangle or the sawtooth?</p>',
 				inputModule: 'vcas',
 				inputId: null, // added by middleware
 				inputCvName: 'audioIn1',
@@ -381,32 +357,7 @@ export class walkthrough {
 				}
 			},
 			{
-				userStep: true,
-				text: 'And the sawtooth while we\'re at it.',
-				inputModule: 'vcas',
-				inputId: null, // added by middleware
-				inputCvName: 'audioIn2',
-				outputModule: 'oscillators',
-				outputId: null, // added by middleware
-				outputCvName: 'sawtooth',
-				hasStepCompleted: (state) => {
-					const connections = state.eurorack.getIn(['patchCables', 'connections'])
-					let success = false
-					connections.map(con => {
-						if (con.getIn(['output', 'module']) === 'oscillators' &&
-								con.getIn(['output', 'cvName']) === 'sawtooth' &&
-								con.getIn(['input', 'module']) === 'vcas' &&
-								con.getIn(['input', 'cvName']) === 'audioIn2'
-							) {
-							success = true
-						}
-					})
-					return success
-				}
-			},
-			{
-				userStep: true,
-				text: 'Now let\'s hook up the VCA to the Filter so that we can hear the final output!',
+				text: '<p>Now let\'s hook up the VCA to the Filter so that we can hear the final output!</p>',
 				inputModule: 'filters',
 				inputId: null, // added by middleware
 				inputCvName: 'sound',
@@ -429,8 +380,8 @@ export class walkthrough {
 				}
 			},
 			{
-				userStep: true,
-				text: 'And finally we will attach the Envelope Output to the VCA cv so that the Envelope can control the volume of the overall output! ',
+				text: '<p>And finally we will attach the Envelope Output to the VCA cv so that the Envelope can control the volume of the overall output!</p>',
+				completedText: '<p>But notice that the noise just went away? This is similar to what happened before when we plugged the Envelope to the LFO. Because the Envelope is not being triggered is is causing the volume output for the VCA to be at -&#x221e;. Hit some keys and start jamming!</p>',
 				inputModule: 'vcas',
 				inputId: null, // added by middleware
 				inputCvName: 'cv1',
@@ -453,23 +404,16 @@ export class walkthrough {
 				}
 			},
 			{
-				text: 'Now hit some keys and listen to the patch you made!',
-				userStep: false,
-				onStep: () => { },
-				hasStepCompleted: (state) => false
-			},
+				text: '<p>You\'ve now created a basic patch for dynamically creating sound! But there\'s so many more possibilities.</p><p>Which is why we are now giving you the ability to add and remove modules. The top right screw of the modules will become a remove button if you hover over it, and the \'Add Module\' module will allow you to add more instances of any other module. You can also change the order of the modules by dragging them to new positions. Go crazy!</p>',
+				onStep: () => setTimeout( () => props.walkthroughCompleted(), 8000),
+				hasStepCompleted: (state) => true
+			}
 		]
 	}
 
 	nextStep() {
-		console.log('this', this)
 		this.currentStep++
-		if (!this.steps[this.currentStep].userStep) {
-			this.steps[this.currentStep].onStep()
-		}
-			this.reduxCb(this.steps[this.currentStep])
-		// } else {
-		// }
-		// this.reduxCb(this.steps[this.currentStep])
+		if (this.steps[this.currentStep].hasOwnProperty('onStep')) this.steps[this.currentStep].onStep()
+		this.nextReduxStep(this.steps[this.currentStep])
 	}
 }

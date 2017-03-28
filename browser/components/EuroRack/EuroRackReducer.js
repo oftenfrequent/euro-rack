@@ -17,6 +17,10 @@ const reducer = (state = {}, action) => {
 			return state.update('order', (o) => o.push(action.id))
 		case 'CONNECT_JACK_ERROR' :
 			return state.set('error', action.error)
+		case 'WALKTHROUGH_STEP':
+			return state.set('addModules', false)
+		case 'WALKTHROUGH_COMPLETED':
+			return state.set('addModules', true)
 		case 'TESTING_STUFF' :
 			console.log('ASLDFHASLD')
 			const osc = new Tone.Oscillator(200, 'sine').start()

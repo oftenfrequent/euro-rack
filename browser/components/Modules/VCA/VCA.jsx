@@ -39,7 +39,7 @@ export class VCA extends React.Component {
         id={this.props.id}
         order={order}
         changeOrder={(n) => this.props.changeOrder(n)}
-        removeModule={true}
+        removeModule={this.props.removeModule}
         removeModuleFunction={() => this.props.removeVCA(this.props.id)}
       >
         <div className='jack-knob-pair clearfix no-amount-pair'>
@@ -128,7 +128,8 @@ export class VCA extends React.Component {
 
 function mapStateToProps(state, props) {
   return {
-    vca: state.vcas.get(props.id)
+    vca: state.vcas.get(props.id),
+    removeModule: state.eurorack.get('addModules')
   }
 }
 

@@ -32,7 +32,7 @@ export class Filter extends React.Component {
         id={this.props.id}
         order={order}
         changeOrder={(n) => this.props.changeOrder(n)}
-        removeModule={true}
+        removeModule={this.props.removeModule}
         removeModuleFunction={() => this.props.removeFilter(this.props.id)}
       >
         <DisplayTypeDropdown
@@ -106,7 +106,8 @@ export class Filter extends React.Component {
 
 function mapStateToProps(state, props) {
   return {
-    fil: state.filters.get(props.id)
+    fil: state.filters.get(props.id),
+    removeModule: state.eurorack.get('addModules')
   }
 }
 

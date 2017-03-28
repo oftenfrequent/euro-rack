@@ -26,7 +26,7 @@ export class EnvelopeGenerator extends React.Component {
         id={this.props.id}
         order={order}
         changeOrder={(n) => this.props.changeOrder(n)}
-        removeModule={true}
+        removeModule={this.props.removeModule}
         removeModuleFunction={() => this.props.removeEnvelope(this.props.id)}
       >
         <DisplayTypeDropdown
@@ -104,7 +104,8 @@ export class EnvelopeGenerator extends React.Component {
 
 function mapStateToProps(state, props) {
   return {
-    env: state.envelopes.get(props.id)
+    env: state.envelopes.get(props.id),
+    removeModule: state.eurorack.get('addModules')
   }
 }
 
