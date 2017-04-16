@@ -21,11 +21,18 @@ export default (state = {}, action) => {
 			}
 		case 'DISCONNECT_JACK' :
 			if (action.inputModule === 'vcas') {
+				if (action.inputCvName === 'cv1') {
+					state = state.updateIn([action.inputId, 'outputToneComponent'], (gain) => {
+						gain.output.gain.value = state.getIn([action.inputId, 'outputValue']) / 1000
+						return gain
+					})
+				}
 				return state.setIn([action.inputId, 'input', action.inputCvName, 'color'], null)
 										.setIn([action.inputId, 'input', action.inputCvName, 'attention'], false )
 			} else if (action.outputModule === 'vcas') {
 				return state.setIn([action.outputId, 'output', action.outputCvName, 'color'], null)
 										.setIn([action.outputId, 'output', action.outputCvName, 'attention'], false )
+
 			} else {
 				return state
 			}
@@ -44,7 +51,8 @@ export default (state = {}, action) => {
 			if (gainType === 'output') {
 				return state.setIn([action.id, 'outputValue'], action.value )
 										.updateIn([action.id, 'outputToneComponent'], (gain) => {
-											if (!state.getIn([action.id, 'input', 'cv1'])) {
+											if (!state.getIn([action.id, 'input', 'cv1', 'color'])) {
+												console.log('gain', gain)
 												gain.output.gain.value = action.value / 1000
 											}
 											return gain

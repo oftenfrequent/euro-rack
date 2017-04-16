@@ -35,7 +35,7 @@ export class walkthrough {
 				onStep: () => { props.addOscillator() },
 				hasStepCompleted: (state) => Array.from(state.oscillators.keys()).length > 0,
 				text: '',
-				completedText: '<p>Welcome to the first web-based modular synth application. This walkthrough will help you learn the basics of synthesis and how to patching modules together. At any point you can click on this tab to hide it.</p>',
+				completedText: '<p>Welcome to the first modular synthesizer of its kind. This walkthrough will help you learn the basics of synthesis and how to patch modules together. We suggest using this project on a computer running Google Chrome for the best performance. At any point you can click on this tab to hide it. Enjoy!</p>',
 			},
 			{
 				text: '<p>Let\'s start by getting you used to patching modules together! We have an Voice Controlled Oscillator (VCO) and a Speaker here. Start by connecting the output of the Sine wave to the Speaker!</p>',
