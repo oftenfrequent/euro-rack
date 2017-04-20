@@ -5,11 +5,16 @@ import classNames from 'classnames'
 import { hashHistory } from 'react-router'
 
 import '../style/app.scss'
+import { callVisitorData } from './User/UserActions'
 
 export class App extends React.Component {
   constructor (props) {
     super(props)
     this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this)
+  }
+
+  componentWillMount() {
+    this.props.callVisitorData()
   }
 
   render () {
@@ -29,6 +34,6 @@ function mapStateToProps (state, props) {
 
 export default connect(
   mapStateToProps,
-  {  }
+  { callVisitorData }
 )(App)
 

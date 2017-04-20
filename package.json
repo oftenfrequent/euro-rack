@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "NODE_ENV=production webpack -p --config ./webpack.production.config.js",
-    "start": "node ./server/start.js"
+    "start": "babel-node ./server/babel-start.js"
   },
   "keywords": [],
   "author": "",
@@ -22,6 +22,7 @@
     "react-dom": "^15.4.1",
     "react-hot-loader": "^1.3.0",
     "react-immutable-proptypes": "^2.1.0",
+    "redux-api-middleware": "^1.0.2",
     "sass-loader": "^3.2.0",
     "style-loader": "^0.13.0",
     "url-loader": "^0.5.7",
@@ -37,13 +38,17 @@
   "dependencies": {
     "babel-cli": "^6.18.0",
     "babel-polyfill": "^6.13.0",
+    "body-parser": "^1.17.1",
     "chalk": "^1.1.3",
     "classnames": "^2.2.3",
     "cookie-parser": "^1.4.3",
+    "crypto": "0.0.3",
+    "dotenv": "^4.0.0",
     "express": "^4.14.1",
     "fs": "0.0.1-security",
     "immutable": "^3.8.1",
-    "lodash": "^4.16.2",
+    "jsonwebtoken": "^7.3.0",
+    "lodash": "^4.17.4",
     "moment": "^2.15.1",
     "pg": "^6.1.0",
     "react": "^15.4.1",
@@ -54,6 +59,7 @@
     "redux": "^3.6.0",
     "redux-api-middleware": "^1.0.2",
     "redux-logger": "^2.6.1",
+    "sequelize": "^3.30.4",
     "tone": "^0.9.0",
     "uuid": "^3.0.1",
     "webpack": "^1.14.0",
