@@ -6,7 +6,11 @@ import express from 'express'
 import cookieParser from 'cookie-parser'
 import bodyParser from 'body-parser'
 import httpProxy from 'http-proxy'
+// import { renderToString } from 'react-dom/server'
+// import { match, RouterContext } from 'react-router'
 
+// import appRoutes from '../../browser/pages/index'
+// import NotFoundPage from '../../browser/pages/NotFoundPage'
 import authentication from './authentication'
 import routes from './routes/index'
 import bundle from '../dev-bundle'
@@ -14,6 +18,8 @@ import bundle from '../dev-bundle'
 const isProduction = process.env.NODE_ENV === 'production'
 const rootPath = path.join(__dirname, '../../')
 const indexPath = path.join(rootPath, './server/dist/index.html')
+const devdexPath = path.join(rootPath, './server/dist/dev-index.html')
+
 // const faviconPath = path.join(rootPath, './server/app/views/favicon.png')
 const app = express()
 
@@ -25,6 +31,8 @@ const AppPipeline = (db) => {
   app.use(cookieParser());
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: true }));
+  // app.set('view engine', 'ejs')
+  // app.set('views', path.join(__dirname, '../dist'));
 
   if (!isProduction) {
     console.log('---------- NOT PRODUCTION -------------')
@@ -32,7 +40,7 @@ const AppPipeline = (db) => {
     bundle()
 
     app.use(logMiddleware)
-    app.get('/server/dist/*', (req, res) => {
+    app.get('/*.js', (req, res) => {
       console.log('request for webpack-dev-server')
       proxy.web(req, res, { target: 'http://localhost:8080'})
     })
@@ -52,7 +60,26 @@ const AppPipeline = (db) => {
 
   app.use('/api', routes)
   app.use(ErrorCatchingMiddleWare)
-  app.get('/*', (req, res) => { res.sendFile(app.get('indexHTMLPath')) })
+  app.get('/*', (req, res) => {
+    console.log('HEREH YET???')
+    // match({routes: appRoutes(), location: req.url},
+    //   (err, redirectLocation, renderProps) => {
+    //     if(err) return res.status(500).send(err.message)
+    //     if(redirectLocation) return res.redirect(302, redirectLocation.pathname + redirectLocation.search)
+
+    //     let markup
+    //     if(renderProps) {
+    //       markup = renderToString(<RouterContext {...renderProps}/>)
+    //     } else {
+    //       markup = renderToString(<NotFoundPage/>)
+    //       res.status(404)
+    //     }
+
+    //     return res.render('index', { markup })
+    //   }
+    // )
+    return res.sendFile(indexPath)
+  })
   app.use(ErrorCatchingEndWare)
 
   return app

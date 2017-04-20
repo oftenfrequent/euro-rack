@@ -19,7 +19,7 @@ export default () => {
   });
 
   var bundler = new WebpackDevServer(compiler, {
-    publicPath: '/server/dist/',
+    publicPath: '/',
     hot: true,
     headers: { 'Access-Control-Allow-Origin': '*' },
     quiet: true, //false,

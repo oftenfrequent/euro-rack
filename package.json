@@ -50,6 +50,7 @@
     "jsonwebtoken": "^7.3.0",
     "lodash": "^4.17.4",
     "moment": "^2.15.1",
+    "passport": "^0.3.2",
     "pg": "^6.1.0",
     "react": "^15.4.1",
     "react-addons-pure-render-mixin": "^15.3.2",

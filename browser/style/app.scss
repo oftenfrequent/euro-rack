@@ -1,3 +1,6 @@
+@import './normalize.css';
+@import './mixins.scss';
+// @import './skeleton.scss';
 @import './variables.scss';
 @import './knob.scss';
 @import './jack.scss';
@@ -46,6 +49,11 @@ body {
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: flex-start;
+  width: 95%;
+  margin: 5px auto;
+  border: 5px solid;
+  border-radius: 14px;
+  padding: 5px;
 }
 
 .module-container {
@@ -56,6 +64,7 @@ body {
 	width: 200px;
 	text-align: center;
 	position: relative;
+	border-radius: 3px;
 
 	&.moving {
 		opacity: 0.25;

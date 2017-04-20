@@ -5,6 +5,7 @@ import { createStore, combineReducers, compose, applyMiddleware } from 'redux'
 import { Router, hashHistory } from 'react-router'
 import { Map } from 'immutable'
 import logger from 'redux-logger'
+import { apiMiddleware } from 'redux-api-middleware'
 
 import appRoutes from './pages'
 // import EuroRack from './components/EuroRack/EuroRack'
@@ -25,6 +26,7 @@ if (process.env.NODE_ENV === 'production') {
 		reducer,
 		initialState,
 		compose(applyMiddleware(
+			apiMiddleware,
 			connectJackMiddleWare,
 			patchingMiddleWare,
 			deleteModuleMiddleWare,
@@ -37,6 +39,7 @@ if (process.env.NODE_ENV === 'production') {
 		reducer,
 		initialState,
 		compose(applyMiddleware(
+			apiMiddleware,
 			connectJackMiddleWare,
 			patchingMiddleWare,
 			deleteModuleMiddleWare,
