@@ -1,25 +1,22 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import PureRenderMixin from 'react-addons-pure-render-mixin'
-import classNames from 'classnames'
-import { hashHistory } from 'react-router'
+import EuroRack from '../components/EuroRack/EuroRack'
 
-import '../style/app.scss'
+import { resetEuroRack } from '../components/EuroRack/EuroRackActions'
+import LoginForm from '../components/Auth/LoginForm'
 
-export class App extends React.Component {
+export class LoginPage extends React.Component {
   constructor (props) {
     super(props)
     this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this)
   }
 
-  componentWillMount() {
-
-  }
-
   render () {
     return (
-      <div className='main-container'>
-        {this.props.children}
+      <div>
+        <h1>Login Page</h1>
+        <LoginForm/>
       </div>
     )
   }
@@ -33,6 +30,8 @@ function mapStateToProps (state, props) {
 
 export default connect(
   mapStateToProps,
-  {  }
-)(App)
+  {
+
+ }
+)(LoginPage)
 

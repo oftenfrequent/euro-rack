@@ -8,7 +8,6 @@ module.exports = function (app, db) {
   const sessionSecret = process.env.SESSION_SECRET
 
   app.post('/login', function(req, res, next) {
-
     User.findOne({ where: { email: req.body.username } })
       .then( user => {
         if (!user || !user.correctPassword(req.body.password)) {
