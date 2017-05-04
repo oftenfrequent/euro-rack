@@ -43,7 +43,8 @@ module.exports = {
     new webpack.optimize.AggressiveMergingPlugin(),
     new webpack.DefinePlugin({
       'process.env': {
-        NODE_ENV: JSON.stringify('production')
+        NODE_ENV: JSON.stringify('production'),
+        WEBFONT_ID: JSON.stringify(process.env.WEBFONT_ID)
       }
     }),
   ]

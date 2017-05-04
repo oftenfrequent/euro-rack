@@ -6,6 +6,7 @@ import { Router, hashHistory } from 'react-router'
 import { Map } from 'immutable'
 import logger from 'redux-logger'
 import { apiMiddleware } from 'redux-api-middleware'
+import WebFont from 'webfontloader'
 
 import appRoutes from './pages'
 // import EuroRack from './components/EuroRack/EuroRack'
@@ -18,6 +19,8 @@ import {
 	changeBPM,
 	walkthroughMiddleware
 } from './config/middleware'
+
+WebFont.load({ typekit: { id: process.env.WEBFONT_ID } })
 
 let store
 

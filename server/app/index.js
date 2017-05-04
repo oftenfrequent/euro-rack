@@ -17,8 +17,9 @@ import bundle from '../dev-bundle'
 
 const isProduction = process.env.NODE_ENV === 'production'
 const rootPath = path.join(__dirname, '../../')
-const indexPath = path.join(rootPath, './server/dist/index.html')
-const devdexPath = path.join(rootPath, './server/dist/dev-index.html')
+const indexPath = isProduction ? path.join(rootPath, './server/dist/index.html') : path.join(rootPath, './server/dist/dev-index.html')
+
+console.log('INDEX___PATH______________', indexPath)
 
 // const faviconPath = path.join(rootPath, './server/app/views/favicon.png')
 const app = express()

@@ -5,6 +5,7 @@ import classNames from 'classnames'
 import { hashHistory } from 'react-router'
 
 import '../style/app.scss'
+import Navbar from './Navbar/Navbar'
 
 export class App extends React.Component {
   constructor (props) {
@@ -19,6 +20,7 @@ export class App extends React.Component {
   render () {
     return (
       <div className='main-container'>
+        <Navbar/>
         {this.props.children}
       </div>
     )
