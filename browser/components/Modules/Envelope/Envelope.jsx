@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import Tone from 'tone'
+import PropTypes from 'prop-types'
 
 import ModuleContainer from '../../ModuleComponents/ModuleContainer'
 import DisplayTypeDropdown from '../../ModuleComponents/DisplayTypeDropdown'
@@ -118,3 +118,11 @@ export default connect(
     changeTimeLength
   }
 )(EnvelopeGenerator)
+
+
+EnvelopeGenerator.propTypes = {
+  id: PropTypes.string.isRequired,
+  order: PropTypes.number.isRequired,
+  changeOrder: PropTypes.func.isRequired,
+  onJackClick: PropTypes.func.isRequired
+}

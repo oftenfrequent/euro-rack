@@ -1,10 +1,10 @@
 import React from 'react'
+import PropTypes from 'prop-types'
+
+
 import Knob from './Knob'
 import DisplayAmount from './DisplayAmount'
 
-
-
-// const Knob = ({name, min, max, value, degreesTotal, sensitivity, onNewValue}) => {
 export class KnobAndAmount extends React.Component {
   constructor(props) {
     super(props)
@@ -42,6 +42,19 @@ export class KnobAndAmount extends React.Component {
       </div>
     )
   }
+}
+
+Knob.propTypes = {
+  hideDisplay: PropTypes.bool,
+  type: PropTypes.string,
+  suffix: PropTypes.string,
+  name: PropTypes.string,
+  min: PropTypes.number.isRequired,
+  max: PropTypes.number.isRequired,
+  value: PropTypes.number.isRequired,
+  degreesTotal: PropTypes.number.isRequired,
+  sensitivity: PropTypes.number.isRequired,
+  onNewValue: PropTypes.func.isRequired
 }
 
 export default KnobAndAmount

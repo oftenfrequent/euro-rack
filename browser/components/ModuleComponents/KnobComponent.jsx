@@ -1,6 +1,7 @@
+// inspiration from http://codepen.io/blucube/pen/cudAz
 import React from 'react'
 import { connect } from 'react-redux'
-// inspiration from http://codepen.io/blucube/pen/cudAz
+import PropTypes from 'prop-types'
 
 const KnobComponent = ({name, degreesValue, degreesTotal, sensitivity, onChange}) => {
   let initialPositionOfYOnClickDown = 0
@@ -55,3 +56,11 @@ const KnobComponent = ({name, degreesValue, degreesTotal, sensitivity, onChange}
 }
 
 export default KnobComponent
+
+KnobComponent.propTypes = {
+  name: PropTypes.string,
+  degreesValue: PropTypes.number.isRequired,
+  degreesTotal: PropTypes.number.isRequired,
+  sensitivity: PropTypes.number.isRequired,
+  onChange: PropTypes.func.isRequired
+}

@@ -1,7 +1,6 @@
 import React from 'react'
 import KnobComponent from './KnobComponent'
-
-
+import PropTypes from 'prop-types'
 
 const Knob = ({name, min, max, value, degreesTotal, sensitivity, onNewValue}) => {
 
@@ -34,3 +33,14 @@ const Knob = ({name, min, max, value, degreesTotal, sensitivity, onNewValue}) =>
 }
 
 export default Knob
+
+
+Knob.propTypes = {
+  name: React.PropTypes.string,
+  min: React.PropTypes.number.isRequired,
+  max: React.PropTypes.number.isRequired,
+  value: React.PropTypes.number.isRequired,
+  degreesTotal: React.PropTypes.number.isRequired,
+  sensitivity: React.PropTypes.number.isRequired,
+  onNewValue: React.PropTypes.func.isRequired
+}
