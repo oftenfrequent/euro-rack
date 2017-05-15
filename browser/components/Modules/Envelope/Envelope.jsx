@@ -19,6 +19,7 @@ export class EnvelopeGenerator extends React.Component {
   }
 
   render(){
+    console.log('this.props.env', this.props.env.toJS())
     const order = this.props.env.get('flexOrder') ? this.props.env.get('flexOrder') : this.props.order
     return (
       <ModuleContainer
@@ -103,6 +104,7 @@ export class EnvelopeGenerator extends React.Component {
 }
 
 function mapStateToProps(state, props) {
+    console.log('state', state)
   return {
     env: state.envelopes.get(props.id),
     removeModule: state.eurorack.get('addModules')

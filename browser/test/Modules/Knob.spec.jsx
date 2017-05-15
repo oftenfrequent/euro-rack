@@ -27,3 +27,5 @@ describe('Knob', () => {
   })
 
 })
+
+export default () => { console.log('HERE') }

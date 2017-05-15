@@ -4,7 +4,9 @@
   "description": "",
   "main": "webpack.config.js",
   "scripts": {
-    "test": "mocha --compilers js:babel-core/register --require ./browser/test/setup.js ./browser/test/**/*.spec.jsx",
+    "getCloserToThis": "mocha --compilers js:babel-core/register --require ./browser/test/setup.js './browser/test/**/*.spec.@(js|jsx)'",
+    "pretest": "webpack --config ./webpack.test.config.js",
+    "test": "open ./browser/test/index.html",
     "build": "NODE_ENV=production webpack -p --config ./webpack.production.config.js",
     "start": "babel-node ./server/babel-start.js"
   },
@@ -18,10 +20,12 @@
     "babel-preset-react": "^6.16.0",
     "chai": "^3.5.0",
     "chai-enzyme": "^0.6.1",
+    "cheerio": "^0.22.0",
     "clean-webpack-plugin": "^0.1.11",
     "css-loader": "^0.26.1",
     "enzyme": "^2.8.2",
     "jsdom": "^10.1.0",
+    "json-loader": "^0.5.4",
     "mocha": "^3.3.0",
     "node-sass": "^3.4.2",
     "react-addons-test-utils": "^15.5.1",
