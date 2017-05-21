@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import Tone from 'tone'
+import PropTypes from 'prop-types'
 
 import ModuleContainer from '../../ModuleComponents/ModuleContainer'
 import DisplayTypeDropdown from '../../ModuleComponents/DisplayTypeDropdown'
@@ -19,6 +19,7 @@ export class EnvelopeGenerator extends React.Component {
   }
 
   render(){
+    console.log('this.props.env', this.props.env.toJS())
     const order = this.props.env.get('flexOrder') ? this.props.env.get('flexOrder') : this.props.order
     return (
       <ModuleContainer
@@ -103,6 +104,7 @@ export class EnvelopeGenerator extends React.Component {
 }
 
 function mapStateToProps(state, props) {
+    console.log('state', state)
   return {
     env: state.envelopes.get(props.id),
     removeModule: state.eurorack.get('addModules')
@@ -118,3 +120,11 @@ export default connect(
     changeTimeLength
   }
 )(EnvelopeGenerator)
+
+
+EnvelopeGenerator.propTypes = {
+  id: PropTypes.string.isRequired,
+  order: PropTypes.number.isRequired,
+  changeOrder: PropTypes.func.isRequired,
+  onJackClick: PropTypes.func.isRequired
+}
