@@ -1,14 +1,20 @@
-import React from 'react';
-import { Route } from 'react-router';
-import App from '../components/App';
-import PlayPage from './PlayPage';
-import WalkthroughPage from './WalkthroughPage';
+import React from 'react'
+import { Route } from 'react-router'
+import App from '../components/App'
+import PlayPage from './PlayPage'
+import WalkthroughPage from './WalkthroughPage'
+import LoginPage from './LoginPage'
+import StyleGuidePage from './StyleGuidePage'
+import NotFoundPage from './NotFoundPage'
 
 export default function appRoutes() {
   return (
     <Route component={App}>
       <Route path="/play" component={PlayPage} />
+      <Route path="/login" component={LoginPage}/>
+      <Route path="/style" component={StyleGuidePage}/>
       <Route path="/" component={WalkthroughPage}/>
+			<Route path="*" component={NotFoundPage}/>
     </Route>
   )
 }

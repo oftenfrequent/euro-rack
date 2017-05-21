@@ -32,6 +32,8 @@ module.exports = {
     extensions: ['', '.js', '.jsx']
   },
   output: {
+    // path: __dirname + '/server/dist',
+    // publicPath: '/server/dist/',
     path: __dirname + '/',
     publicPath: '/',
     filename: 'bundle.js'
@@ -43,6 +45,12 @@ module.exports = {
       minChunks: 2, // How many times a dependency must come up before being extracted
     }),
     new webpack.HotModuleReplacementPlugin(),
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: JSON.stringify('development'),
+        WEBFONT_ID: JSON.stringify(process.env.WEBFONT_ID)
+      }
+    }),
   ]
 
 };

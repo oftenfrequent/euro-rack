@@ -5,6 +5,8 @@ import { createStore, combineReducers, compose, applyMiddleware } from 'redux'
 import { Router, hashHistory } from 'react-router'
 import { Map } from 'immutable'
 import logger from 'redux-logger'
+import { apiMiddleware } from 'redux-api-middleware'
+import WebFont from 'webfontloader'
 
 import appRoutes from './pages'
 // import EuroRack from './components/EuroRack/EuroRack'
@@ -18,6 +20,8 @@ import {
 	walkthroughMiddleware
 } from './config/middleware'
 
+WebFont.load({ typekit: { id: process.env.WEBFONT_ID } })
+
 let store
 
 if (process.env.NODE_ENV === 'production') {
@@ -25,6 +29,7 @@ if (process.env.NODE_ENV === 'production') {
 		reducer,
 		initialState,
 		compose(applyMiddleware(
+			apiMiddleware,
 			connectJackMiddleWare,
 			patchingMiddleWare,
 			deleteModuleMiddleWare,
@@ -37,6 +42,7 @@ if (process.env.NODE_ENV === 'production') {
 		reducer,
 		initialState,
 		compose(applyMiddleware(
+			apiMiddleware,
 			connectJackMiddleWare,
 			patchingMiddleWare,
 			deleteModuleMiddleWare,

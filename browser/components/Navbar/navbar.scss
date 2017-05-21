@@ -1,0 +1,40 @@
+@import '../../style/variables.scss';
+
+
+.navbar-container {
+	background: #ccc;
+	border-bottom: 2px solid #bbb;
+	padding: 10px;
+	display: flex;
+	align-items: baseline;
+
+
+	.logo-container {
+		font-family: 'Acuta', 'Helvetica', Ariel, sans-serif;
+		font-size: 24px;
+		flex-grow: 2;
+	}
+
+	.link-list {
+		flex-grow: 1;
+		display: flex;
+
+		.nav-list-item {
+			flex-grow: 1;
+
+			a {
+				text-decoration: none;
+				color: $black;
+
+				&:hover {
+					// text-decoration: none;
+					color: $black;
+				}
+			}
+
+		}
+	}
+
+}
+
+

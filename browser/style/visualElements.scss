@@ -1,0 +1,22 @@
+@import './variables.scss';
+
+form {
+	border: 1px solid $black;
+  // overflow: auto;
+  // zoom: 1;
+	padding: 30px;
+	margin: 0 auto;
+}
+
+input {
+	border: 1px solid #eee;
+	color: #eee;
+	border-radius: 3px;
+	width: 100%;
+
+}
+
+label {
+	padding: 5px;
+
+}

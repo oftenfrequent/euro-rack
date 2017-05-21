@@ -1,19 +1,15 @@
-var chalk = require('chalk')
-var express = require('express')
-var path = require('path')
+import chalk from 'chalk'
+import db from './db'
+import ExpressApp from './app'
 
-var app = express()
-var port = (process.env.PORT || 3000)
+const port = (process.env.PORT || 3000)
 
-app.use(express.static(path.join(__dirname, './dist')));
+const startServer = () => {
+  const app = ExpressApp(db)
 
-var startServer = function() {
-	app.listen(port, function() {
-		console.log(chalk.green('Server locked in at port ' + port.toString()))
-	  app.get('/*', function(req, res){
-	  	res.sendFile('index.html', { root: __dirname })
-	  })
-	})
+  app.listen(port, () => console.log(chalk.green(`Server locked in at port ${port}`)))
 }
 
-startServer()
+db.sync()
+.then(startServer)
+.catch(err => console.log(chalk.red(err.stack)))
