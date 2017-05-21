@@ -21,15 +21,18 @@ export class LoginForm extends React.Component {
   render () {
     return (
       <form onSubmit={(e) => {this.handleSubmit(e)}}>
-
-        <div className='six columns'>
-          <input type='text' ref='email' placeholder='email' defaultValue='asd@asd' />
+        <div className='row'>
+          <div className='six columns'>
+            <input type='text' ref='email' placeholder='email' defaultValue='asd@asd' />
+          </div>
+          <div className='six columns'>
+            <input type='password' ref='pass' placeholder='password' />
+          </div>
         </div>
-        <div className='six columns'>
-          <input type='password' ref='pass' placeholder='password' />
-        </div>
-        <div className='twelve columns'>
-          <button type='submit'>login</button>
+        <div className='row'>
+          <div className='twelve columns'>
+            <button type='submit'>login</button>
+          </div>
         </div>
         {this.state.error && (
           <p>Bad login information</p>

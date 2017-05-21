@@ -13,10 +13,6 @@ export class App extends React.Component {
     this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this)
   }
 
-  componentWillMount() {
-
-  }
-
   render () {
     return (
       <div className='main-container'>
