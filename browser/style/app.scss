@@ -1,6 +1,8 @@
 @import './normalize.css';
 @import './mixins.scss';
 @import './skeleton.scss';
+@import './moduleContainer.scss';
+@import './walkthroughOverlay.scss';
 @import './visualElements.scss';
 @import './variables.scss';
 @import './knob.scss';
@@ -53,72 +55,6 @@ body {
   margin: 5px auto;
 }
 
-.module-container {
-	background: #ddd;
-	float: left;
-  margin:2.5px;
-	height: 380px;
-	width: 200px;
-	text-align: center;
-	position: relative;
-	border-radius: 3px;
-
-	&.moving {
-		opacity: 0.25;
-	}
-	&.addModule {
-		opacity: 0.5;
-		order: 10000;
-	}
-
-	.module-container--content {
-		padding: 35px 15px 15px 15px;
-		z-index: 10;
-		position: absolute;
-		bottom: 0;
-		top: 0;
-		left: 0;
-		right: 0;
-	}
-
-	.module-name {
-		// font-style: italic;
-		position: relative;
-		text-transform: uppercase;
-    margin-top: 12px;
-    margin-bottom: 0px;
-	}
-
-	.screw-row {
-		margin-top: 5px;
-		width: 100%;
-		position:absolute;
-		z-index: 0;
-
-		&:first-of-type {
-			z-index: 11;
-			.screw.screw--delete, .indent{
-				transition: all 0.3s ease-in-out;
-			}
-			.screw.screw--delete{
-				&:hover {
-					background: rgba(0,0,0,0);
-					transform: rotate(313deg) !important;
-					.indent{
-						background: red;
-					}
-				}
-			}
-		}
-
-		&.screw-row--bottom {
-			bottom: 5px;
-		}
-	}
-}
-
-
-
 .speaker-hole-container {
 	width: 100%;
 	padding: 10px 0px;
@@ -136,36 +72,6 @@ body {
 			margin: 3px;
 			float: left;
 		}
-	}
-}
-
-
-.screw {
-	border-radius: 50%;
-	height: 15px;
-	width: 15px;
-	background: #bbb;
-	float: left;
-	margin-left: 5px;
-
-	&:last-of-type {
-		float: right;
-		margin-right: 5px;
-	}
-
-	.indent {
-		height: 3px;
-    width: 11px;
-    background: #999;
-    position: relative;
-    top: 6px;
-    border-radius: 3px;
-    left: 2px;
-
-    &.vert {
-    	transform: rotate(90deg);
-    	top: 3px;
-    }
 	}
 }
 
@@ -220,112 +126,6 @@ body {
 			float: left;
 		}
 	}
-}
-
-button {
-	transition: all .3s ease-in-out;
-	margin: 0 auto;
-	color: $black;
-	background: $clear;
-	border: 1px solid $black;
-	padding: 2px;
-	text-align: center;
-	width: 100%;
-	font-size: 12px;
-	margin-bottom: 5px;
-	&:hover {
-		border-color: $border-color;
-		cursor: pointer;
-	}
-}
-
-.jack-knob-pair {
-	width: 100%;
-	// &.inactive {
-	// 	opacity: 0.2;
-	// }
-
-	&.no-amount-pair {
-		.paired-jack {
-			margin-top: 14px;
-		}
-
-		.paired-knob {
-			margin-top: 5px;
-		}
-	}
-
-	.paired-jack, .paired-knob {
-		width: 50%;
-		float:left;
-	}
-
-	.paired-jack {
-		margin-top:30px;
-	}
-}
-
-.walkthrough-text-overlay {
-  opacity: 1;
-  position: absolute;
-  right: -300px;
-  top: 5%;
-  transition: all 0.3s ease-in-out;
-  width: 300px;
-  z-index: 100;
-
-	&:hover {
-		cursor: pointer;
-	}
-
-  &.empty {
-  	opacity: 0;
-  }
-
-  &.open {
-	  right: 0px;
-
-	  .walkthrough-tab {
-			left: 0px;
-
-	  }
-  }
-
-  .walkthrough-text-container {
-  	position:relative;
-	  background: $border-color;
-	  color: $black;
-	  border-radius: 0px 0px 0px 3px;
-	  box-shadow: 5px 3px 5px #888;
-		padding: 30px;
-		line-height: 1.4;
-		font-weight: 200;
-		z-index: 1;
-
-		button {
-			margin-top: 20px;
-
-			&:hover {
-				border-color: $black;
-				background: rgba($black, 0.2);
-			}
-		}
-  }
-
-  .walkthrough-tab {
-	  transition: all 0.3s ease-in-out;
-		font-weight: 200;
-  	width: 25px;
-    background: $border-color;
-	  color: $black;
-    position: absolute;
-    left: -25px;
-    top: 0px;
-    border-radius: 3px 0px 0px 3px;
-    padding: 7px;
-    box-shadow: 5px 3px 5px #888;
-		z-index: 0;
-  }
 }
 
 .message-banner {

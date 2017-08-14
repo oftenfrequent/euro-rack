@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import classNames from 'classnames'
 import PureRenderMixin from 'react-addons-pure-render-mixin'
-import { Link } from 'react-router'
+import { Link } from 'react-router-dom'
 // import '../../style/app.scss'
 
 export class WalkthroughText extends React.Component {

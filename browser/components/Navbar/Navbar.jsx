@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 // import PureRenderMixin from 'react-addons-pure-render-mixin'
 
 import MessageBanner from '../MessageBanner/MessageBanner'
-import { Link } from 'react-router'
+import { Link } from 'react-router-dom'
 import './navbar.scss'
 
 export class Navbar extends React.Component {
@@ -20,7 +20,7 @@ export class Navbar extends React.Component {
           <div className='logo-container'><span>Eurorack</span></div>
           <div className='link-list'>
             <div className='nav-list-item'>
-              <Link to='/'>Walkthrough</Link>
+              <Link to='/walkthrough'>Walkthrough</Link>
             </div>
             <div className='nav-list-item'>
               <Link to='/play'>Full Experience</Link>

@@ -2,18 +2,18 @@
 
 form {
 	border: 1px solid $black;
-  // overflow: auto;
-  // zoom: 1;
 	padding: 30px;
 	margin: 0 auto;
 }
 
 input {
-	border: 1px solid #eee;
-	color: #eee;
+	border: 1px solid $black;
+	color: $black;
 	border-radius: 3px;
 	width: 100%;
-
+	background: rgba(0,0,0,0);
+	padding: 10px;
+	margin-bottom: 10px;
 }
 
 label {

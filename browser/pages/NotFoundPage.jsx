@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router'
+import { Link } from 'react-router-dom'
 import PureRenderMixin from 'react-addons-pure-render-mixin'
 
 export class NotFoundPage extends React.Component {
@@ -10,9 +10,8 @@ export class NotFoundPage extends React.Component {
 
   render () {
     return (
-      <div>
-        <h1>404</h1>
-        <h2>Page not found!</h2>
+      <div className='container'>
+        <h2>Page Not Found</h2>
         <p>
           <Link to="/">Go back to the main page</Link>
         </p>

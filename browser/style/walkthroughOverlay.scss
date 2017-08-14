@@ -1,0 +1,62 @@
+.walkthrough-text-overlay {
+  opacity: 1;
+  position: absolute;
+  right: -300px;
+  top: 5%;
+  transition: all 0.3s ease-in-out;
+  width: 300px;
+  z-index: 100;
+
+	&:hover {
+		cursor: pointer;
+	}
+
+  &.empty {
+  	opacity: 0;
+  }
+
+  &.open {
+	  right: 0px;
+
+	  .walkthrough-tab {
+			left: 0px;
+
+	  }
+  }
+
+  .walkthrough-text-container {
+  	position:relative;
+	  background: $border-color;
+	  color: $black;
+	  border-radius: 0px 0px 0px 3px;
+	  box-shadow: 5px 3px 5px #888;
+		padding: 30px;
+		line-height: 1.4;
+		font-weight: 200;
+		z-index: 1;
+
+		button {
+			margin-top: 20px;
+
+			&:hover {
+				border-color: $black;
+				background: rgba($black, 0.2);
+			}
+		}
+  }
+
+  .walkthrough-tab {
+	  transition: all 0.3s ease-in-out;
+		font-weight: 200;
+  	width: 25px;
+    background: $border-color;
+	  color: $black;
+    position: absolute;
+    left: -25px;
+    top: 0px;
+    border-radius: 3px 0px 0px 3px;
+    padding: 7px;
+    box-shadow: 5px 3px 5px #888;
+		z-index: 0;
+  }
+}

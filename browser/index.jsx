@@ -20,6 +20,8 @@ import {
 	walkthroughMiddleware
 } from './config/middleware'
 
+import './style/app.scss'
+
 WebFont.load({ typekit: { id: process.env.WEBFONT_ID } })
 
 let store
@@ -56,9 +58,7 @@ if (process.env.NODE_ENV === 'production') {
 
 ReactDOM.render(
 	<Provider store={store}>
-		<Router history={hashHistory}>
-      {appRoutes()}
-    </Router>
+    {appRoutes()}
 	</Provider>
 	, document.getElementById('app')
 )

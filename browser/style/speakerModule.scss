@@ -1,0 +1,31 @@
+.speaker-hole-container {
+	width: 100%;
+	padding: 10px 0px;
+
+	.speaker-hole-row {
+		display: flex;
+		margin: 0 auto;
+		justify-content: center;
+
+		.speaker-hole {
+			width: 5px;
+			height: 5px;
+			border-radius: 50%;
+			background: #444;
+			margin: 3px;
+			float: left;
+		}
+	}
+}
+
+.canvas-container{
+  width: 100%;
+  height: 100px;
+  .oscilloscope {
+    width: 100%;
+  }
+}
+
+.master-out-jack .jack-container {
+	padding: 5px 0px 20px;
+}

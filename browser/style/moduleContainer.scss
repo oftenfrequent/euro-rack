@@ -1,0 +1,157 @@
+@import './variables.scss';
+
+.module-container {
+	background: #ddd;
+	float: left;
+  margin:2.5px;
+	height: 380px;
+	width: 200px;
+	text-align: center;
+	position: relative;
+	border-radius: 3px;
+
+	&.moving {
+		opacity: 0.25;
+	}
+	&.addModule {
+		opacity: 0.5;
+		order: 10000;
+	}
+
+	.module-container--content {
+		padding: 35px 15px 15px 15px;
+		z-index: 10;
+		position: absolute;
+		bottom: 0;
+		top: 0;
+		left: 0;
+		right: 0;
+	}
+
+	.module-name {
+		// font-style: italic;
+		position: relative;
+		text-transform: uppercase;
+    margin-top: 12px;
+    margin-bottom: 0px;
+	}
+
+	.screw-row {
+		margin-top: 5px;
+		width: 100%;
+		position:absolute;
+		z-index: 0;
+
+		&:first-of-type {
+			z-index: 11;
+			.screw.screw--delete, .indent{
+				transition: all 0.3s ease-in-out;
+			}
+			.screw.screw--delete{
+				&:hover {
+					background: rgba(0,0,0,0);
+					transform: rotate(313deg) !important;
+					.indent{
+						background: red;
+					}
+				}
+			}
+		}
+
+		&.screw-row--bottom {
+			bottom: 5px;
+		}
+
+		.screw {
+			border-radius: 50%;
+			height: 15px;
+			width: 15px;
+			background: #bbb;
+			float: left;
+			margin-left: 5px;
+
+			&:last-of-type {
+				float: right;
+				margin-right: 5px;
+			}
+
+			.indent {
+				height: 3px;
+		    width: 11px;
+		    background: #999;
+		    position: relative;
+		    top: 6px;
+		    border-radius: 3px;
+		    left: 2px;
+
+		    &.vert {
+		    	transform: rotate(90deg);
+		    	top: 3px;
+		    }
+			}
+		}
+	}
+
+
+	.waveforms-out-row {
+		width: 100%;
+		position: absolute;
+		bottom: 20px;
+		left: 0px;
+		right: 0px;
+
+		.waveforms-centered-row {
+			width: 90%;
+	    margin: 0 auto;
+
+			.jack-container {
+				width: 25%;
+				float: left;
+			}
+		}
+	}
+
+	button {
+		transition: all .3s ease-in-out;
+		margin: 0 auto;
+		color: $black;
+		background: $clear;
+		border: 1px solid $black;
+		padding: 2px;
+		text-align: center;
+		width: 100%;
+		font-size: 12px;
+		margin-bottom: 5px;
+		&:hover {
+			border-color: $border-color;
+			cursor: pointer;
+		}
+	}
+
+	.jack-knob-pair {
+		width: 100%;
+		// &.inactive {
+		// 	opacity: 0.2;
+		// }
+
+		&.no-amount-pair {
+			.paired-jack {
+				margin-top: 14px;
+			}
+
+			.paired-knob {
+				margin-top: 5px;
+			}
+		}
+
+		.paired-jack, .paired-knob {
+			width: 50%;
+			float:left;
+		}
+
+		.paired-jack {
+			margin-top:30px;
+		}
+	}
+
+}
