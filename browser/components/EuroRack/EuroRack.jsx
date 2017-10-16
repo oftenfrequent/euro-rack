@@ -7,6 +7,7 @@ import LFO from '../Modules/LFO/LFO'
 import MIDI from '../Modules/MIDI/MIDIComponent'
 import EnvelopeGenerator from '../Modules/Envelope/Envelope'
 import Filter from '../Modules/Filter/Filter'
+import ConvolutionReverb from '../Modules/ConvolutionReverb/ConvolutionReverb'
 import VCA from '../Modules/VCA/VCA'
 import Speaker from '../Modules/Speaker/Speaker'
 import AddNewComponent from '../Modules/AddNew/AddNew'
@@ -31,6 +32,7 @@ export class EuroRack extends React.Component {
       Array.from(props.vcas.keys()),
       Array.from(props.envelopes.keys()),
       Array.from(props.filters.keys()),
+      Array.from(props.convolutionReverbs.keys()),
       Array.from(props.midis.keys())
     ]
 //    this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
@@ -61,6 +63,7 @@ export class EuroRack extends React.Component {
       Array.from(nextProps.vcas.keys()),
       Array.from(nextProps.envelopes.keys()),
       Array.from(nextProps.filters.keys()),
+      Array.from(nextProps.convolutionReverbs.keys()),
       Array.from(nextProps.midis.keys())
     ])
 
@@ -139,6 +142,15 @@ export class EuroRack extends React.Component {
             onJackClick={(e, id, direction, cvName, toneComponent, currentColor) => this.handleJackClick(e, 'filters', id, direction, cvName, toneComponent, currentColor)}
           />
         )}
+        {Array.from(this.props.convolutionReverbs.keys()).map((name,index) =>
+          <ConvolutionReverb
+            id={name}
+            key={index}
+            order={this.props.order.indexOf(name)}
+            changeOrder={(n) => this.changeOrder(n)}
+            onJackClick={(e, id, direction, cvName, toneComponent, currentColor) => this.handleJackClick(e, 'convolutionReverbs', id, direction, cvName, toneComponent, currentColor)}
+          />
+        )}
         {Array.from(this.props.midis.keys()).map((name,index) =>
           <MIDI
             id={name}
@@ -171,6 +183,7 @@ function mapStateToProps(state) {
     lfos: state.lfos,
     envelopes: state.envelopes,
     filters: state.filters,
+    convolutionReverbs: state.convolutionReverbs,
     vcas: state.vcas,
     midis: state.midis,
     patchCables: state.eurorack.get('patchCables'),

@@ -9,6 +9,7 @@ import { addOscillator } from '../Oscillator/OscillatorActions'
 import { addLFO } from '../LFO/LFOActions'
 import { addEnvelope } from '../Envelope/EnvelopeActions'
 import { addFilter } from '../Filter/FilterActions'
+import { addConvolutionReverb } from '../ConvolutionReverb/ConvolutionReverbActions'
 import { addVCA } from '../VCA/VCAActions'
 
 export class AddNewComponent extends React.Component {
@@ -31,6 +32,8 @@ export class AddNewComponent extends React.Component {
         return this.props.addEnvelope()
       case 'filter' :
         return this.props.addFilter()
+      case 'convolutionReverb' :
+        return this.props.addConvolutionReverb()
       case 'vca' :
         return this.props.addVCA()
     }
@@ -45,7 +48,7 @@ export class AddNewComponent extends React.Component {
           draggable={false}
         >
           <DisplayTypeDropdown
-            optionTypes={fromJS(['vco', 'lfo', 'envelope', 'filter', 'vca'])}
+            optionTypes={fromJS(['vco', 'lfo', 'envelope', 'filter', 'vca', 'convolutionReverb'])}
             changeType={(v) => this.changeStateModule(v)}
           />
           <button onClick={() => this.addModule()}>Add Module</button>
