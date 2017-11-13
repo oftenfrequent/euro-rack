@@ -69,6 +69,7 @@ export default connect(
     addLFO,
     addEnvelope,
     addFilter,
-    addVCA
+    addVCA,
+    addConvolutionReverb
   }
 )(AddNewComponent)

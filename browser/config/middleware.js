@@ -294,6 +294,13 @@ export const deleteModuleMiddleWare = store => next => action => {
     if(moduleToRemove.getIn(['output', 'sound', 'color'])) { store.dispatch(disconnectJack(moduleToRemove.getIn(['output', 'sound', 'color']))) }
   }
 
+  if(action.type === 'REMOVE_CONVOLUTION_REVERB') {
+    moduleToRemove = state.convolutionReverbs.get(action.id)
+    if(moduleToRemove.getIn(['input', 'wetness', 'color'])) { store.dispatch(disconnectJack(moduleToRemove.getIn(['input', 'frequency', 'color']))) }
+    if(moduleToRemove.getIn(['input', 'sound', 'color'])) { store.dispatch(disconnectJack(moduleToRemove.getIn(['input', 'sound', 'color']))) }
+    if(moduleToRemove.getIn(['output', 'sound', 'color'])) { store.dispatch(disconnectJack(moduleToRemove.getIn(['output', 'sound', 'color']))) }
+  }
+
   return next(action)
 }
 

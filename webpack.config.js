@@ -26,6 +26,10 @@ module.exports = {
       test: /\.scss$/,
       loaders: ['style', 'css', 'sass']
     },
+    {
+      test: /\.wav$/,
+      loaders: ['file-loader', 'url-loader']
+    },
     ]
   },
   resolve: {
@@ -35,7 +39,8 @@ module.exports = {
     // path: __dirname + '/server/dist',
     // publicPath: '/server/dist/',
     path: __dirname + '/',
-    publicPath: '/',
+    // publicPath: '/',
+    // publicPath: 'http://127.0.0.1:8888/'
     filename: 'bundle.js'
   },
   plugins: [

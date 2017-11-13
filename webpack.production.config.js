@@ -22,6 +22,10 @@ module.exports = {
       test: /\.scss$/,
       loaders: ['style', 'css', 'sass']
     },
+    {
+      test: /\.wav$/,
+      loaders: ['file-loader', 'url-loader']
+    },
     ]
   },
   resolve: {
