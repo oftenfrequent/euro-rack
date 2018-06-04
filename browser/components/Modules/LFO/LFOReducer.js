@@ -113,12 +113,14 @@ const updateParamsInType = (state, min, max, mid, id, type) => {
 		const midValue = mid
 		const minValue = midValue - difference
 		const maxValue = midValue + difference
-		lfo.bounds = {
-			min: minValue,
-			max: maxValue,
-			lowBound: min,
-			highBound: max
-		}
+		// lfo.bounds = {
+		// 	min: minValue,
+		// 	max: maxValue,
+		// 	lowBound: min,
+		// 	highBound: max
+		// }
+		lfo.min = minValue
+		lfo.max = maxValue
 		return lfo
 	})
 }

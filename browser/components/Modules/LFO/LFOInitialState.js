@@ -20,7 +20,7 @@ const initialState = () => {
 				minValue: 0,
 				midValue: 0.5,
 				maxValue: 1,
-				toneComponent: new Tone.BoundLFO({
+				toneComponent: new Tone.LFO({
 					type:'sine',
 					frequency:0.01,
 					min: 0,
@@ -34,7 +34,7 @@ const initialState = () => {
 				minValue: 0,
 				midValue: 0.5,
 				maxValue: 1,
-				toneComponent: new Tone.BoundLFO({
+				toneComponent: new Tone.LFO({
 					type:'triangle',
 					frequency:0.01,
 					min: 0,
@@ -48,7 +48,7 @@ const initialState = () => {
 				minValue: 0,
 				midValue: 0.5,
 				maxValue: 1,
-				toneComponent: new Tone.BoundLFO({
+				toneComponent: new Tone.LFO({
 					type:'sawtooth',
 					frequency:0.01,
 					min: 0,
@@ -63,7 +63,7 @@ const initialState = () => {
 				midValue: 0.5,
 				maxValue: 1,
 				modulationFrequency: 0,
-				toneComponent: new Tone.BoundLFO({
+				toneComponent: new Tone.LFO({
 					type:'square',
 					frequency:0.01,
 					min: 0,

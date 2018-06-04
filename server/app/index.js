@@ -54,7 +54,7 @@ const AppPipeline = (db) => {
   }
 
   // connect auth to app
-  authentication(app, db)
+  // authentication(app, db)
 
   // Static stuff
   // app.use(favicon(app.getValue('faviconPath')));

@@ -10,10 +10,10 @@ import StyleGuidePage from './StyleGuidePage'
 import { NotFoundPage } from './NotFoundPage'
 
 export default function appRoutes() {
+        // <Navbar />
   return (
     <BrowserRouter>
       <div className='main-container'>
-        <Navbar />
         <Switch>
 		      <Route exact path="/" component={HomePage}/>
 		      <Route path="/play" component={PlayPage} />
