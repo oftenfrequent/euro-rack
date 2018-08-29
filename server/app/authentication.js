@@ -70,7 +70,7 @@ const createToken = (user, sessionSecret) => {
   return new Promise((resolve, reject) => {
     const token = jwt.sign(user.sanitize(),
       sessionSecret,
-      { expiresIn: "1m" },
+      { expiresIn: "1d" },
       (err, token) => { resolve(token) })
   })
 }

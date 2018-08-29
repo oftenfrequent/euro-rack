@@ -92,7 +92,7 @@ export class ConvolutionReverb extends React.Component {
         <Jack name='wetness'
           attention={this.props.reverb.getIn(['input', 'wetness', 'attention'])}
           color={this.props.reverb.getIn(['input', 'wetness', 'color'])}
-          onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'input', 'wetness', this.props.reverb.get('toneComponent').wet, this.props.reverb.getIn(['input', 'wetness', 'color']))}
+          onJackClick={(e) => this.props.onJackClick(e, this.props.id, 'input', 'wetness', this.props.reverb.get('toneComponent'), this.props.reverb.getIn(['input', 'wetness', 'color']))}
         />
         <div className='filter-in-jack'>
           <Jack name='audio in'

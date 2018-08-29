@@ -1,6 +1,8 @@
 import { fromJS, List } from 'immutable'
 import Tone from 'tone'
 
+window.T = Tone;
+
 import EuroRackInitialState from './EuroRackInitialState'
 
 const reducer = (state = {}, action) => {

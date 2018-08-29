@@ -54,7 +54,7 @@ const AppPipeline = (db) => {
   }
 
   // connect auth to app
-  // authentication(app, db)
+  authentication(app, db)
 
   // Static stuff
   // app.use(favicon(app.getValue('faviconPath')));
@@ -62,7 +62,7 @@ const AppPipeline = (db) => {
   app.use('/api', routes)
   app.use(ErrorCatchingMiddleWare)
   app.get('/*', (req, res) => {
-    console.log('HEREH YET???')
+    // console.log('HEREH YET???')
     // match({routes: appRoutes(), location: req.url},
     //   (err, redirectLocation, renderProps) => {
     //     if(err) return res.status(500).send(err.message)

@@ -170,6 +170,7 @@ export class EuroRack extends React.Component {
          : null
         }
       </div>
+      <button onClick={() => this.savePatch()}>Save</button>
       </div>
     )
       // <button onClick={() => this.props.testing()}>TESTING STUFF</button>

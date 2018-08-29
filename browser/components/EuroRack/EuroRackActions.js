@@ -88,3 +88,9 @@ export function resetEuroRack() {
 		type: 'RESET_EURORACK'
 	}
 }
+
+export function savePatch() {
+	return {
+		type: 'SAVE_PATCH'
+	}
+}

@@ -63,6 +63,11 @@ export const connectJackMiddleWare = store => next => action => {
           action['minValue'] = 0
           action['maxValue'] = 1
         }
+        if (inputConnectionObj.get('cvName') === 'wetness') {
+          action['midValue'] = state[inputConnectionObj.get('module')].getIn([inputConnectionObj.get('id'), 'wetness'])
+          action['minValue'] = 0
+          action['maxValue'] = 100
+        }
 
       } else {
         action['isLFO'] = false
