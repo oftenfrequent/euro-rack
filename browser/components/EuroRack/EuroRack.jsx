@@ -9,6 +9,7 @@ import EnvelopeGenerator from '../Modules/Envelope/Envelope'
 import Filter from '../Modules/Filter/Filter'
 import ConvolutionReverb from '../Modules/ConvolutionReverb/ConvolutionReverb'
 import VCA from '../Modules/VCA/VCA'
+import PingPong from '../Modules/PingPong/PingPong'
 import Speaker from '../Modules/Speaker/Speaker'
 import AddNewComponent from '../Modules/AddNew/AddNew'
 import JackClickHelper from '../Helpers/JackClickHelper'
@@ -33,7 +34,8 @@ export class EuroRack extends React.Component {
       Array.from(props.envelopes.keys()),
       Array.from(props.filters.keys()),
       Array.from(props.convolutionReverbs.keys()),
-      Array.from(props.midis.keys())
+      Array.from(props.midis.keys()),
+      Array.from(props.pingPongs.keys())
     ]
 //    this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
   }
@@ -64,7 +66,8 @@ export class EuroRack extends React.Component {
       Array.from(nextProps.envelopes.keys()),
       Array.from(nextProps.filters.keys()),
       Array.from(nextProps.convolutionReverbs.keys()),
-      Array.from(nextProps.midis.keys())
+      Array.from(nextProps.midis.keys()),
+      Array.from(nextProps.pingPongs.keys())
     ])
 
     idList.map( id => {
@@ -160,6 +163,15 @@ export class EuroRack extends React.Component {
             onJackClick={(e, id, direction, cvName, toneComponent, currentColor) => this.handleJackClick(e, 'midis', id, direction, cvName, toneComponent, currentColor)}
           />
         )}
+        {Array.from(this.props.pingPongs.keys()).map((name,index) =>
+          <PingPong
+            id={name}
+            key={index}
+            order={this.props.order.indexOf(name)}
+            changeOrder={(n) => this.changeOrder(n)}
+            onJackClick={(e, id, direction, cvName, toneComponent, currentColor) => this.handleJackClick(e, 'pingPongs', id, direction, cvName, toneComponent, currentColor)}
+          />
+        )}
         <Speaker
           order={9999}
           changeOrder={(n) => this.changeOrder(n)}
@@ -187,6 +199,7 @@ function mapStateToProps(state) {
     convolutionReverbs: state.convolutionReverbs,
     vcas: state.vcas,
     midis: state.midis,
+    pingPongs: state.pingPongs,
     patchCables: state.eurorack.get('patchCables'),
     order: state.eurorack.get('order').toJS(),
     addModules: state.eurorack.get('addModules')

@@ -11,6 +11,7 @@ import { addEnvelope } from '../Envelope/EnvelopeActions'
 import { addFilter } from '../Filter/FilterActions'
 import { addConvolutionReverb } from '../ConvolutionReverb/ConvolutionReverbActions'
 import { addVCA } from '../VCA/VCAActions'
+import { addPingPong } from '../PingPong/PingPongActions'
 
 export class AddNewComponent extends React.Component {
   constructor(props){
@@ -36,6 +37,8 @@ export class AddNewComponent extends React.Component {
         return this.props.addConvolutionReverb()
       case 'vca' :
         return this.props.addVCA()
+      case 'pingPong' :
+        return this.props.addPingPong()
     }
 
   }
@@ -48,7 +51,7 @@ export class AddNewComponent extends React.Component {
           draggable={false}
         >
           <DisplayTypeDropdown
-            optionTypes={fromJS(['vco', 'lfo', 'envelope', 'filter', 'vca', 'convolutionReverb'])}
+            optionTypes={fromJS(['vco', 'lfo', 'envelope', 'filter', 'vca', 'convolutionReverb', 'pingPong'])}
             changeType={(v) => this.changeStateModule(v)}
           />
           <button onClick={() => this.addModule()}>Add Module</button>
@@ -70,6 +73,7 @@ export default connect(
     addEnvelope,
     addFilter,
     addVCA,
-    addConvolutionReverb
+    addConvolutionReverb,
+    addPingPong,
   }
 )(AddNewComponent)

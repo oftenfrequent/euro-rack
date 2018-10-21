@@ -18,6 +18,7 @@ const initialState = {
 	filters: fromJS({}),
 	vcas: fromJS({}),
 	midis: fromJS({}),
+	pingPongs: fromJS({}),
 	// oscillators: fromJS({
 	// 	[uuid.v4()]: OscillatorInitialStateCreator()
 	// }),

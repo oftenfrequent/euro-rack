@@ -11,6 +11,7 @@ import { addFilter } from '../components/Modules/Filter/FilterActions'
 import { addConvolutionReverb } from '../components/Modules/ConvolutionReverb/ConvolutionReverbActions'
 import { addVCA } from '../components/Modules/VCA/VCAActions'
 import { addMIDI } from '../components/Modules/MIDI/MIDIActions'
+import { addPingPong } from '../components/Modules/PingPong/PingPongActions'
 
 export class PlayPage extends React.Component {
   constructor (props) {
@@ -27,6 +28,7 @@ export class PlayPage extends React.Component {
     this.props.addVCA()
     this.props.addMIDI()
     this.props.addConvolutionReverb()
+    this.props.addPingPong()
   }
 
   // componentWillMount() {
@@ -56,6 +58,7 @@ export default connect(
     addVCA,
     addMIDI,
     addConvolutionReverb,
+    addPingPong,
  }
 )(PlayPage)
 
