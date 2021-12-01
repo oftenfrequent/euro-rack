@@ -4,22 +4,41 @@ let requestFrameId
 export const visualize = (canvas, canvasCtx, analyser) => {
   const WIDTH = canvas.width
   const HEIGHT = canvas.height
-  const bufferLength = 2048
 
   analyser.minDecibels = -110
   analyser.maxDecibels = 0
   analyser.smoothingTimeConstant = 0.85
 
-  const dataArray = new Uint8Array(bufferLength)
   canvasCtx.clearRect(0, 0, WIDTH, HEIGHT)
+  canvasCtx.fillStyle = 'rgb(128,128,128)'
+  canvasCtx.fillRect(0, 0, WIDTH, HEIGHT)
 
-  function draw() {
-    requestFrameId = requestAnimationFrame(draw)
+  function drawFrequencyBars() {
+    console.log('HEREH')
+    const bufferLength = 64
+    const dataArray = new Uint8Array(bufferLength)
+    // requestFrameId = requestAnimationFrame(drawFrequencyBars)
+
+    analyser.getByteFrequencyData(dataArray)
+
+    const w = WIDTH / dataArray.length;
+
+    for (var i = 0, imax = dataArray.length; i < imax; i++) {
+      var x = w * i;
+      var y = linlin(dataArray[i], 0, 255, HEIGHT, 0);
+      var r = linlin(dataArray[i], 0, 255, 100, 255)|0;
+      canvasCtx.fillStyle = "rgb(" + r + ", 76, 60)";
+      canvasCtx.fillRect(x, y, w - 1, HEIGHT - y);
+    }
+  }
+
+
+  function drawSignal() {
+    const bufferLength = 2048
+    const dataArray = new Uint8Array(bufferLength)
+    // requestFrameId = requestAnimationFrame(drawSignal)
 
     analyser.getByteTimeDomainData(dataArray)
-
-    canvasCtx.fillStyle = 'rgb(128,128,128)'
-    canvasCtx.fillRect(0, 0, WIDTH, HEIGHT)
 
     canvasCtx.lineWidth = 2
     canvasCtx.strokeStyle = 'rgb(255,255,0)'
@@ -47,8 +66,22 @@ export const visualize = (canvas, canvasCtx, analyser) => {
     canvasCtx.stroke()
   }
 
+  function draw() {
+    requestFrameId = requestAnimationFrame(draw)
+
+    canvasCtx.fillStyle = 'rgb(128,128,128)'
+    canvasCtx.fillRect(0, 0, WIDTH, HEIGHT)
+    drawSignal()
+    drawFrequencyBars()
+  }
+
   draw()
 
+}
+
+
+function linlin(value, inMin, inMax, outMin, outMax) {
+  return (value - inMin) / (inMax - inMin) * (outMax - outMin) + outMin;
 }
 
 export const stopVisualization = (canvas, canvasCtx) => {
